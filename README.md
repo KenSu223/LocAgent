@@ -73,10 +73,30 @@ By parsing codebases into directed heterogeneous graphs, LocAgent creates a ligh
 ## 📑 Cite Us
 
    ```
-  @article{chen2025locagent,
-  title={LocAgent: Graph-Guided LLM Agents for Code Localization},
-  author={Chen, Zhaoling and Tang, Xiangru and Deng, Gangda and Wu, Fang and Wu, Jialong and Jiang, Zhiwei and Prasanna, Viktor and Cohan, Arman and Wang, Xingyao},
-  journal={arXiv preprint arXiv:2503.09089},
-  year={2025}
-  }
+@inproceedings{chen-etal-2025-locagent,
+    title = "{L}oc{A}gent: Graph-Guided {LLM} Agents for Code Localization",
+    author = "Chen, Zhaoling  and
+      Tang, Robert  and
+      Deng, Gangda  and
+      Wu, Fang  and
+      Wu, Jialong  and
+      Jiang, Zhiwei  and
+      Prasanna, Viktor  and
+      Cohan, Arman  and
+      Wang, Xingyao",
+    editor = "Che, Wanxiang  and
+      Nabende, Joyce  and
+      Shutova, Ekaterina  and
+      Pilehvar, Mohammad Taher",
+    booktitle = "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = jul,
+    year = "2025",
+    address = "Vienna, Austria",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.acl-long.426/",
+    doi = "10.18653/v1/2025.acl-long.426",
+    pages = "8697--8727",
+    ISBN = "979-8-89176-251-0",
+    abstract = "Code localization{--}identifying precisely where in a codebase changes need to be made{--}is a fundamental yet challenging task in software maintenance. Existing approaches struggle to efficiently navigate complex codebases when identifying relevant code snippets.The challenge lies in bridging natural language problem descriptions with the target code elements, often requiring reasoning across hierarchical structures and multiple dependencies.We introduce LocAgent, a framework that addresses code localization through a graph-guided agent.By parsing codebases into directed heterogeneous graphs, LocAgent creates a lightweight representation that captures code structures and their dependencies, enabling LLM agents to effectively search and locate relevant entities through powerful multi-hop reasoning.Experimental results on real-world benchmarks demonstrate that our approach significantly enhances accuracy in code localization.Notably, our method with the fine-tuned Qwen-2.5-Coder-Instruct-32B model achieves comparable results to SOTA proprietary models at greatly reduced cost (approximately 86{\%} reduction), reaching up to 92.7{\%} accuracy on file-level localization while improving downstream GitHub issue resolution success rates by 12{\%} for multiple attempts (Pass@10). Our code is available at \url{https://github.com/gersteinlab/LocAgent}."
+}
    ```
