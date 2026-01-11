@@ -22,6 +22,11 @@ MODEL_COST_PER_INPUT = {
     "gpt-4-0125-preview": 0.00001,
     "gpt-4o": 0.000005,
     'azure/gpt-4o': 0.000005,
+    'azure/gpt-4.1': 0.000005,  # Assuming similar pricing to gpt-4o
+    'azure/gpt-5.2': 0.000005,  # Assuming similar pricing to gpt-4o
+    'azure/gpt-4.1-mini': 1.65e-07,  # Assuming similar pricing to gpt-4o-mini
+    'azure/DeepSeek-V3.2': 1.4e-07,  # Assuming similar pricing to deepseek
+    'azure/deepseek-v3.2': 1.4e-07,  # Alias for the model name
     'gpt-4o-2024-05-13': 0.000005,
     'openai/gpt-4o-2024-05-13': 0.000005,
     'openai/gpt-4o-mini-2024-07-18': 1.65e-07,
@@ -57,6 +62,11 @@ MODEL_COST_PER_OUTPUT = {
     "gpt-4-0125-preview": 0.00003,
     "gpt-4o": 0.000015,
     'azure/gpt-4o': 0.000015,
+    'azure/gpt-4.1': 0.000015,  # Assuming similar pricing to gpt-4o
+    'azure/gpt-5.2': 0.000015,  # Assuming similar pricing to gpt-4o
+    'azure/gpt-4.1-mini': 6.6e-07,  # Assuming similar pricing to gpt-4o-mini
+    'azure/DeepSeek-V3.2': 2.8e-07,  # Assuming similar pricing to deepseek
+    'azure/deepseek-v3.2': 2.8e-07,  # Alias for the model name
     'openai/gpt-4o-2024-05-13': 0.000015,
     'gpt-4o-2024-05-13': 0.000015,
     'openai/gpt-4o-mini-2024-07-18': 6.6e-07,

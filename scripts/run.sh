@@ -15,7 +15,7 @@ mkdir -p $result_path
 python auto_search_main.py \
     --dataset 'czlll/SWE-bench_Lite' \
     --split 'test' \
-    --model 'azure/gpt-4o' \
+    --model 'azure/gpt-4.1' \
     --localize \
     --merge \
     --output_folder $result_path/location \

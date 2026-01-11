@@ -51,6 +51,59 @@ from util.runtime.fn_call_converter import (
 # os.environ['LITELLM_LOG'] = 'DEBUG
 
 
+def _normalize_azure_base(api_base: str) -> str:
+    # Strip Azure OpenAI path suffix if present to avoid duplicate path segments.
+    if not api_base:
+        return api_base
+    normalized = api_base.rstrip('/')
+    if normalized.endswith('/openai/v1'):
+        normalized = normalized[: -len('/openai/v1')]
+    return normalized
+
+
+def configure_azure_endpoint(model_name: str):
+    """
+    Configure litellm with the correct Azure endpoint and API key based on model name.
+    Returns a dict with api_key and api_base for use in litellm.completion().
+    """
+    azure_configs = {
+        'azure/gpt-4.1': {
+            'api_key': os.environ.get('AZURE_API_KEY_GPT41'),
+            'api_base': os.environ.get('AZURE_API_BASE_GPT41'),
+            'deployment_name': 'gpt-4.1'
+        },
+        'azure/gpt-5.2': {
+            'api_key': os.environ.get('AZURE_API_KEY_GPT52'),
+            'api_base': os.environ.get('AZURE_API_BASE_GPT52'),
+            'deployment_name': 'gpt-5.2'
+        },
+        'azure/gpt-4.1-mini': {
+            'api_key': os.environ.get('AZURE_API_KEY_GPT41MINI'),
+            'api_base': os.environ.get('AZURE_API_BASE_GPT41MINI'),
+            'deployment_name': 'gpt-4.1-mini'
+        },
+        'azure/deepseek-v3.2': {
+            'api_key': os.environ.get('AZURE_API_KEY_DEEPSEEK'),
+            'api_base': os.environ.get('AZURE_API_BASE_DEEPSEEK'),
+            'deployment_name': 'DeepSeek-V3.2'
+        }
+    }
+    
+    if model_name in azure_configs:
+        config = azure_configs[model_name]
+        if not config.get('api_key') or not config.get('api_base'):
+            raise ValueError(
+                f"Missing Azure configuration for {model_name}. "
+                "Set the AZURE_API_KEY_* and AZURE_API_BASE_* environment variables."
+            )
+        # Set environment variables for litellm
+        config['api_base'] = _normalize_azure_base(config['api_base'])
+        os.environ['AZURE_API_KEY'] = config['api_key']
+        os.environ['AZURE_API_BASE'] = config['api_base']
+        return config
+    return None
+
+
 def filter_dataset(dataset, filter_column: str, used_list: str):
     file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.toml')
     if os.path.exists(file_path):
@@ -118,6 +171,9 @@ def auto_search_process(result_queue,
                         temp=1.0,
                         max_iteration_num=20,
                         use_function_calling=True):
+    # Configure Azure endpoint if needed
+    azure_config = configure_azure_endpoint(model_name)
+    
     if tools and ('hosted_vllm' in model_name or 'qwen' in model_name.lower() 
     #             #   or model_name=='azure/gpt-4o' 
     #             #   or model_name == 'litellm_proxy/o3-mini-2025-01-31'
@@ -157,30 +213,40 @@ def auto_search_process(result_queue,
             })
 
         try:
+            # Prepare litellm kwargs
+            # For Azure models, use the deployment name in the model string
+            if azure_config:
+                model_for_litellm = f"azure/{azure_config['deployment_name']}"
+                litellm_kwargs = {
+                    'model': model_for_litellm,
+                    'messages': messages,
+                    'temperature': temp,
+                    'api_key': azure_config['api_key'],
+                    'api_base': azure_config['api_base'],
+                }
+            else:
+                litellm_kwargs = {
+                    'model': model_name,
+                    'messages': messages,
+                    'temperature': temp,
+                }
+            
             # new conversation
             if tools and ('hosted_vllm' in model_name or 'qwen' in model_name.lower()):
                 messages = convert_fncall_messages_to_non_fncall_messages(messages, tools, add_in_context_learning_example=False)
-                response = litellm.completion(
-                    model=model_name,
-                    temperature=temp, top_p=0.8, repetition_penalty=1.05, 
-                    messages=messages,
-                    stop=NON_FNCALL_STOP_WORDS
-                )
+                litellm_kwargs.update({
+                    'temperature': temp,
+                    'top_p': 0.8,
+                    'repetition_penalty': 1.05,
+                    'stop': NON_FNCALL_STOP_WORDS
+                })
+                response = litellm.completion(**litellm_kwargs)
             elif tools:
-                response = litellm.completion(
-                    model=model_name,
-                    tools=tools,
-                    messages=messages,
-                    temperature=temp,
-                    # stop=['</execute_ipython>'], #</finish>',
-                )
+                litellm_kwargs['tools'] = tools
+                response = litellm.completion(**litellm_kwargs)
             else:
-                response = litellm.completion(
-                    model=model_name,
-                    messages=messages,
-                    temperature=temp,
-                    stop=['</execute_ipython>'], #</finish>',
-                )
+                litellm_kwargs['stop'] = ['</execute_ipython>']
+                response = litellm.completion(**litellm_kwargs)
         except litellm.BadRequestError as e:
             # If there's an error, send the error info back to the parent process
             result_queue.put({'error': str(e), 'type': 'BadRequestError'})
@@ -594,9 +660,11 @@ def main():
     
     parser.add_argument(
         "--model", type=str,
-        default="openai/gpt-4o-2024-05-13",
+        default="azure/gpt-4.1",
         choices=["gpt-4o", 
                  "azure/gpt-4o", "openai/gpt-4o-2024-05-13",
+                 # Your Azure models
+                 "azure/gpt-4.1", "azure/gpt-5.2", "azure/gpt-4.1-mini", "azure/deepseek-v3.2",
                  "deepseek/deepseek-chat", "deepseek-ai/DeepSeek-R1",
                  "litellm_proxy/claude-3-5-sonnet-20241022", "litellm_proxy/gpt-4o-2024-05-13", "litellm_proxy/o3-mini-2025-01-31",
                  # fine-tuned model
