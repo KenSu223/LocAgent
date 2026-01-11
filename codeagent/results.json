@@ -1,0 +1,83 @@
+{
+  "metadata": {
+    "model": "gpt-4.1",
+    "repo": "manim",
+    "timestamp": "2026-01-11T08:26:05.957764",
+    "total_issues": 5,
+    "processed": 5
+  },
+  "results": [
+    {
+      "issue_url": "https://github.com/3b1b/manim/issues/1330",
+      "title": "Error after installing manim",
+      "base_commit": "3938f81c1b4a5ee81d5bfc6563c17a225f7e5068",
+      "ground_truth_files": [
+        "manimlib/window.py"
+      ],
+      "predicted_files": [
+        "manimlib/scene/scene.py",
+        "manimlib/config.py",
+        "manimlib/window.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['manimlib/window.py', 'manimlib/scene/scene.py', 'manimlib/config.py'], 'reasoning': 'The error occurs during the creation of the OpenGL window/context via pyglet/moderngl_window in Window (manimlib/window.py), triggered by parameters passed from Scene (manimlib/scene/scene.py), which may depend on or benefit from better global configuration defaults (manimlib/config.py). Modifications are likely needed to improve window/context configuration to avoid NoSuchConfigException, for example: by ensuring compatible OpenGL/Microsoft window parameters or by providing sensible cross-platform defaults and error handling.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/3b1b/manim/issues/30",
+      "title": "TypeError while running a triangle.py scene",
+      "base_commit": "0092ac9a2a20873c7c077cefc4d68397a6df2ada",
+      "ground_truth_files": [
+        "mobject/mobject.py"
+      ],
+      "predicted_files": [
+        "topics/geometry.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\"topics/geometry.py\"],\n    \"reasoning\": \"The root of the TypeError is that some Polygon or VMobject instances in the scene have their points attribute as integer arrays (dtype=int64), but geometric transformations (like shift) require float arrays (dtype=float64) to support non-integer transformations. The Polygon class, found in topics/geometry.py, is ultimately responsible for setting up the points array in constructs like 'self.triangle = Polygon(...)' in old_projects/triangle_of_power/triangle.py. Modifying Polygon's __init__ in topics/geometry.py to always cast its points array to float (e.g., using np.array(points, dtype=float)) will ensure all polygons (and their descendants) work with geometric transformations, resolving this and similar issues across the codebase. Only topics/geometry.py needs to be modified; triangle.py and core VMobject code expect correct dtype in subclasses/instances.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/3b1b/manim/issues/401",
+      "title": "The video doesn't concatenate, I can only get partial videos",
+      "base_commit": "2cf3d4dbf9da66cbff30f54a032b9c60d6e6073c",
+      "ground_truth_files": [
+        "manimlib/scene/scene.py",
+        "manimlib/utils/output_directory_getters.py"
+      ],
+      "predicted_files": [
+        "example_scenes.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['example_scenes.py'], 'reasoning': 'This file defines the WriteStuff scene, which is referenced in the error. None of the Python files handling utility or scene logic contain code referencing file creation, output, or video concatenation keywords. The scene definition or its parameters in example_scenes.py may be causing the output bug (partial videos, missing concatenation lists), so this file needs modification.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/3b1b/manim/issues/293",
+      "title": "Outdated DockerFile dependencies",
+      "base_commit": "384895b9a8da0fcdb3b92868fb5965c5e6de1ed5",
+      "ground_truth_files": [
+        "Dockerfile"
+      ],
+      "predicted_files": [],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['Dockerfile'], 'reasoning': \"The root-level Dockerfile specifies 'FROM python:2.7.12', which uses Python 2.7, an unsupported version for Manim and likely to cause syntax errors. Updating this Dockerfile to use a Python 3 base image will resolve the dependency issue as described in the issue.\"}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/3b1b/manim/issues/1059",
+      "title": " Impossible to open 'CC:/manim/manim_3_feb/media/videos/example_scenes/480p15/partial_movie_files/SquareToCircle/00000.mp4'",
+      "base_commit": "dbdd7996960ba46ed044a773290b02f17478c760",
+      "ground_truth_files": [
+        "manimlib/scene/scene_file_writer.py"
+      ],
+      "predicted_files": [
+        "manimlib/constants.py",
+        "manimlib/scene/scene_file_writer.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['manimlib/constants.py', 'manimlib/scene/scene_file_writer.py'], 'reasoning': \"The error arises from the construction and use of output file paths, which rely on directory constants initialized in manimlib/constants.py and are used to build file paths in manimlib/scene/scene_file_writer.py. Both files are responsible for determining where scene files are saved, building their full paths, and ensuring output directories exist. Therefore, they need proper normalization and validation to prevent malformed paths like 'CC:/manim/...'.\"}",
+      "error": null
+    }
+  ]
+}

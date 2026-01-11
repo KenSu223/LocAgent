@@ -153,7 +153,9 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+dataset/repos/
 
+logs.txt
 outputs_data
 outputs_data/
 index_data
