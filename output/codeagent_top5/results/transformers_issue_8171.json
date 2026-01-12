@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/8171",
+  "repo_name": "transformers",
+  "title": "Need suggestion on contributing TFDPR",
+  "base_commit": "eb3bd73ce35bfef56eeb722d697f2d39a06a8f8d",
+  "ground_truth_files": [
+    "docs/source/model_doc/dpr.rst",
+    "src/transformers/__init__.py",
+    "src/transformers/convert_pytorch_checkpoint_to_tf2.py",
+    "src/transformers/modeling_tf_auto.py",
+    "src/transformers/utils/dummy_pt_objects.py",
+    "src/transformers/utils/dummy_tf_objects.py",
+    "tests/test_modeling_dpr.py",
+    "utils/check_repo.py"
+  ],
+  "predicted_files": [
+    "src/transformers/utils/dummy_tf_objects.py",
+    "src/transformers/convert_pytorch_checkpoint_to_tf2.py",
+    "src/transformers/modeling_tf_dpr.py",
+    "src/transformers/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/modeling_tf_dpr.py', 'src/transformers/__init__.py', 'src/transformers/convert_pytorch_checkpoint_to_tf2.py', 'src/transformers/utils/dummy_tf_objects.py', 'docs/source/model_doc/dpr.rst'], 'reasoning': '1. src/transformers/modeling_tf_dpr.py: This is where the actual TFDPR model implementation belongs; without this, the TF model cannot exist or be loaded.\\n2. src/transformers/__init__.py: Necessary to register and expose TFDPR, allowing imports and integration with the library.\\n3. src/transformers/convert_pytorch_checkpoint_to_tf2.py: Needs adjustment to enable conversion/loading of DPR PyTorch weights into TFDPR; enables interoperability with preexisting weights.\\n4. src/transformers/utils/dummy_tf_objects.py: Registers TFDPR as a dummy when TensorFlow is not available for broader compatibility and seamless API use.\\n5. docs/source/model_doc/dpr.rst: Documentation update is essential to describe the addition, usage and specifics of TFDPR for library users and contributors.'}",
+  "error": null
+}

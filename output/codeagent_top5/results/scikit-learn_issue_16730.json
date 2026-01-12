@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/16730",
+  "repo_name": "scikit-learn",
+  "title": "BUG: MLE for PCA mis-estimates rank",
+  "base_commit": "eaf0a044fdc084ebeeb9bbfbcf42e6df2b1491bb",
+  "ground_truth_files": [
+    "doc/whats_new/v0.23.rst",
+    "sklearn/decomposition/_pca.py",
+    "sklearn/decomposition/tests/test_pca.py"
+  ],
+  "predicted_files": [
+    "sklearn/decomposition/_pca.py",
+    "sklearn/decomposition/_base.py",
+    "sklearn/decomposition/tests/test_pca.py",
+    "sklearn/decomposition/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/decomposition/_pca.py', 'sklearn/decomposition/tests/test_pca.py', 'sklearn/decomposition/_base.py', 'sklearn/decomposition/__init__.py', 'doc/modules/decomposition.rst'], 'reasoning': \"1. sklearn/decomposition/_pca.py: Contains the core PCA logic and the MLE-based dimension inference, including _infer_dimension and the n_components='mle' handling. This is the source of the bug.\\n2. sklearn/decomposition/tests/test_pca.py: Tests for PCA, including those for MLE dimension estimation. Should be updated to catch/fix regression and validate correct estimation.\\n3. sklearn/decomposition/_base.py: Provides shared PCA base logic and validation; may need updates for consistency in dimensionality management or validation.\\n4. sklearn/decomposition/__init__.py: Exposes PCA and manages documentation/interface; update only if changed API/doc affects public exposure.\\n5. doc/modules/decomposition.rst: Documentation for decomposition models including PCA; update if MLE/rank estimation documentation changes after fix.\"}",
+  "error": null
+}

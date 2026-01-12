@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/2190",
+  "repo_name": "scikit-learn",
+  "title": "crash in MeanShift tests after make cython (edited from k_means)",
+  "base_commit": "0bbd57b322aaa5aeca4f3af2dd7f802360d29673",
+  "ground_truth_files": [
+    "sklearn/neighbors/binary_tree.pxi"
+  ],
+  "predicted_files": [
+    "__init__.py",
+    "sklearn/cluster/__init__.py",
+    "sklearn/cluster/mean_shift_.py",
+    "sklearn/cluster/tests/test_mean_shift.py",
+    "test_mean_shift.py",
+    "sklearn/cluster/_k_means.py",
+    "setup.py",
+    "sklearn/cluster/setup.py",
+    "mean_shift_.py",
+    "_k_means.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cluster/mean_shift_.py', 'sklearn/cluster/tests/test_mean_shift.py', 'sklearn/cluster/__init__.py', 'sklearn/cluster/_k_means.pyx', 'sklearn/cluster/setup.py'], 'reasoning': '1. mean_shift_.py: Contains the core MeanShift implementation, likely source of crashes or needed fixes.\\n2. test_mean_shift.py: Contains tests that reproduce the crash; essential for both debugging and verifying the solution.\\n3. __init__.py: Handles import/export of the MeanShift module; required if import errors or symbol exposure issues appear due to recent changes.\\n4. _k_means.pyx: Recently edited k-means Cython code could have impacted build dependencies or shared cythonized utilities used by MeanShift.\\n5. setup.py: Build script for cluster algorithms (Cython, BLAS); changes may be necessary if cythonization or compilation caused test failures.'}",
+  "error": null
+}

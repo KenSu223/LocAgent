@@ -1,0 +1,35 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/21330",
+  "repo_name": "transformers",
+  "title": "Add XLM-V",
+  "base_commit": "b9af152efb748b1bff8f6fe0130e62ebb8e11a53",
+  "ground_truth_files": [
+    "README.md",
+    "README_es.md",
+    "README_hd.md",
+    "README_ja.md",
+    "README_ko.md",
+    "README_zh-hans.md",
+    "README_zh-hant.md",
+    "docs/source/de/index.mdx",
+    "docs/source/en/_toctree.yml",
+    "docs/source/en/index.mdx",
+    "src/transformers/models/auto/configuration_auto.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/auto/modeling_auto.py",
+    "configuration_xlm_v.py",
+    "src/transformers/models/auto/tokenization_auto.py",
+    "src/transformers/models/xlm_v/configuration_xlm_v.py",
+    "modeling_auto.py",
+    "modeling_xlm_v.py",
+    "src/transformers/models/xlm_v/modeling_xlm_v.py",
+    "src/transformers/models/xlm_v/tokenization_xlm_v.py",
+    "modeling_xlm_roberta.py",
+    "tokenization_xlm_v.py",
+    "tokenization_auto.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/xlm_v/modeling_xlm_v.py', 'src/transformers/models/xlm_v/tokenization_xlm_v.py', 'src/transformers/models/xlm_v/configuration_xlm_v.py', 'src/transformers/models/auto/modeling_auto.py', 'src/transformers/models/auto/tokenization_auto.py'], 'reasoning': \"1. modeling_xlm_v.py: New model implementation for XLM-V, analogous to modeling_xlm_roberta.py, is the most crucial part.\\n2. tokenization_xlm_v.py: Required to handle XLM-V's vocabulary and tokenization logic, as XLM-V introduces a new approach for vocab scaling.\\n3. configuration_xlm_v.py: Important to add model configuration parameters specific to XLM-V and enable proper model instantiation.\\n4. modeling_auto.py: Needs updating to register XLM-V as a supported architecture for automatic model loading (AutoModel).\\n5. tokenization_auto.py: Needs updating to enable automatic tokenizer loading for the new XLM-V tokenizer class.\\nThese cover core support for XLM-V within the Transformers repo; further changes to Flax/TensorFlow or docs may be needed for full coverage, but are lower priority.\"}",
+  "error": null
+}

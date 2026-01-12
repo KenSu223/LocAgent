@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1860",
+  "repo_name": "localstack",
+  "title": "Route53 Add HostedZone or Add recordSet failing when done via terraform ",
+  "base_commit": "83ff0cb0a0366db3c8067eef40b7869f15e7d05e",
+  "ground_truth_files": [
+    "localstack/plugins.py",
+    "localstack/services/infra.py",
+    "tests/integration/test_route53.py"
+  ],
+  "predicted_files": [
+    "localstack/services/route53/__init__.py",
+    "localstack/services/plugins.py",
+    "localstack/services/generic_proxy.py",
+    "tests/integration/test_route53.py",
+    "localstack/services/infra.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/route53/__init__.py', 'localstack/services/plugins.py', 'localstack/services/infra.py', 'localstack/services/generic_proxy.py', 'tests/integration/test_route53.py'], 'reasoning': '1. localstack/services/route53/__init__.py: Implementation of Route53 API and the missing getChange method; this module does not exist and must be created to handle requests. 2. localstack/services/plugins.py: Register Route53 as a supported service to be started with others, so it is recognized as an available AWS service emulation.3. localstack/services/infra.py: Add logic for Route53 startup, stopping, and health checks, ensuring it launches with the rest of the infrastructure services.4. localstack/services/generic_proxy.py: Update proxy routing if necessary to route Route53 requests to new handler (depends on existing routing logic, but might need edits to handle new endpoints).5. tests/integration/test_route53.py: Add or update integration tests to verify Route53 (including getChange API) works with terraform and other clients; ensures the issue is fixed and remains fixed.'}",
+  "error": null
+}

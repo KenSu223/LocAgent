@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/5425",
+  "repo_name": "fastapi",
+  "title": "Error while opening swagger docs while uploading file in APIRouter",
+  "base_commit": "c6aa28bea2f751a91078bd8d845133ff83f352bf",
+  "ground_truth_files": [
+    "fastapi/routing.py"
+  ],
+  "predicted_files": [
+    "fastapi/params.py",
+    "fastapi/param_functions.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py",
+    "fastapi/openapi/utils.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"fastapi/params.py\",\n        \"fastapi/param_functions.py\",\n        \"fastapi/applications.py\",\n        \"fastapi/routing.py\",\n        \"fastapi/openapi/utils.py\"\n    ],\n    \"reasoning\": \"1. fastapi/params.py: This file defines core parameter types such as Path, Query, and likely File. Any issues or missing OpenAPI schema mapping for File uploads originate here, especially as FastAPI must represent UploadFile/File correctly in parameter schemas for documentation and validation.\\n2. fastapi/param_functions.py: This wraps and exposes the parameter classes as convenient functions. Bugs or missing OpenAPI schema hints for File endpoints in routers may require updates for proper integration here.\\n3. fastapi/applications.py: Responsible for integrating routing and docs setup. The call stack indicates this file is involved when generating OpenAPI (Swagger) specs, so changes here may be needed if the doc app fails to render UploadFile endpoints correctly.\\n4. fastapi/routing.py: This is the root for endpoint registration and parameter parsing in FastAPI. Any mismatch in how File/UploadFile parameters are interpreted for OpenAPI generation through APIRouter routes would be handled here.\\n5. fastapi/openapi/utils.py: This file is likely involved in translating FastAPI parameters/types into OpenAPI-friendly formats. If the schema for File upload endpoints is broken, bugs often require fixes here to ensure OpenAPI (and thus Swagger) can display the correct input forms.\\n\\nThese files collectively govern handling of file upload parameters in endpoints, their OpenAPI schema representation, and the interaction between routers and documentation interfaces. Fixes ensuring File/UploadFile parameters appear and function properly in Swagger UI when registered in routers will likely involve modifications across these files.\"\n}",
+  "error": null
+}

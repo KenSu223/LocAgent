@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2118",
+  "repo_name": "flask",
+  "title": "config.from_pyfile crashes on Python 3 when source isn't encoded in default encoding",
+  "base_commit": "8cd0b03beeac4a41c398ea365475c651c484a9ee",
+  "ground_truth_files": [
+    "CHANGES",
+    "flask/config.py",
+    "tests/test_config.py"
+  ],
+  "predicted_files": [
+    "flask/config.py",
+    "tests/test_instance_config.py",
+    "examples/minitwit/minitwit/minitwit.py",
+    "tests/test_config.py",
+    "flask/app.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/config.py', 'tests/test_config.py', 'tests/test_instance_config.py', 'flask/app.py', 'examples/minitwit/minitwit/minitwit.py'], 'reasoning': '1. flask/config.py: This is where config.from_pyfile is implemented, and the file is opened with the default encoding. A modification is needed to open the file in binary mode and then decode or specify correct encoding to avoid UnicodeDecodeError on Python 3. 2. tests/test_config.py: Covers config loading; should add and update tests to verify behavior with encodings and binary mode. 3. tests/test_instance_config.py: Related to instance config file reading and could surface/validate encoding errors; should also be updated. 4. flask/app.py: May interact with config initialization/loading and warrants review to ensure it does not reproduce the problem. 5. examples/minitwit/minitwit/minitwit.py: Example usage and calls to app.config methods; example files should demonstrate best practices and be checked for encoding support.'}",
+  "error": null
+}

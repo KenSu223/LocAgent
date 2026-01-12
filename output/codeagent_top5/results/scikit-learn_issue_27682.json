@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/27682",
+  "repo_name": "scikit-learn",
+  "title": "MAINT Directly `cimport` interfaces from `std::algorithm`",
+  "base_commit": "3d19272be75fe32edd4cf01cb2eeac2281305e42",
+  "ground_truth_files": [
+    "sklearn/metrics/_pairwise_distances_reduction/_middle_term_computer.pyx.tp",
+    "sklearn/metrics/_pairwise_distances_reduction/_radius_neighbors.pyx.tp"
+  ],
+  "predicted_files": [
+    "sklearn/metrics/_pairwise_distances_reduction/_middle_term_computer.py",
+    "sklearn/metrics/_pairwise_distances_reduction/_radius_neighbors.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/metrics/_pairwise_distances_reduction/_radius_neighbors.pyx.tp', 'sklearn/metrics/_pairwise_distances_reduction/_middle_term_computer.pyx.tp'], 'reasoning': 'These two files explicitly use old-style Cython `cdef extern from \"<algorithm>\" namespace \"std\"` for importing std::algorithm\\'s move and fill interfaces. The issue and TODO comments recommend switching to the direct `from libcpp.algorithm cimport move` / `fill` syntax provided by Cython 3. No other direct usages of these interfaces were found in the codebase, so changes are required only in these two source files.'}",
+  "error": null
+}

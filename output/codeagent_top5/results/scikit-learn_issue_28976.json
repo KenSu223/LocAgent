@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/28976",
+  "repo_name": "scikit-learn",
+  "title": "`min_samples` in HDSCAN",
+  "base_commit": "dc1cad2b3fddb8b9069d7cfd89cb1039260baf8e",
+  "ground_truth_files": [
+    "sklearn/cluster/_hdbscan/_reachability.pyx",
+    "sklearn/cluster/_hdbscan/hdbscan.py"
+  ],
+  "predicted_files": [
+    "sklearn/cluster/_hdbscan/hdbscan.py",
+    "sklearn/cluster/_hdbscan/tests/test_hdbscan.py",
+    "doc/api_reference.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cluster/_hdbscan/hdbscan.py', 'doc/api_reference.py', 'doc/common_pitfalls.rst', 'sklearn/cluster/_hdbscan/tests/test_hdbscan.py', 'doc/api/module.rst.template'], 'reasoning': \"1. sklearn/cluster/_hdbscan/hdbscan.py: The class-level docstring for HDBSCAN is the direct source of the problematic 'min_samples' description and must be clarified to explain its relation to core distance.\\n2. doc/api_reference.py: If the documentation is programmatically generated from code docstrings, updating this file or rerunning doc build ensures the change propagates officially.\\n3. doc/common_pitfalls.rst: Might include conceptual background or parameter-related pitfalls, possibly referencing min_samples logic (ensure clarity in both docstring and pitfalls discussion).\\n4. sklearn/cluster/_hdbscan/tests/test_hdbscan.py: Test documentation/examples may mention or show usage of min_samples; update any such references to ensure consistency.\\n5. doc/api/module.rst.template: If API documentation is generated from class docstrings via Sphinx, updating or checking this template ensures proper regeneration and inclusion of revised docstrings.\"}",
+  "error": null
+}

@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/34390",
+  "repo_name": "transformers",
+  "title": "[mask2former] torch.export error for Mask2Former",
+  "base_commit": "9bee9ff5db6e68fb31065898d7e924d07c1eb9c1",
+  "ground_truth_files": [
+    "src/transformers/models/mask2former/modeling_mask2former.py",
+    "tests/models/mask2former/test_modeling_mask2former.py"
+  ],
+  "predicted_files": [
+    "modeling_attn_mask_utils.py",
+    "modeling_mask2former.py",
+    "src/transformers/models/mask2former/modeling_mask2former.py",
+    "cache_utils.py",
+    "src/transformers/cache_utils.py",
+    "src/transformers/models/mask2former/configuration_mask2former.py",
+    "integrations/executorch.py",
+    "src/transformers/modeling_attn_mask_utils.py",
+    "configuration_mask2former.py",
+    "src/transformers/integrations/executorch.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/mask2former/modeling_mask2former.py', 'src/transformers/integrations/executorch.py', 'src/transformers/modeling_attn_mask_utils.py', 'src/transformers/cache_utils.py', 'src/transformers/models/mask2former/configuration_mask2former.py'], 'reasoning': '1. modeling_mask2former.py: This is the model implementation whose forward methods directly trigger the traceability error with torch.export due to dynamic shape usage. 2. integrations/executorch.py: This file contains wrapper and exporter logic for torch.export and may require changes for full compatibility with Mask2Former models. 3. modeling_attn_mask_utils.py: Provides key utility functions for attention masks which are often the source of shape/trace errors in export scenarios. 4. cache_utils.py: Handles static cache logic for export/compile and may need updates if caching interacts with dynamic shapes. 5. configuration_mask2former.py: Mask2Former configuration may need updates to support static shapes or configurable options for export compatibility.'}",
+  "error": null
+}

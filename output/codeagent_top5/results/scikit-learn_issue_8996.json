@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/8996",
+  "repo_name": "scikit-learn",
+  "title": "Deprecate LSHForest",
+  "base_commit": "0fb9a50033574e36a8bd635d8e5c0a793428877c",
+  "ground_truth_files": [
+    "benchmarks/bench_plot_approximate_neighbors.py",
+    "doc/modules/classes.rst",
+    "doc/modules/neighbors.rst",
+    "doc/whats_new.rst",
+    "examples/neighbors/plot_approximate_nearest_neighbors_hyperparameters.py",
+    "examples/neighbors/plot_approximate_nearest_neighbors_scalability.py",
+    "sklearn/neighbors/approximate.py",
+    "sklearn/neighbors/tests/test_approximate.py"
+  ],
+  "predicted_files": [
+    "sklearn/neighbors/approximate.py",
+    "sklearn/neighbors/tests/test_approximate.py",
+    "benchmarks/bench_plot_approximate_neighbors.py",
+    "sklearn/neighbors/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/neighbors/approximate.py', 'sklearn/neighbors/__init__.py', 'sklearn/neighbors/tests/test_approximate.py', 'doc/modules/neighbors.rst', 'benchmarks/bench_plot_approximate_neighbors.py'], 'reasoning': \"1. sklearn/neighbors/approximate.py: Main location for LSHForest implementation, the place to add deprecation and performance warnings in its constructor.\\n2. sklearn/neighbors/__init__.py: Controls public API exports and imports for LSHForest; should be updated to deprecate and hide LSHForest appropriately.\\n3. sklearn/neighbors/tests/test_approximate.py: Contains direct tests of LSHForest, must be updated for deprecation warnings and possibly rewritten if tests fail or become obsolete.\\n4. doc/modules/neighbors.rst: Main documentation file where LSHForest's status and warning must be clearly documented for users.\\n5. benchmarks/bench_plot_approximate_neighbors.py: Benchmarking script, should provide user-facing warnings if it uses LSHForest or may need removal in future versions.\"}",
+  "error": null
+}

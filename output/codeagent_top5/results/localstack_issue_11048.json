@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/11048",
+  "repo_name": "localstack",
+  "title": "bug: get-parameter and get-parameters on SSM does not work with ARNs (Localstack 3.5.0)",
+  "base_commit": "6aafbcdebade24b26705913cbc413dc7d50dad7a",
+  "ground_truth_files": [
+    "localstack-core/localstack/services/ssm/provider.py",
+    "localstack-core/localstack/utils/aws/arns.py",
+    "tests/aws/services/ssm/test_ssm.py"
+  ],
+  "predicted_files": [
+    "localstack-core/localstack/services/ssm/provider.py",
+    "localstack-core/localstack/utils/aws/arns.py",
+    "localstack-core/localstack/services/ssm/resource_providers/aws_ssm_parameter.py",
+    "localstack-core/localstack/aws/api/ssm.py",
+    "localstack-core/localstack/services/ssm/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack-core/localstack/services/ssm/provider.py\",\n        \"localstack-core/localstack/utils/aws/arns.py\",\n        \"localstack-core/localstack/services/ssm/resource_providers/aws_ssm_parameter.py\",\n        \"localstack-core/localstack/aws/api/ssm.py\",\n        \"localstack-core/localstack/services/ssm/__init__.py\"\n    ],\n    \"reasoning\": \"1. provider.py is the key file for handling SSM API calls in LocalStack and will contain, directly or via helpers, the logic for get-parameter and input validation; this is where the main fix must occur to support ARNs in parameter names according to the AWS spec.\\n2. arns.py handles ARN parsing and normalization across services; modifying this will ensure ARNs passed as parameter names are correctly interpreted and decomposed for validation and lookup.\\n3. aws_ssm_parameter.py is the logical place for modeling and validating parameters, especially if validation logic or object construction needs to handle ARNs as names (may also inform the correct split between object identity and lookup).\\n4. api/ssm.py contains the typed API contract used to route/interpret requests, and sometimes has additional checks or decoders that need to be ARN-aware; ensuring it doesn't pre-filter legitimate ARN names is important.\\n5. __init__.py in ssm may need updates if exposed functions/classes used in CLI or entrypoints are involved in validating or passing parameter names/ARNs between layers.\\n\\nTogether, these files comprise the request entry, validation, normalization, and object instantiation for SSM parameter handling. The fix will likely involve changes to provider.py and arns.py for robust ARN support; aws_ssm_parameter.py and api/ssm.py for correct validation/typing; __init__.py only if API exposure is needed.\"\n}",
+  "error": null
+}

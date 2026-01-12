@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/6551",
+  "repo_name": "localstack",
+  "title": "bug: Can't get SSM secret parameter using localstack.",
+  "base_commit": "a258338f5c88f49b517f7ecf66be113e481a0afe",
+  "ground_truth_files": [
+    "localstack/services/ssm/provider.py",
+    "tests/integration/test_ssm.py"
+  ],
+  "predicted_files": [
+    "localstack/services/ssm/provider.py",
+    "localstack/services/secretsmanager/provider.py",
+    "localstack/services/stores.py",
+    "localstack/aws/api/ssm/__init__.py",
+    "localstack/aws/api/secretsmanager/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/ssm/provider.py\",\n        \"localstack/services/secretsmanager/provider.py\",\n        \"localstack/services/stores.py\",\n        \"localstack/aws/api/ssm/__init__.py\",\n        \"localstack/aws/api/secretsmanager/__init__.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/ssm/provider.py: This is the primary location for SSM API operation logic, including parameter retrieval ('get-parameter'). The bug arises because an SSM parameter lookup does not see data from SecretsManager; changes here can bridge or extend lookup logic to check for secrets in addition to parameters, as a workaround.\\n\\n2. localstack/services/secretsmanager/provider.py: This file manages secret creation ('create-secret'). Changes may be needed to reflect secret creation in a central or SSM-accessible store, or to trigger any needed notifications so that SSM can 'see' secrets, if bridging is added.\\n\\n3. localstack/services/stores.py: This file likely contains shared data stores or abstractions used by both SSM and SecretsManager. For the fix, it may be necessary to implement bridging, data replication, or conditional logic allowing SSM to access secrets (and vice versa), as LocalStack may use centralized or mock storage for AWS resources.\\n\\n4. localstack/aws/api/ssm/__init__.py: This is the interface/model definition for SSM. Any new logic affecting parameter access, returned models, or additions to how AWS SSM is simulated should be updated here as well.\\n\\n5. localstack/aws/api/secretsmanager/__init__.py: This is the interface/model definition for SecretsManager. If bridging or new interactions between secretsmanager and ssm are modeled or reflected in external API, updates might be needed here for compatibility.\"\n}",
+  "error": null
+}

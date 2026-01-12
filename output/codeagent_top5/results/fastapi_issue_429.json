@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/429",
+  "repo_name": "fastapi",
+  "title": "OpenAPI: HTTP_422 response does not use custom media_type",
+  "base_commit": "033bc2a6c9aec3a245eb1f1b4fadb2fbb7a514b8",
+  "ground_truth_files": [
+    "fastapi/openapi/utils.py"
+  ],
+  "predicted_files": [
+    "fastapi/exception_handlers.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/applications.py",
+    "fastapi/openapi/models.py",
+    "fastapi/routing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/routing.py', 'fastapi/openapi/utils.py', 'fastapi/openapi/models.py', 'fastapi/exception_handlers.py', 'fastapi/applications.py'], 'reasoning': '1. fastapi/routing.py - Responsible for registering path operations; default 422 responses are likely added here. 2. fastapi/openapi/utils.py - Controls OpenAPI schema generation, media type, and response model rendering; changes needed for correct media_type in 422 responses. 3. fastapi/openapi/models.py - Contains schema definitions for OpenAPI responses, especially error objects. 4. fastapi/exception_handlers.py - Handles custom and default exception serialization, which connects to OpenAPI error object formats. 5. fastapi/applications.py - Manages FastAPI app configuration and OpenAPI generation hooks, potentially affecting customizations to error responses and media types.'}",
+  "error": null
+}

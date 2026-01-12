@@ -1,0 +1,32 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/8444",
+  "repo_name": "localstack",
+  "title": "enhancement request: support for s3:ObjectRestore:* bucket notifications",
+  "base_commit": "3a6a3301fca769f2b9c5adbc5c19db442c02e03c",
+  "ground_truth_files": [
+    "localstack/services/events/provider.py",
+    "localstack/services/s3/notifications.py",
+    "localstack/services/s3/provider.py",
+    "tests/integration/s3/test_s3_notifications_eventbridge.py",
+    "tests/integration/s3/test_s3_notifications_eventbridge.snapshot.json",
+    "tests/integration/s3/test_s3_notifications_sqs.py",
+    "tests/integration/s3/test_s3_notifications_sqs.snapshot.json",
+    "tests/integration/test_events.py",
+    "tests/integration/test_events.snapshot.json"
+  ],
+  "predicted_files": [
+    "notifications.py",
+    "localstack/services/s3/s3_listener.py",
+    "localstack/services/s3/provider.py",
+    "s3_listener.py",
+    "localstack/services/s3/models.py",
+    "models.py",
+    "provider.py",
+    "localstack/services/s3/utils.py",
+    "localstack/services/s3/notifications.py",
+    "utils.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/s3/notifications.py', 'localstack/services/s3/provider.py', 'localstack/services/s3/s3_listener.py', 'localstack/services/s3/models.py', 'localstack/services/s3/utils.py'], 'reasoning': '1. notifications.py: This is the primary file for S3 event notification support; new event type(s), wiring, and Lambda/SNS/SQS triggers should be handled here.\\n2. provider.py: Handles high-level S3 request logic, and must be augmented to trigger ObjectRestore notifications after restore-relevant operations.\\n3. s3_listener.py: Listens to bucket operations, often invokes notification logic upon specific S3 actions, and may need enhancement to support ObjectRestore scenarios.\\n4. models.py: In case ObjectRestore or notification event types are model-driven, definitions or data classes might require updates here.\\n5. utils.py: Any helpers or backend utilities supporting the notification/event workflow and object restoration may need to be updated for the new event support.'}",
+  "error": null
+}

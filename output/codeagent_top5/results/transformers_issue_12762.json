@@ -1,0 +1,31 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/12762",
+  "repo_name": "transformers",
+  "title": "t5 fast tokenizer save_vocabulary fails without sentencepiece file",
+  "base_commit": "ba1b3db70907b975b5ca52b9957c5ed7a186a0fa",
+  "ground_truth_files": [
+    "src/transformers/models/albert/tokenization_albert_fast.py",
+    "src/transformers/models/barthez/tokenization_barthez_fast.py",
+    "src/transformers/models/big_bird/tokenization_big_bird_fast.py",
+    "src/transformers/models/camembert/tokenization_camembert_fast.py",
+    "src/transformers/models/herbert/tokenization_herbert_fast.py",
+    "src/transformers/models/mbart50/tokenization_mbart50_fast.py",
+    "src/transformers/models/pegasus/tokenization_pegasus_fast.py",
+    "src/transformers/models/reformer/tokenization_reformer_fast.py",
+    "src/transformers/models/t5/tokenization_t5_fast.py",
+    "src/transformers/models/xlm_roberta/tokenization_xlm_roberta_fast.py",
+    "src/transformers/models/xlnet/tokenization_xlnet_fast.py",
+    "src/transformers/tokenization_utils_fast.py",
+    "tests/test_tokenization_common.py"
+  ],
+  "predicted_files": [
+    "src/transformers/tokenization_utils_base.py",
+    "src/transformers/models/t5/tokenization_t5_fast.py",
+    "src/transformers/tokenization_utils_fast.py",
+    "src/transformers/file_utils.py",
+    "src/transformers/models/t5/tokenization_t5.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/t5/tokenization_t5_fast.py', 'src/transformers/tokenization_utils_fast.py', 'src/transformers/tokenization_utils_base.py', 'src/transformers/file_utils.py', 'src/transformers/models/t5/tokenization_t5.py'], 'reasoning': '1. src/transformers/models/t5/tokenization_t5_fast.py: Directly implements save_vocabulary; needs changes to handle cases where vocab_file is None to prevent save failures and improve resilience.\\n2. src/transformers/tokenization_utils_fast.py: Calls save_vocabulary as part of save flow; must robustly handle absent vocab files and coordinate fallback, error reporting, or skipping.\\n3. src/transformers/tokenization_utils_base.py: If the base save/pretrain logic or shared error handling is to be changed, would need updates for consistency.\\n4. src/transformers/file_utils.py: Provides is_sentencepiece_available and file/path logic\u2014could be relevant to fallback mechanisms or smarter detection of availability/requirements.\\n5. src/transformers/models/t5/tokenization_t5.py: The slow T5 tokenizer, referenced in fast variant for compatibility; documenting or mapping logic may need adjustment if file/model interoperability is changed.'}",
+  "error": null
+}

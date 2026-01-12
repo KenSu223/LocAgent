@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/457",
+  "repo_name": "localstack",
+  "title": "CloudWatch listener returns Internal Server Error",
+  "base_commit": "91859102289e257e360682887e871c6a4bfbd75d",
+  "ground_truth_files": [
+    "README.md",
+    "localstack/constants.py",
+    "localstack/ext/java/pom.xml",
+    "localstack/services/install.py",
+    "requirements.txt"
+  ],
+  "predicted_files": [
+    "localstack/config.py",
+    "localstack/constants.py",
+    "localstack/services/generic_proxy.py",
+    "localstack/services/infra.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/infra.py', 'localstack/services/generic_proxy.py', 'localstack/config.py', 'localstack/constants.py', 'bin/localstack'], 'reasoning': '1. localstack/services/infra.py: Central service startup; likely missing proper CloudWatch handler or misconfigured listener on port 4582. 2. localstack/services/generic_proxy.py: Handles proxy errors and could be involved in generating 500 Internal Server Error responses. 3. localstack/config.py: Contains port mappings and configuration, thus may need fixes to ensure CloudWatch is correctly registered and mapped to port 4582. 4. localstack/constants.py: May define missing constants for CloudWatch, required for correct infrastructure startup. 5. bin/localstack: Entry-point script; may need modification if service startup does not include CloudWatch or is missing related arguments.'}",
+  "error": null
+}

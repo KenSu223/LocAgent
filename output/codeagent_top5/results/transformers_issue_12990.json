@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/12990",
+  "repo_name": "transformers",
+  "title": "kindly adding some documentations on t5-v1_1-base\"\"",
+  "base_commit": "ba1b3db70907b975b5ca52b9957c5ed7a186a0fa",
+  "ground_truth_files": [
+    "README.md",
+    "docs/source/index.rst",
+    "docs/source/model_doc/byt5.rst",
+    "docs/source/model_doc/mt5.rst",
+    "docs/source/model_doc/t5.rst",
+    "src/transformers/models/t5/modeling_flax_t5.py",
+    "src/transformers/models/t5/modeling_t5.py",
+    "src/transformers/models/t5/modeling_tf_t5.py"
+  ],
+  "predicted_files": [],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['docs/source/model_doc/t5.rst', 'docs/source/tokenizer_summary.rst', 'docs/source/pretrained_models.rst', 'docs/source/model_summary.rst', 'docs/source/fast_tokenizers.rst'], 'reasoning': \"1. docs/source/model_doc/t5.rst is the primary model documentation file and should contain details on 't5-v1_1-base', model size/memory, and tokenizer compatibility/differences. 2. docs/source/tokenizer_summary.rst is for summarizing tokenizer issues and would document the fast tokenizer incompatibility with t5-v1_1-base. 3. docs/source/pretrained_models.rst lists all pretrained models including model size and core differences, so should be updated for t5-v1_1-base. 4. docs/source/model_summary.rst compares models and features, hence should document how t5-v1_1-base differs. 5. docs/source/fast_tokenizers.rst may note additional info or caveats on fast tokenizer status for T5 models. Source code files are not prioritized as the issue is strictly about documentation, not implementation.\"}",
+  "error": null
+}

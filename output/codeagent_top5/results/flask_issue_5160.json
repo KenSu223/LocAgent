@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/5160",
+  "repo_name": "flask",
+  "title": "Switch to importlib breaks scripts with `app.run()`",
+  "base_commit": "c8cf4694c60f0d81809468a1b45ec730496cc546",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "src/flask/helpers.py",
+    "src/flask/scaffold.py"
+  ],
+  "predicted_files": [
+    "tests/test_regression.py",
+    "src/flask/__init__.py",
+    "src/flask/app.py",
+    "src/flask/scaffold.py",
+    "src/flask/__main__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/scaffold.py', 'src/flask/app.py', 'src/flask/__main__.py', 'src/flask/__init__.py', 'tests/test_regression.py'], 'reasoning': \"1. src/flask/scaffold.py: Contains the broken logic for discovering the package path using importlib when '__main__.__spec__ is None'; main fix should be here.\\n2. src/flask/app.py: Calls into the affected scaffold code and may need adjustments or fallback handling for '__main__' usage.\\n3. src/flask/__main__.py: Handles direct script entry, may need to safeguard import_name or instance path logic for robust script execution.\\n4. src/flask/__init__.py: The core initialization may need improvement in how import_name is handled for script vs package usage.\\n5. tests/test_regression.py: Should include or update tests to catch regressions when running Flask via app.run() as a script.\"}",
+  "error": null
+}

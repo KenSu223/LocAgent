@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/8364",
+  "repo_name": "scikit-learn",
+  "title": "Matplotlib update on CI makes example look different",
+  "base_commit": "cdd693bf955acd2a97cce48011d168c6b1ef316d",
+  "ground_truth_files": [
+    "examples/svm/plot_separating_hyperplane.py"
+  ],
+  "predicted_files": [
+    "examples/classification/plot_lda.py",
+    "examples/classification/plot_digits_classification.py",
+    "examples/classification/plot_classifier_comparison.py",
+    "examples/classification/plot_lda_qda.py",
+    "examples/classification/plot_classification_probability.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['examples/classification/plot_classifier_comparison.py', 'examples/classification/plot_digits_classification.py', 'examples/classification/plot_classification_probability.py', 'examples/classification/plot_lda.py', 'examples/classification/plot_lda_qda.py'], 'reasoning': \"The main file to update is 'examples/classification/plot_classifier_comparison.py', referenced on the landing page. Modifications should ensure compatibility and visual consistency under matplotlib v2 by explicitly specifying styles, colors, and plot parameters. Other classification example files listed may also be affected or serve as landing page content and thus should be reviewed for similar adaptations if needed, but are less critical.\"}",
+  "error": null
+}

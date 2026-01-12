@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/29294",
+  "repo_name": "scikit-learn",
+  "title": "ConvergenceWarnings cannot be turned off",
+  "base_commit": "2707099b23a0a8580731553629566c1182d26f48",
+  "ground_truth_files": [
+    "sklearn/utils/parallel.py",
+    "sklearn/utils/tests/test_parallel.py"
+  ],
+  "predicted_files": [
+    "sklearn/covariance/_graph_lasso.py",
+    "sklearn/exceptions.py",
+    "sklearn/utils/parallel.py",
+    "sklearn/model_selection/_validation.py",
+    "sklearn/base.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/covariance/_graph_lasso.py\",\n        \"sklearn/exceptions.py\",\n        \"sklearn/utils/parallel.py\",\n        \"sklearn/model_selection/_validation.py\",\n        \"sklearn/base.py\"\n    ],\n    \"reasoning\": \"1. sklearn/covariance/_graph_lasso.py is the main implementation file where GraphicalLassoCV and GraphicalLasso reside. This is where ConvergenceWarnings are raised, typically using warnings.warn(..., ConvergenceWarning), and changes may be needed to how warnings are emitted, especially in parallel contexts.\\n2. sklearn/exceptions.py contains the definition for ConvergenceWarning, and may require updates if the warning is implemented as a custom subclass or if there are suppression mechanics to adjust.\\n3. sklearn/utils/parallel.py is involved when GraphicalLassoCV is run with n_jobs > 1. Warnings raised from child processes in joblib/parallel contexts often escape normal filters, so changes here are often needed to propagate or suppress warnings properly in parallel runs.\\n4. sklearn/model_selection/_validation.py is responsible for cross-validation logic that underpins GraphicalLassoCV. Many persistent warnings, especially those flooding stdout during cross-validation, may originate from this level or may need central handling there.\\n5. sklearn/base.py is the root class for many estimators and might involve fit logic and context management for warning suppression at the estimator level, especially in edge cases or with metadata routing.\\n\\nModifications should focus first on _graph_lasso.py, as that's where the warnings originate. If required, changes in parallel.py (_parallel_backend), _validation.py (cross-validation routines), and base.py (fit context or estimator-level suppression) should be made. The exceptions.py file is included in case ConvergenceWarning's definition or handling needs to be tweaked to make it suppressible, for example by adjusting its inheritance or use.\"\n}",
+  "error": null
+}

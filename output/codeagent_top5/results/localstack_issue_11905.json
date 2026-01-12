@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/11905",
+  "repo_name": "localstack",
+  "title": "bug: KMS DeriveSharedSecret does not work symmetrically",
+  "base_commit": "61535b7d970493d9bb6740a03d698d075dd0a3b9",
+  "ground_truth_files": [
+    "localstack-core/localstack/services/kms/models.py",
+    "tests/aws/services/kms/test_kms.py",
+    "tests/aws/services/kms/test_kms.snapshot.json",
+    "tests/aws/services/kms/test_kms.validation.json"
+  ],
+  "predicted_files": [
+    "localstack-core/localstack/services/kms/provider.py",
+    "localstack-core/localstack/services/kms/models.py",
+    "localstack-core/localstack/services/kms/utils.py",
+    "localstack-core/localstack/packages/",
+    "tests/unit/test_kms.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack-core/localstack/services/kms/provider.py\",\n        \"localstack-core/localstack/services/kms/models.py\",\n        \"localstack-core/localstack/services/kms/utils.py\",\n        \"localstack-core/localstack/packages/\",\n        \"tests/unit/test_kms.py\"\n    ],\n    \"reasoning\": \"1. provider.py is the main service handler for KMS operations, likely containing the entrypoint and logic for derive-shared-secret, even if named differently or handled generically. Any symmetric bug in the key agreement logic should be tracked down here first. 2. models.py likely abstracts key objects and cryptographic operations, including ECC keys and potentially the agreement routines. Any errors in use or implementation of ECC/ECDH correspondence may be here. 3. utils.py may include lower-level cryptographic helper routines (e.g., serialization, key curve operations) that influence how secrets are derived and compared. 4. localstack-core/localstack/packages/ may contain or integrate with a crypto library whose usage or parameters may affect ECC/ECDH calculations; interoperation bugs can surface here. 5. tests/unit/test_kms.py should be updated or checked after fixing the implementation, to ensure the symmetry bug is covered by a regression test. The order reflects the most probable sources of the bug and the layers at which fixes and/or verifications should be made.\"\n}",
+  "error": null
+}

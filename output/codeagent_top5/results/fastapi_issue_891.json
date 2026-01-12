@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/891",
+  "repo_name": "fastapi",
+  "title": "SQL related tables and corresponding nested pydantic models in async",
+  "base_commit": "55afb70b3717969565499f5dcaef54b1f0acc7da",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "docs/src/async_sql_databases/__init__.py",
+    "fastapi/routing.py",
+    "docs/src/async_sql_databases/tutorial001.py",
+    "fastapi/encoders.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['docs/src/async_sql_databases/tutorial001.py', 'fastapi/encoders.py', 'docs/advanced/async-sql-databases.md', 'fastapi/routing.py', 'docs/src/async_sql_databases/__init__.py'], 'reasoning': '1. docs/src/async_sql_databases/tutorial001.py: Contains the example for async database logic; would need updating to support nested Pydantic models from single SQL joins, extend table definitions (possibly to include User/FavouriteBook relationships), and showcase the route discussed in the issue.\\n2. fastapi/encoders.py: Handles serialization and might require fixes to encode joined queries or nested models from database rows correctly (especially if columns are ambiguous).\\n3. docs/advanced/async-sql-databases.md: The documentation describing async database use; should be updated to reflect best practices for nested/nested models and how users should alter their code to achieve results mentioned in the issue.\\n4. fastapi/routing.py: Used in handling async routes and serialization, may require updates for smoother nested model returns involving SQL joins.\\n5. docs/src/async_sql_databases/__init__.py: As the package initializer, could need slight updates if models or metadata are adjusted in a way that affects imports/documentation structure.'}",
+  "error": null
+}

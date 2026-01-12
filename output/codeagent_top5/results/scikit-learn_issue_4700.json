@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/4700",
+  "repo_name": "scikit-learn",
+  "title": "cross_val_predict AttributeError with lists",
+  "base_commit": "9385c45c0379ceab913daa811b1e7d4128faee35",
+  "ground_truth_files": [
+    "sklearn/cross_validation.py",
+    "sklearn/tests/test_cross_validation.py",
+    "sklearn/utils/mocking.py"
+  ],
+  "predicted_files": [
+    "sklearn/utils/__init__.py",
+    "sklearn/base.py",
+    "sklearn/tests/test_cross_validation.py",
+    "sklearn/cross_validation.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cross_validation.py', 'sklearn/utils/__init__.py', 'doc/modules/cross_validation.rst', 'sklearn/tests/test_cross_validation.py', 'sklearn/base.py'], 'reasoning': \"1. 'sklearn/cross_validation.py': The bug is located here in the implementation of cross_val_predict, where the code assumes X has a 'shape' attribute. A direct fix to gracefully handle lists or array-likes should be applied here. 2. 'sklearn/utils/__init__.py': Utility functions for handling array-likes and input conversions are usually here; changes may be needed to a utility for determining length or shape of X robustly. 3. 'doc/modules/cross_validation.rst': The documentation should be updated to clarify list support and show examples, as the issue mentions doc ambiguity. 4. 'sklearn/tests/test_cross_validation.py': Add or edit test cases for cross_val_predict with list input, to confirm and prevent regressions. 5. 'sklearn/base.py': This may contain array handling and conversion functions used by cross-validation routines, and could need updates for full compatibility.\"}",
+  "error": null
+}

@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/4744",
+  "repo_name": "scikit-learn",
+  "title": "Bug with using TreeClassifier with OOB score and sparse matrices",
+  "base_commit": "abb31d0a7ca769a1e6406553a58a7fb0bd3b259a",
+  "ground_truth_files": [
+    "doc/whats_new.rst",
+    "sklearn/ensemble/forest.py",
+    "sklearn/ensemble/tests/test_forest.py"
+  ],
+  "predicted_files": [
+    "sklearn/ensemble/forest.py",
+    "sklearn/ensemble/tests/test_forest.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/ensemble/forest.py\",\n        \"sklearn/ensemble/tests/test_forest.py\"\n    ],\n    \"reasoning\": \"1. sklearn/ensemble/forest.py must be modified: This is where the OOB score is computed for tree ensembles, specifically in the _set_oob_score method. The direct cause of the bug is the call estimator.predict_proba(X[unsampled_indices, :], check_input=False), which needs to be changed to check_input=True to ensure correct sparse matrix format handling for the estimator. This resolves the actual functional bug.\\n\\n2. sklearn/ensemble/tests/test_forest.py should be modified: There appear to be no existing tests for OOB scoring with sparse matrices. To prevent regressions and verify the fix, a targeted test using OOB scoring and sparse matrix input should be added here.\\n\\nNo other files need modification because the import of check_array and the matrix validation logic are correctly handled in the existing utility modules, and the issue arises solely from the caller side in forest.py. Base classes and tree.py do not require changes for this fix. Other possible locations (e.g., sklearn/utils/validation.py, sklearn/tree/tree.py) are not directly implicated and their logic is only inherited or utilized by forest.py.\"\n}",
+  "error": null
+}

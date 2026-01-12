@@ -1,0 +1,29 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/11253",
+  "repo_name": "localstack",
+  "title": "bug: API Gateway V1 (targeted to Lambda) gives 500 error with // in path",
+  "base_commit": "1aad84d96159f6d12f872357e04f080a39836f5f",
+  "ground_truth_files": [
+    "localstack-core/localstack/services/apigateway/context.py",
+    "localstack-core/localstack/services/apigateway/helpers.py",
+    "localstack-core/localstack/services/apigateway/next_gen/execute_api/integrations/aws.py",
+    "tests/aws/services/apigateway/test_apigateway_lambda.py",
+    "tests/aws/services/apigateway/test_apigateway_lambda.snapshot.json",
+    "tests/aws/services/apigateway/test_apigateway_lambda.validation.json"
+  ],
+  "predicted_files": [
+    "core/localstack/services/apigateway/provider.py",
+    "edge.py",
+    "core/localstack/services/apigateway/helpers.py",
+    "integration.py",
+    "helpers.py",
+    "core/localstack/services/edge.py",
+    "provider.py",
+    "core/localstack/services/apigateway/router_asf.py",
+    "core/localstack/services/apigateway/integration.py",
+    "router_asf.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack-core/localstack/services/apigateway/router_asf.py', 'localstack-core/localstack/services/apigateway/helpers.py', 'localstack-core/localstack/services/apigateway/provider.py', 'localstack-core/localstack/services/apigateway/integration.py', 'localstack-core/localstack/services/edge.py'], 'reasoning': \"1. router_asf.py: This file contains routing logic for API Gateway requests\u2014in particular, it uses remove_leading_extra_slashes, which may not correctly normalize paths with double slashes, triggering internal errors instead of properly routing to Lambda.\\n2. helpers.py: Contains utilities for extracting path parameters and request processing, which may not handle extra slashes well or may need normalization fixes.\\n3. provider.py: Main API Gateway V1 service implementation, responsible for request dispatch, and may need logic updates for improperly routed requests.\\n4. integration.py: Manages integration types like Lambda Proxy; normalization might be required here if requests are malformed before reaching integration dispatch.\\n5. edge.py: Handles edge proxy and routing; may be involved if requests with multiple slashes are incorrectly proxied or routed before reaching the gateway.\\nOther files like Lambda provider seem less relevant unless Lambda invocation itself is affected by path, but bug description indicates Lambda isn't triggered at all with double slash. Thus, initial fixes should target routing/dispatch/normalization logic above.\"}",
+  "error": null
+}

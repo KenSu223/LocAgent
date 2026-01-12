@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/7467",
+  "repo_name": "scikit-learn",
+  "title": "float numbers can't be set to RFECV's parameter \"step\"",
+  "base_commit": "c9e227b70d64f73b953d8d60629d6ac63e02a91c",
+  "ground_truth_files": [
+    "sklearn/feature_selection/rfe.py",
+    "sklearn/feature_selection/tests/test_rfe.py"
+  ],
+  "predicted_files": [
+    "sklearn/feature_selection/rfe.py",
+    "sklearn/feature_selection/tests/test_rfe.py",
+    "examples/feature_selection/plot_rfe_with_cross_validation.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/feature_selection/rfe.py', 'sklearn/feature_selection/tests/test_rfe.py', 'doc/modules/feature_selection.rst', 'examples/feature_selection/plot_rfe_with_cross_validation.py', 'sklearn/feature_selection/rfe.py'], 'reasoning': \"1. sklearn/feature_selection/rfe.py: Main implementation of RFECV and RFE, where 'step' is processed and used for feature elimination. Needs update to cast float 'step' to integer/slice safely, ensuring proper support for float step values as per documentation.\\n2. sklearn/feature_selection/tests/test_rfe.py: Unit tests exercising RFECV and RFE with 'step', ensuring correct behavior for float input, as well as regression testing for previous warning case.\\n3. doc/modules/feature_selection.rst: Documentation chronicling use of RFECV/RFE and the 'step' parameter, which should explicitly document correct float support and examples for users.\\n4. examples/feature_selection/plot_rfe_with_cross_validation.py: Example code using RFECV, which may include sample runs of float 'step', ensuring reproducibility and correct demonstration after the fix.\\n5. sklearn/feature_selection/rfe.py (again if shared): If the file contains both RFECV and RFE logic (likely), ensure changes cover feature elimination loop in both, as needed.\"}",
+  "error": null
+}

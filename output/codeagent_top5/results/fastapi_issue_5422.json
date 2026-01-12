@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/5422",
+  "repo_name": "fastapi",
+  "title": "Unidirectional websocket connections where only the server pushes data to the clients",
+  "base_commit": "c6aa28bea2f751a91078bd8d845133ff83f352bf",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "starlette/routing.py",
+    "docs_src/websockets/tutorial001.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py",
+    "tests/test_ws_router.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['starlette/routing.py', 'fastapi/routing.py', 'fastapi/applications.py', 'tests/test_ws_router.py', 'docs_src/websockets/tutorial001.py'], 'reasoning': \"1. starlette/routing.py: The 'websocket_session' function enforces session protocol, so changes here are needed to allow endpoints that push only to clients (unidirectional).\\n2. fastapi/routing.py: Handles websocket route registration and invocation; updates may be needed to ensure compatibility with new unidirectional sessions.\\n3. fastapi/applications.py: Registers websocket routes at the application level\u2014should be compatible and document usage.\\n4. tests/test_ws_router.py: Add regression and feature tests for unidirectional websocket endpoints to ensure support and discourage regressions in future.\\n5. docs_src/websockets/tutorial001.py: To update documentation/examples to show and instruct on native server-push websocket endpoints.\"}",
+  "error": null
+}

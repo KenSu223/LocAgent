@@ -1,0 +1,30 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/7435",
+  "repo_name": "scikit-learn",
+  "title": "[RFC?] Make cross_val_score output a dict/named tuple.",
+  "base_commit": "e8a15d544490b3fe80ef77dd995d12de84194d00",
+  "ground_truth_files": [
+    "doc/modules/classes.rst",
+    "doc/modules/cross_validation.rst",
+    "doc/modules/grid_search.rst",
+    "doc/modules/model_evaluation.rst",
+    "doc/whats_new.rst",
+    "sklearn/metrics/scorer.py",
+    "sklearn/metrics/tests/test_score_objects.py",
+    "sklearn/model_selection/__init__.py",
+    "sklearn/model_selection/_search.py",
+    "sklearn/model_selection/_validation.py",
+    "sklearn/model_selection/tests/test_search.py",
+    "sklearn/model_selection/tests/test_validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/grid_search.py",
+    "sklearn/model_selection/_search.py",
+    "sklearn/cross_validation.py",
+    "sklearn/model_selection/_validation.py",
+    "sklearn/model_selection/tests/test_search.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/model_selection/_validation.py', 'sklearn/model_selection/_search.py', 'sklearn/model_selection/tests/test_search.py', 'sklearn/cross_validation.py', 'sklearn/grid_search.py'], 'reasoning': '1. sklearn/model_selection/_validation.py: Contains the main implementation of cross_val_score and _fit_and_score which need modification to change their output structure.\\n2. sklearn/model_selection/_search.py: Calls _fit_and_score and structures outputs for hyperparameter search and cv_results_. Needs update to accept the new output format.\\n3. sklearn/model_selection/tests/test_search.py: Tests the output structure, must be updated to check new formats.\\n4. sklearn/cross_validation.py: Legacy interface still defining cross_val_score and _fit_and_score, update for backward compatibility.\\n5. sklearn/grid_search.py: Older grid search implementation, calls _fit_and_score and may need output handling updates.'}",
+  "error": null
+}

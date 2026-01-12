@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/459",
+  "repo_name": "localstack",
+  "title": "Underscore converted to hyphen while put it as metadata using amazon-sdk",
+  "base_commit": "177fc797678664a0c06b8c6c434330cef44541a1",
+  "ground_truth_files": [
+    "bin/Dockerfile.base",
+    "localstack/ext/java/src/test/java/cloud/localstack/S3HttpsConnectionTest.java",
+    "localstack/ext/java/src/test/java/cloud/localstack/S3LifecycleTest.java",
+    "localstack/services/generic_proxy.py",
+    "tests/integration/test_dynamodb.py"
+  ],
+  "predicted_files": [
+    "localstack/services/s3/s3_listener.py",
+    "localstack/services/generic_proxy.py",
+    "localstack/utils/common.py",
+    "tests/integration/test_s3.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/s3/s3_listener.py\",\n        \"localstack/services/generic_proxy.py\",\n        \"localstack/utils/common.py\",\n        \"tests/integration/test_s3.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/s3/s3_listener.py is the main S3 service handler, and it is responsible for parsing S3 operations including metadata handling. Any logic transforming metadata keys (such as changing underscores to hyphens) would most likely reside here and must be corrected to match AWS behavior.\\n2. localstack/services/generic_proxy.py serves as a proxy layer and may contain generic header normalization functions that convert underscores in headers (including those in metadata) to hyphens. Since HTTP/1.1 header normalization is sometimes over-applied to user metadata, this is a probable location for fixing or bypassing such logic when handling x-amz-meta-* headers.\\n3. localstack/utils/common.py may contain utility functions for header manipulation or low-level normalization that could impact all services, including S3. Any generic transformation of keys for metadata headers might need to be revised here as well.\\n4. tests/integration/test_s3.py is where end-to-end tests should be added or updated to ensure that metadata keys with underscores are preserved as such in S3 object operations, matching AWS behavior and preventing regression.\\nNo further files are listed because the problem is most likely contained in metadata processing within S3, the HTTP proxy layer, and supporting utilities. If lower-level libraries (e.g., Flask, Werkzeug, etc.) are modifying headers even further down, additional fixes might require dependency configuration, but start with these core files in the localstack codebase.\"\n}",
+  "error": null
+}

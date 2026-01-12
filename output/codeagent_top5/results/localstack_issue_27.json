@@ -1,0 +1,36 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/27",
+  "repo_name": "localstack",
+  "title": "Use lambci/docker-lambda for local lambda execution?",
+  "base_commit": "ae8db74df81821040e3ac654c62d2118da85255a",
+  "ground_truth_files": [
+    "Dockerfile",
+    "Makefile",
+    "README.md",
+    "localstack/config.py",
+    "localstack/constants.py",
+    "localstack/mock/apis/lambda_api.py",
+    "localstack/mock/infra.py",
+    "localstack/mock/proxy/dynamodb_listener.py",
+    "localstack/utils/aws/aws_stack.py",
+    "localstack/utils/common.py",
+    "localstack/utils/testutil.py",
+    "setup.py",
+    "tests/test_integration.py"
+  ],
+  "predicted_files": [
+    "localstack/config.py",
+    "localstack/constants.py",
+    "localstack/utils/docker_utils.py",
+    "config.py",
+    "localstack/services/lambda_/lambda_executors.py",
+    "docker_utils.py",
+    "localstack/services/lambda_/lambda_api.py",
+    "constants.py",
+    "lambda_executors.py",
+    "lambda_api.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/lambda_/lambda_executors.py', 'localstack/utils/docker_utils.py', 'localstack/services/lambda_/lambda_api.py', 'localstack/constants.py', 'localstack/config.py'], 'reasoning': '1. lambda_executors.py: Central file for executing Lambda functions, where integration with lambci/docker-lambda    would need to be implemented or updated to use new image. 2. docker_utils.py: Contains Docker management logic, will need updates for using lambci/docker-lambda containers and    any environment handling required. 3. lambda_api.py: Main Lambda service orchestrator, may need to propagate new settings and interface changes to executor. 4. constants.py: Defines Docker image names and registries; update to specify lambci/docker-lambda as the image source. 5. config.py: For adding/configuring new user/CLI options allowing selection and configuration of the Docker image for Lambda execution.'}",
+  "error": null
+}

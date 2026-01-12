@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/7603",
+  "repo_name": "scikit-learn",
+  "title": "When min_samples_split and min_samples_leaf are greater than or equal to 1.0 and 0.5, no error is thrown.",
+  "base_commit": "9b2aac9e5c8749243c73f2377519d2f2c407b095",
+  "ground_truth_files": [
+    "sklearn/tree/tests/test_tree.py",
+    "sklearn/tree/tree.py"
+  ],
+  "predicted_files": [
+    "sklearn/ensemble/gradient_boosting.py",
+    "sklearn/ensemble/base.py",
+    "sklearn/tree/tree.py",
+    "sklearn/ensemble/forest.py",
+    "sklearn/tree/tests/test_tree.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/tree/tree.py', 'sklearn/ensemble/forest.py', 'sklearn/ensemble/gradient_boosting.py', 'sklearn/tree/tests/test_tree.py', 'sklearn/ensemble/base.py'], 'reasoning': '1. sklearn/tree/tree.py: Main location for implementation and validation of min_samples_split and min_samples_leaf, as shown in code searches and parameter checks; changes here will ensure proper error raising and behavior for both integer and float inputs, and prevent silent bugs for large float values. 2. sklearn/ensemble/forest.py: Wrapper for RandomForest and ExtraTrees; must ensure correct handling and passing of these parameters to tree estimators. 3. sklearn/ensemble/gradient_boosting.py: Handles gradient boosting models, which also use these tree parameters and need consistent validation/error raising. 4. sklearn/tree/tests/test_tree.py: Contains test coverage of parameter validation and expected errors. Needs updating to verify issue fixes (ValueError on illegal values). 5. sklearn/ensemble/base.py: General base class for ensembles; should be checked to ensure consistent parameter handling and possibly upstream checks, if validation is made more robust or centralized.'}",
+  "error": null
+}

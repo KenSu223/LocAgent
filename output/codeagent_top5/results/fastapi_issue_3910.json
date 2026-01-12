@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/3910",
+  "repo_name": "fastapi",
+  "title": "Would be nice to be able to route request using header's Accept field (or generic header's field)",
+  "base_commit": "42a4ed7a1804f631f971d05f3302d54361ebe10e",
+  "ground_truth_files": [
+    "fastapi/openapi/utils.py"
+  ],
+  "predicted_files": [
+    "tests/test_custom_route_class.py",
+    "fastapi/params.py",
+    "fastapi/param_functions.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/routing.py', 'fastapi/applications.py', 'fastapi/param_functions.py', 'fastapi/params.py', 'tests/test_custom_route_class.py'], 'reasoning': \"1. fastapi/routing.py: Central route dispatch logic, must be modified to allow request routing based on header fields such as Accept, implementing selection of route handlers using header values. 2. fastapi/applications.py: Integrates registration of path operations and must support passing Accept/header arguments to routing logic. 3. fastapi/param_functions.py: Decorator implementations where new parameters like 'accept' or 'headers' need to be parsed and forwarded. 4. fastapi/params.py: Defines parameter handling, may require updates to model new header-routing parameters. 5. tests/test_custom_route_class.py: Test coverage for new Accept/header-based routing rules is essential to validate implementation.\"}",
+  "error": null
+}

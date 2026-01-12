@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1095",
+  "repo_name": "localstack",
+  "title": "Healthcheck when running in docker",
+  "base_commit": "1c5f2e9650155a839cc842a9cd07faf3e76ed5d2",
+  "ground_truth_files": [
+    "docker-compose.yml"
+  ],
+  "predicted_files": [
+    "localstack/utils/common.py",
+    "localstack/services/generic_proxy.py",
+    "localstack/services/infra.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['Dockerfile', 'docker-compose.yml', 'localstack/services/generic_proxy.py', 'localstack/services/infra.py', 'localstack/utils/common.py'], 'reasoning': \"1. Dockerfile: Add a HEALTHCHECK command so Docker can poll the health endpoint and mark the container 'healthy'. 2. docker-compose.yml: Use the Docker healthcheck and 'depends_on: condition: service_healthy' to start dependent services only when Localstack is ready. 3. localstack/services/generic_proxy.py: Expose a new /health endpoint or similar HTTP route that signals Localstack readiness. 4. localstack/services/infra.py: Implement service readiness tracking and provide hooks for the healthcheck endpoint to report true readiness. 5. localstack/utils/common.py: Implement any helper functions required for status tracking and readiness checks if existing tools are insufficient.\"}",
+  "error": null
+}

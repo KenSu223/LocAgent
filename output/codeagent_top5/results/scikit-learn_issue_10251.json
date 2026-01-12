@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/10251",
+  "repo_name": "scikit-learn",
+  "title": "Extending Criterion",
+  "base_commit": "61e722aa126207efcdbc1ddcd4453854ad44ea09",
+  "ground_truth_files": [
+    "sklearn/tree/_criterion.pxd",
+    "sklearn/tree/_criterion.pyx"
+  ],
+  "predicted_files": [
+    "sklearn/tree/_tree.py",
+    "sklearn/tree/_criterion.py",
+    "sklearn/tree/tree.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/tree/_criterion.pxd', 'sklearn/tree/_criterion.pyx', 'sklearn/tree/tree.py', 'doc/modules/tree.rst', 'sklearn/tree/_tree.pyx'], 'reasoning': \"1. sklearn/tree/_criterion.pxd: Must export ClassificationCriterion and other Cython classes for external subclassing as proposed in the issue.\\n2. sklearn/tree/_criterion.pyx: Contains the implementation of impurity criteria and needs modifications to make its logic extendable in Cython or Python, e.g., changing cdef to cpdef for key methods.\\n3. sklearn/tree/tree.py: Contains argument checking, construction logic for trees, and currently restricts or checks the type of 'criterion'\u2014must be modified to allow custom implementations as described in the issue.\\n4. doc/modules/tree.rst: Documentation should be improved for developers on how to extend Criterion, both in Python (where feasible) and Cython, with examples and descriptions.\\n5. sklearn/tree/_tree.pyx: The tree implementation interacts with the criterion and may need changes to support custom or more flexible criterion objects, especially if the Python interface is broadened.\"}",
+  "error": null
+}

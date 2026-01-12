@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/1749",
+  "repo_name": "flask",
+  "title": "JSONEncoder and aware datetimes",
+  "base_commit": "1a7fd980f8579bd7d7d53c812a77c1dc64be52ba",
+  "ground_truth_files": [
+    "flask/json.py"
+  ],
+  "predicted_files": [
+    "flask/json.py",
+    "flask/sessions.py",
+    "flask/app.py",
+    "tests/test_helpers.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/json.py', 'flask/app.py', 'flask/sessions.py', 'tests/test_helpers.py'], 'reasoning': '1. flask/json.py implements the JSONEncoder class and is directly responsible for datetime encoding. The main issue is here: aware datetimes are converted to timetuple, losing the timezone. 2. flask/app.py manages configuration of the JSONEncoder; necessary for propagating usage, dependency updates, or documenting changes. 3. flask/sessions.py uses http_date for session expiry serialization, possibly mishandling aware datetimes; should be checked and aligned with changes. 4. tests/test_helpers.py contains custom encoder/test cases for datetime handling; required to update/add tests for correct timezone-aware behavior.'}",
+  "error": null
+}

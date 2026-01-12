@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/9326",
+  "repo_name": "transformers",
+  "title": "Issue with 'char_to_token()' function of DistilBertTokenizerFast ",
+  "base_commit": "5f7a07c0c867abedbb3ebf135915eeee56add24b",
+  "ground_truth_files": [
+    "docs/source/custom_datasets.rst"
+  ],
+  "predicted_files": [
+    "tests/test_tokenization_distilbert.py",
+    "src/transformers/tokenization_utils_base.py",
+    "src/transformers/models/distilbert/tokenization_distilbert_fast.py",
+    "src/transformers/models/auto/tokenization_auto.py",
+    "tests/test_tokenization_common.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/tokenization_utils_base.py', 'src/transformers/models/distilbert/tokenization_distilbert_fast.py', 'tests/test_tokenization_common.py', 'tests/test_tokenization_distilbert.py', 'src/transformers/models/auto/tokenization_auto.py'], 'reasoning': '1. src/transformers/tokenization_utils_base.py: Contains the implementation of char_to_token(), so is the most critical for fixing character-to-token mapping bugs.\\n2. src/transformers/models/distilbert/tokenization_distilbert_fast.py: Implements DistilBertTokenizerFast, which may need model-specific corrections if the mapping logic is delegated or incorrectly inherited.\\n3. tests/test_tokenization_common.py: Contains general tests of the char_to_token function and must be updated/expanded to validate bug fixes for all models.\\n4. tests/test_tokenization_distilbert.py: Provides model-specific tests for DistilBertTokenizerFast; should be adjusted to check correct char-to-token behavior after fixes.\\n5. src/transformers/models/auto/tokenization_auto.py: Handles auto-selection and registration of tokenizer classes, which may require updates if the fix affects how models locate DistilBertTokenizerFast.'}",
+  "error": null
+}

@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/4652",
+  "repo_name": "localstack",
+  "title": "bug: LAMBDA_DOCKER_FLAGS doesn't work with -e",
+  "base_commit": "f4a188b6d51155a0831a3246f1d8e4f4be835861",
+  "ground_truth_files": [
+    "localstack/services/awslambda/lambda_executors.py",
+    "tests/integration/test_lambda.py"
+  ],
+  "predicted_files": [
+    "localstack/services/awslambda/lambda_executors.py",
+    "localstack/utils/docker.py",
+    "localstack/config.py",
+    "tests/integration/test_lambda.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/awslambda/lambda_executors.py\",\n        \"localstack/utils/docker.py\",\n        \"localstack/config.py\",\n        \"tests/integration/test_lambda.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/awslambda/lambda_executors.py is the main handler for constructing and passing LAMBDA_DOCKER_FLAGS, including -e for environment variables, to Docker container launch processes; bug likely resides here in how flags are concatenated or handed off for execution. 2. localstack/utils/docker.py implements the actual container launch logic, so it may require changes to correctly parse and apply environment variables passed via flags, ensuring -e flags are correctly extracted and translated to environment settings. 3. localstack/config.py is where LAMBDA_DOCKER_FLAGS is sourced from environment and made available in code; issues with retrieval, formatting, or propagation may be addressed here. 4. tests/integration/test_lambda.py should be updated or extended to test the injection of environment variables through LAMBDA_DOCKER_FLAGS and verify the fix in various scenarios.\"\n}",
+  "error": null
+}

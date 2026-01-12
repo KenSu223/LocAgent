@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/119",
+  "repo_name": "fastapi",
+  "title": "Enriching the auto-generated OpenAPI-Spec",
+  "base_commit": "04494991884d1eee3e111349cff5d98f37830522",
+  "ground_truth_files": [
+    "mkdocs.yml"
+  ],
+  "predicted_files": [
+    "fastapi/openapi/docs.py",
+    "fastapi/openapi/constants.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/applications.py",
+    "fastapi/openapi/models.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/openapi/utils.py', 'fastapi/openapi/models.py', 'fastapi/applications.py', 'fastapi/openapi/docs.py', 'fastapi/openapi/constants.py'], 'reasoning': '1. fastapi/openapi/utils.py: Core schema assembly/generation functions for OpenAPI; enrichments to tags, x-logo, and extensions should be handled here, specifically in the code generating the top-level OpenAPI dict.\\n2. fastapi/openapi/models.py: Contains data models for OpenAPI objects; should be updated to include new spec features (e.g., x-logo, extra metadata) so that they can be represented in the schema.\\n3. fastapi/applications.py: Wires together arguments that become part of OpenAPI, exposes the schema on routes. Modifications here for extra config (custom fields/tags/logo) should be supported via arguments and passed downstream.\\n4. fastapi/openapi/docs.py: Responsible for serving docs (Swagger/ReDoc); needed for any enrichment involving the way docs render custom features like x-logo.\\n5. fastapi/openapi/constants.py: May require small updates if new constants are added for keys/extensions relevant to OpenAPI.\\nOther files are not directly involved in generation/enrichment of OpenAPI spec.'}",
+  "error": null
+}

@@ -1,0 +1,13 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/748",
+  "repo_name": "localstack",
+  "title": "Contributors not loading up. Broken links for backers and Contributors.  ",
+  "base_commit": "fa1a64c954b89b88ac30e77fd12930efc04c04c5",
+  "ground_truth_files": [
+    "README.md"
+  ],
+  "predicted_files": [],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['README.md'], 'reasoning': \"The broken sponsor and contributor links are hardcoded in README.md as per issue description and search results. The correct links should be provided here, replacing the '/sponsor/X/website' patterns with valid URLs (like 'https://opencollective.com/localstack#contributors'). No code or dashboard logic generates these links, so a doc update is sufficient.\"}",
+  "error": null
+}

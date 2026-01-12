@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/12306",
+  "repo_name": "scikit-learn",
+  "title": "SimpleImputer to Crash on Constant Imputation with string value when dataset is encoded Numerically",
+  "base_commit": "45019594938f92f3344c80bb0d351793dd91334b",
+  "ground_truth_files": [
+    "sklearn/impute/_base.py"
+  ],
+  "predicted_files": [
+    "sklearn/impute/__init__.py",
+    "sklearn/impute/_base.py",
+    "sklearn/impute/tests/test_impute.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['doc/modules/impute.rst', 'sklearn/impute/_base.py', 'sklearn/impute/tests/test_impute.py', 'doc/common_pitfalls.rst', 'sklearn/impute/__init__.py'], 'reasoning': '1. doc/modules/impute.rst: The main user guide for SimpleImputer should clearly warn/log situations where string imputation with numerically-typed arrays will fail, as suggested by the issue. 2. sklearn/impute/_base.py: The source code validates input dtypes and raises errors; clarifying/explaining the error message here can help users understand the crash and locate the problem faster. 3. sklearn/impute/tests/test_impute.py: Most tests for constant imputation are present, but a test with string fill_value on numerically-encoded data could be added to explicitly show the expected failure. 4. doc/common_pitfalls.rst: Common pitfalls documentation should link or describe this issue, warning users about dtype mismatches when using constant strategy. 5. sklearn/impute/__init__.py: Minor, for completeness (API docstring), only if surface-level documentation requires updating as per scikit-learn standards.'}",
+  "error": null
+}

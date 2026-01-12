@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2594",
+  "repo_name": "flask",
+  "title": "add ssl_context option to `flask run`",
+  "base_commit": "22708b048d224a5590fa28d86ca02bac52294f90",
+  "ground_truth_files": [
+    "CHANGES",
+    "flask/cli.py",
+    "tests/test_cli.py"
+  ],
+  "predicted_files": [
+    "flask/cli.py",
+    "flask/app.py",
+    "tests/test_cli.py",
+    "flask/__main__.py",
+    "flask/_compat.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"flask/cli.py\",\n        \"flask/app.py\",\n        \"tests/test_cli.py\",\n        \"flask/__main__.py\",\n        \"flask/_compat.py\"\n    ],\n    \"reasoning\": \"1. flask/cli.py is the most important because it defines and handles the 'flask run' CLI command and its options. To accept --ssl_context, this file must be updated to add that option, correctly parse its value, and forward it to the app runner logic.\\n2. flask/app.py contains the Flask app implementation, including the run() method. Changes may be needed to ensure that the ssl_context option, when passed, is correctly processed by the application. This may involve documentation or argument handling updates.\\n3. tests/test_cli.py is essential for adding or updating tests to verify that the --ssl_context option works as expected when using 'flask run'; proper test coverage will ensure future reliability.\\n4. flask/__main__.py serves as an entry point for the CLI when running 'python -m flask'. If CLI options or argument forwarding logic live here (or must be updated for new options), this file should be reviewed and possibly modified.\\n5. flask/_compat.py is listed last and may not strictly require modification, but any changes in argument processing or type compatibility might necessitate edits here (e.g., for unicode/bytes input). In most cases, it will not require changes, but it's prudent to review if type issues affect ssl_context forwarding.\\n\\nOverall, the majority of the required changes will reside in flask/cli.py (CLI option addition and parsing), flask/app.py (receiving and passing ssl_context to run logic), and tests/test_cli.py (verifying behavior). Entry points and compatibility helpers should be checked for completeness.\"\n}",
+  "error": null
+}

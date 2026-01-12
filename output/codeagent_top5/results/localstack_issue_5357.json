@@ -1,0 +1,29 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/5357",
+  "repo_name": "localstack",
+  "title": "bug: `AmazonopensearchserviceDestinationConfiguration` is not supported for Firehose-Streams",
+  "base_commit": "b09c4f89481cec43b3d126c15050910cae81e9d1",
+  "ground_truth_files": [
+    ".github/workflows/pro-integration.yml",
+    "localstack/services/firehose/provider.py",
+    "localstack/utils/aws/aws_stack.py",
+    "requirements.txt",
+    "tests/integration/conftest.py",
+    "tests/integration/test_firehose.py"
+  ],
+  "predicted_files": [
+    "localstack/services/firehose/provider.py",
+    "mappers.py",
+    "tests/integration/test_opensearch.py",
+    "test_opensearch.py",
+    "provider.py",
+    "tests/integration/test_firehose.py",
+    "kinesisfirehose.py",
+    "test_firehose.py",
+    "localstack/services/cloudformation/models/kinesisfirehose.py",
+    "localstack/services/firehose/mappers.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/firehose/provider.py', 'localstack/services/firehose/mappers.py', 'localstack/services/cloudformation/models/kinesisfirehose.py', 'tests/integration/test_firehose.py', 'tests/integration/test_opensearch.py'], 'reasoning': '1. provider.py: Firehose delivery stream logic lacks handling for Amazonopensearchservice destination configs; core to the fix.\\n2. mappers.py: Contains mapping/conversion functions for Elasticsearch but not for OpenSearch, which must be added.\\n3. kinesisfirehose.py: Already declares support for OpenSearch, but may need validation or wiring tweaks.\\n4. test_firehose.py: Must ensure Firehose delivery to OpenSearch works by adding/updating integration tests.\\n5. test_opensearch.py: Needed to validate OpenSearch can act as a Firehose destination.'}",
+  "error": null
+}

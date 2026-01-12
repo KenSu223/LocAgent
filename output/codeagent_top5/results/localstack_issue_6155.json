@@ -1,0 +1,31 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/6155",
+  "repo_name": "localstack",
+  "title": "samlocal not returning on second and later deploys",
+  "base_commit": "31286eb81823ee97e4e4a6b519abab9efcffe091",
+  "ground_truth_files": [
+    "localstack/services/cloudformation/models/cdk.py",
+    "localstack/services/cloudformation/models/ec2.py",
+    "localstack/services/cloudformation/provider.py",
+    "localstack/utils/cloudformation/template_deployer.py",
+    "tests/integration/cloudformation/test_cloudformation_stacks.py",
+    "tests/integration/cloudformation/test_cloudformation_stacks.snapshot.json",
+    "tests/integration/templates/template36.yaml",
+    "tests/integration/test_cloudformation.py"
+  ],
+  "predicted_files": [
+    "kinesis_mock_server.py",
+    "localstack/services/awslambda/event_source_listeners/stream_event_source_listener.py",
+    "localstack/services/kinesis/kinesis_mock_server.py",
+    "provider.py",
+    "stream_event_source_listener.py",
+    "infra.py",
+    "localstack/services/awslambda/event_source_listeners/dynamodb_event_source_listener.py",
+    "dynamodb_event_source_listener.py",
+    "localstack/services/dynamodbstreams/provider.py",
+    "localstack/services/infra.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/awslambda/event_source_listeners/dynamodb_event_source_listener.py', 'localstack/services/awslambda/event_source_listeners/stream_event_source_listener.py', 'localstack/services/kinesis/kinesis_mock_server.py', 'localstack/services/dynamodbstreams/provider.py', 'localstack/services/infra.py'], 'reasoning': '1. dynamodb_event_source_listener.py: The specific thread run method in the logs points to this file, indicating its listener may not properly clean up on repeated deploys, causing threads and iterators to linger.\\n2. stream_event_source_listener.py: Common event source listener logic is likely implemented here; resource management or teardown may need adjustment, particularly for repeated deploy cycles.\\n3. kinesis_mock_server.py: The logs reference expired iterators and stack traces in the mock server, indicating potential need for improved iterator lifecycle handling on redeploy.\\n4. provider.py (dynamodbstreams): As the provider for DynamoDB streams, this module likely manages stream iterators and their expiration, possibly missing cleanup hooks for redeploy scenarios.\\n5. infra.py: Handles overall infrastructure lifecycle, possibly lacking necessary teardown/re-initialization for event listeners/threads between deploys.'}",
+  "error": null
+}

@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/1628",
+  "repo_name": "fastapi",
+  "title": "pass method return value as positional parameters to Response",
+  "base_commit": "ea8d7f689efcb0ddf28f4686fa3be90c2154503b",
+  "ground_truth_files": [
+    "docs/en/docs/advanced/custom-response.md",
+    "docs_src/custom_response/tutorial006.py",
+    "fastapi/applications.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/routing.py",
+    "tests/test_tutorial/test_custom_response/test_tutorial006.py"
+  ],
+  "predicted_files": [
+    "starlette/routing.py",
+    "fastapi/responses.py",
+    "starlette/responses.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/routing.py', 'fastapi/applications.py', 'fastapi/responses.py', 'starlette/routing.py', 'starlette/responses.py'], 'reasoning': \"1. fastapi/routing.py: Core route handling, where handler return values are wrapped in response_class; needs update to support passing return values as positional parameters.\\n2. fastapi/applications.py: FastAPI application initialization, configuration (e.g., response_class and status_code defaults) is set here; may require adapting to new/modified interface.\\n3. fastapi/responses.py: Adapts Starlette responses for FastAPI; changes may be required if positional parameter passing is added or modified.\\n4. starlette/routing.py: Underlying Starlette routing may need tweaks to correctly handle positional parameters forwarded from FastAPI, as FastAPI routes rely on Starlette's routing mechanisms.\\n5. starlette/responses.py: RedirectResponse and other classes are defined here, so modifications might be needed if their __init__ or handling of positional parameters is changed.\"}",
+  "error": null
+}

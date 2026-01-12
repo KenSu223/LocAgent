@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/2008",
+  "repo_name": "transformers",
+  "title": "Expand run_lm_finetuning.py to all models",
+  "base_commit": "a8e3336a850e856188350a93e67d77c07c85b8af",
+  "ground_truth_files": [
+    "examples/ner/run_ner.py",
+    "examples/ner/run_tf_ner.py",
+    "examples/run_glue.py",
+    "examples/run_language_modeling.py",
+    "examples/run_squad.py",
+    "src/transformers/__init__.py",
+    "templates/adding_a_new_example_script/run_xxx.py"
+  ],
+  "predicted_files": [
+    "examples/run_language_modeling.py",
+    "examples/test_examples.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['examples/run_language_modeling.py', 'docs/source/examples.md', 'examples/test_examples.py'], 'reasoning': '1. examples/run_language_modeling.py: The core script that handles argument parsing, model selection, and the training loop needs to be updated to explicitly support the requested models (ctrl, xlm, xlnet, transfo-xl, albert), including adjusting model type checks and tokenizer/model logic.\\n2. docs/source/examples.md: Documentation should mention the expanded model support for language model finetuning, to help users utilize these new options.\\n3. examples/test_examples.py: Test scripts should be updated (or new ones added) to include checks for the new supported models, ensuring their inclusion does not break functionality.'}",
+  "error": null
+}

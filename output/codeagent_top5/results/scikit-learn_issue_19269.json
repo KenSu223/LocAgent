@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/19269",
+  "repo_name": "scikit-learn",
+  "title": "sklearn.datasets.load_files select file extension",
+  "base_commit": "e11c4d21a4579f0d49f414a4b76e386f80f0f074",
+  "ground_truth_files": [
+    "doc/whats_new/v1.1.rst",
+    "sklearn/datasets/_base.py",
+    "sklearn/datasets/tests/test_base.py"
+  ],
+  "predicted_files": [
+    "sklearn/datasets/_twenty_newsgroups.py",
+    "sklearn/datasets/__init__.py",
+    "sklearn/datasets/tests/test_base.py",
+    "sklearn/datasets/_base.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/datasets/_base.py', 'sklearn/datasets/tests/test_base.py', 'sklearn/datasets/_twenty_newsgroups.py', 'sklearn/datasets/__init__.py', 'doc/modules/classes.rst'], 'reasoning': '1. sklearn/datasets/_base.py: This is the main implementation of load_files, where support for filtering by file extension should be added. 2. sklearn/datasets/tests/test_base.py: Tests for load_files must be updated or added to ensure new functionality is covered. 3. sklearn/datasets/_twenty_newsgroups.py: This module invokes load_files; any change in its behavior or interface may require updates here. 4. sklearn/datasets/__init__.py: Exposes load_files, so if argument validation or docstring changes are needed, modify here. 5. doc/modules/classes.rst: The main documentation file referencing load_files behavior; update to document the new feature.'}",
+  "error": null
+}

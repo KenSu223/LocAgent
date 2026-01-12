@@ -1,0 +1,14 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/2511",
+  "repo_name": "localstack",
+  "title": "Cannot connect to DynamoDB from lambda",
+  "base_commit": "3794f1e20a56f3b7bcd23f82a006e266f2a57a05",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "localstack/config.py",
+    "tests/integration/test_lambda.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['docker-compose.yml', 'bin/docker-entrypoint.sh', 'localstack/config.py', 'localstack/services/awslambda/', 'tests/integration/test_lambda.py'], 'reasoning': '1. docker-compose.yml: Vital for correct service linking, port exposure, and hostname configuration between Lambda and DynamoDB in localstack, resolving endpoint issues.\\n2. bin/docker-entrypoint.sh: This script actively manages environment variable exposure/propagation, crucial for Lambda containers to receive correct endpoint URLs for DynamoDB.\\n3. localstack/config.py: While no direct search hits, this central config file is often responsible for service endpoint logic, so changes may be needed here if endpoint handling is abstracted/configured.\\n4. localstack/services/awslambda/: The main service implementation for Lambda; any modifications to Lambda execution environments, environment variable passing, or endpoint URL management should occur here.\\n5. tests/integration/test_lambda.py: Updating integration tests ensures the fix works in practice, validates Lambda can connect to DynamoDB with the correct endpoint URL under localstack.'}",
+  "error": null
+}

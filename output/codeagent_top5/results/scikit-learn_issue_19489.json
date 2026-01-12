@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/19489",
+  "repo_name": "scikit-learn",
+  "title": "'feature_name' referenced before assignment",
+  "base_commit": "6f7ae911f18fda59669309582706f1aa1f36374d",
+  "ground_truth_files": [
+    "doc/whats_new/v1.0.rst",
+    "sklearn/feature_extraction/_dict_vectorizer.py",
+    "sklearn/feature_extraction/tests/test_dict_vectorizer.py"
+  ],
+  "predicted_files": [
+    "__init__.py",
+    "sklearn/feature_extraction/tests/test_dict_vectorizer.py",
+    "test_dict_vectorizer.py",
+    "sklearn/feature_extraction/tests/__init__.py",
+    "sklearn/feature_extraction/__init__.py",
+    "sklearn/feature_extraction/_dict_vectorizer.py",
+    "tests/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/feature_extraction/_dict_vectorizer.py', 'sklearn/feature_extraction/tests/test_dict_vectorizer.py', 'sklearn/feature_extraction/__init__.py', 'sklearn/feature_extraction/tests/__init__.py', 'doc/data_transforms.rst'], 'reasoning': \"The bug is in sklearn/feature_extraction/_dict_vectorizer.py, where 'feature_name' can be referenced before assignment; this is the primary fix location. Unit tests directly covering DictVectorizer should be added or updated (test_dict_vectorizer.py) to ensure the bug remains fixed. The __init__.py import may need minor updates if behavior changes, and tests/__init__.py should be reviewed if test discovery is impacted. Updating documentation will help users understand any modified feature value handling.\"}",
+  "error": null
+}

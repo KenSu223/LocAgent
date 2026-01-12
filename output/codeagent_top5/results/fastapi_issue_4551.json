@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/4551",
+  "repo_name": "fastapi",
+  "title": "Attribute not found while testing a Beanie Model inside fast api",
+  "base_commit": "b93f8a709ab3923d1268dbc845f41985c0302b33",
+  "ground_truth_files": [
+    "docs/en/docs/advanced/testing-events.md"
+  ],
+  "predicted_files": [
+    "tests/test_tutorial/test_security/test_tutorial005_py310.py",
+    "tests/test_tutorial/test_sql_databases/test_sql_databases_middleware.py",
+    "tests/test_tutorial/test_response_model/test_tutorial003_py310.py",
+    "tests/test_tutorial/test_sql_databases_peewee/test_sql_databases_peewee.py",
+    "fastapi/openapi/models.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/openapi/models.py', 'tests/test_tutorial/test_security/test_tutorial005_py310.py', 'tests/test_tutorial/test_response_model/test_tutorial003_py310.py', 'tests/test_tutorial/test_sql_databases_peewee/test_sql_databases_peewee.py', 'tests/test_tutorial/test_sql_databases/test_sql_databases_middleware.py'], 'reasoning': \"1. fastapi/openapi/models.py: Contains the Contact model with an email field and logic for email validation\u2014critical for ensuring proper attribute definition in models with email.\\n2. tests/test_tutorial/test_security/test_tutorial005_py310.py: Tests login and token endpoints; may need adjustment if mock/login model data does not include the email field as required by the backend logic.\\n3. tests/test_tutorial/test_response_model/test_tutorial003_py310.py: Defines/validates Pydantic response models that likely use the email field; modification needed if the user model is missing 'email'.\\n4. tests/test_tutorial/test_sql_databases_peewee/test_sql_databases_peewee.py: Contains logic for DB-backed user models, which should include the email attribute for correct test execution.\\n5. tests/test_tutorial/test_sql_databases/test_sql_databases_middleware.py: Similar to (4), covers DB logic/context for user models with email; changes might be needed to ensure the email field is correctly present in both the database and tests.\"}",
+  "error": null
+}

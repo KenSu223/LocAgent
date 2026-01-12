@@ -1,0 +1,31 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/4137",
+  "repo_name": "localstack",
+  "title": "Consider Kinesis-Mock over Kinesalite",
+  "base_commit": "3cc0541a260c2f2af90e435f333c623e84ed4880",
+  "ground_truth_files": [
+    "README.md",
+    "localstack/config.py",
+    "localstack/services/kinesis/kinesis_listener.py",
+    "localstack/services/kinesis/kinesis_starter.py",
+    "tests/integration/test_cloudformation.py",
+    "tests/integration/test_dynamodb.py",
+    "tests/integration/test_kinesis.py",
+    "tests/unit/test_kinesis.py"
+  ],
+  "predicted_files": [
+    "localstack/config.py",
+    "kinesis_starter.py",
+    "localstack/utils/kinesis/kinesis_connector.py",
+    "config.py",
+    "localstack/services/install.py",
+    "kinesis_listener.py",
+    "install.py",
+    "localstack/services/kinesis/kinesis_starter.py",
+    "localstack/services/kinesis/kinesis_listener.py",
+    "kinesis_connector.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/kinesis/kinesis_starter.py', 'localstack/services/install.py', 'localstack/config.py', 'localstack/services/kinesis/kinesis_listener.py', 'localstack/utils/kinesis/kinesis_connector.py'], 'reasoning': '1. kinesis_starter.py: Main entrypoint for starting the Kinesis mock; will require code refactoring to use Kinesis-Mock instead of Kinesalite.\\n2. install.py: Handles installation logic for Kinesalite (npm, CLI, etc.); will need changes to install/setup Kinesis-Mock (jar/Docker image).\\n3. config.py: Contains configuration options for Kinesalite-specific settings and behaviors (limits, delays, etc.), which may need renaming or removal for Kinesis-Mock.\\n4. kinesis_listener.py: Contains references, response handling, and logic based on Kinesalite\u2019s API quirks, which will need updates for new mock.\\n5. kinesis_connector.py: Contains code/comments based on Kinesalite\u2019s behavior for connectors; should be reviewed and adjusted if directly impacted by new mock behavior.'}",
+  "error": null
+}

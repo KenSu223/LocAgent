@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/3555",
+  "repo_name": "flask",
+  "title": "Remove simplejson",
+  "base_commit": "024f0d384cf5bb65c76ac59f8ddce464b2dc2ca1",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "docs/api.rst",
+    "docs/installation.rst",
+    "src/flask/json/__init__.py",
+    "src/flask/json/tag.py",
+    "tests/test_helpers.py",
+    "tox.ini"
+  ],
+  "predicted_files": [
+    "src/flask/json/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/json/__init__.py', 'docs/api.rst'], 'reasoning': \"The main file requiring modification is src/flask/json/__init__.py, where legacy references to simplejson exist in comments and docstrings. This file abstracts the JSON library and is the integration point for plugability. Documentation in docs/api.rst may also reference simplejson or legacy behavior and should be updated for clarity. Other files do not import or wrap simplejson directly and don't require changes.\"}",
+  "error": null
+}

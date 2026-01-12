@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/901",
+  "repo_name": "scikit-learn",
+  "title": "add predict and fit_predict to more clustering algorithms",
+  "base_commit": "127415b209ca1df3f8502bdf74de56c33aff2565",
+  "ground_truth_files": [
+    "sklearn/base.py",
+    "sklearn/cluster/affinity_propagation_.py",
+    "sklearn/cluster/dbscan_.py",
+    "sklearn/cluster/hierarchical.py",
+    "sklearn/cluster/k_means_.py",
+    "sklearn/cluster/mean_shift_.py",
+    "sklearn/cluster/spectral.py",
+    "sklearn/cluster/tests/test_k_means.py"
+  ],
+  "predicted_files": [
+    "sklearn/cluster/spectral.py",
+    "sklearn/cluster/dbscan_.py",
+    "sklearn/cluster/mean_shift_.py",
+    "sklearn/cluster/affinity_propagation_.py",
+    "sklearn/cluster/hierarchical.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cluster/mean_shift_.py', 'sklearn/cluster/affinity_propagation_.py', 'sklearn/cluster/spectral.py', 'sklearn/cluster/hierarchical.py', 'sklearn/cluster/dbscan_.py'], 'reasoning': 'These files implement the core clustering algorithms exposed by the module other than KMeans. They currently use functional APIs and should be refactored to expose (if not already) corresponding estimator classes (MeanShift, AffinityPropagation, SpectralClustering, Ward/WardAgglomeration, DBSCAN) and their `predict` and `fit_predict` methods. This resolves the issue by adding a consistent and useful API to these algorithms beyond what is already present in KMeans. Tests and docs may also need updates, but these five are the primary algorithm files requiring code changes.'}",
+  "error": null
+}

@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/24100",
+  "repo_name": "transformers",
+  "title": "[Trainer] Why not use `tqdm`'s `dynamic_ncols=True` option?",
+  "base_commit": "a73883ae9ec66cb35a8222f204a5f2fafc326d3f",
+  "ground_truth_files": [
+    "src/transformers/trainer_callback.py"
+  ],
+  "predicted_files": [
+    "src/transformers/trainer_callback.py",
+    "src/transformers/trainer.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/transformers/trainer_callback.py\",\n        \"src/transformers/trainer.py\"\n    ],\n    \"reasoning\": \"1. The most critical change is in src/transformers/trainer_callback.py, specifically in the ProgressCallback class. This is where the tqdm progress bar is instantiated (see lines like `self.training_bar = tqdm(total=state.max_steps)` and `self.prediction_bar = tqdm(total=len(eval_dataloader), ...)`). To fix the ugly line wrapping issue, simply add `dynamic_ncols=True` to these tqdm calls.\\n\\n2. src/transformers/trainer.py may also instantiate tqdm progress bars directly (e.g., for training loops or evaluation without ProgressCallback), or it may influence how ProgressCallback is used. It's important to check if any progress bars are created here and add `dynamic_ncols=True` if so, or ensure the ProgressCallback is correctly utilized.\\n\\nNo other files require modification for the core problem described. The issue is limited to the visual rendering of the tqdm bar in the callback responsible for progress reporting. Utility files, configuration, and documentation do not need changes for this user-facing behavior.\"\n}",
+  "error": null
+}

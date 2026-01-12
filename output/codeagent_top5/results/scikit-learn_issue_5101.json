@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/5101",
+  "repo_name": "scikit-learn",
+  "title": "LatentDirichletAllocation has superfluous attributes",
+  "base_commit": "4ac6a90a82e4a8d7b5338c18ae8a16559c98ba10",
+  "ground_truth_files": [
+    "sklearn/decomposition/online_lda.py"
+  ],
+  "predicted_files": [
+    "sklearn/decomposition/tests/test_online_lda.py",
+    "sklearn/decomposition/online_lda.py",
+    "sklearn/decomposition/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/decomposition/online_lda.py', 'sklearn/decomposition/tests/test_online_lda.py', 'sklearn/decomposition/__init__.py', 'doc/modules/decomposition.rst'], 'reasoning': \"1. sklearn/decomposition/online_lda.py: Main file containing implementation and all uses of 'dirichlet_component_' and 'exp_dirichlet_component_', where removal is needed. 2. sklearn/decomposition/tests/test_online_lda.py: Should be checked for direct attribute testing, though currently no usage was found. 3. sklearn/decomposition/__init__.py: Typical file for API exposure; currently no references found but should be reviewed for redundancy. 4. doc/modules/decomposition.rst: Main user documentation for the decomposition module; no references found, but should be checked for attribute listing or docs mentioning the attributes.\"}",
+  "error": null
+}

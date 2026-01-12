@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/10860",
+  "repo_name": "localstack",
+  "title": "Internal Refactoring: Towards a Multi-Distribution Setup",
+  "base_commit": "b8290ff8013366de16f7dd2ed14d74b56d1fb03b",
+  "ground_truth_files": [
+    ".circleci/config.yml",
+    ".dockerignore",
+    ".github/workflows/asf-updates.yml",
+    ".github/workflows/tests-pro-integration.yml",
+    ".github/workflows/tests-s3-image.yml",
+    "Dockerfile",
+    "Dockerfile.s3",
+    "Makefile"
+  ],
+  "predicted_files": [
+    "localstack/cli/main.py",
+    "localstack/version.py",
+    "setup.py",
+    "localstack/dev/run/configurators.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['setup.py', 'bin/localstack', 'localstack/cli/main.py', 'Makefile', 'localstack/dev/run/configurators.py'], 'reasoning': \"1. setup.py: Directly references and writes to 'localstack/version.py', must be updated for the new directory structure (localstack-core/localstack). 2. bin/localstack: Main CLI entrypoint and launcher, manipulates sys.path to find the localstack module at repo root\u2014must now look in localstack-core. 3. localstack/cli/main.py: The Python CLI entrypoint\u2014needs to be moved/updated for module path changes. 4. Makefile: Build/install steps may reference 'localstack' in the root directory. Update to install and operate from 'localstack-core'. 5. localstack/dev/run/configurators.py: Contains many imports and some file/path references to localstack, needs importing/code path updates after move.\"}",
+  "error": null
+}

@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/768",
+  "repo_name": "scikit-learn",
+  "title": "Arpack wrappers fail with new scipy",
+  "base_commit": "0e8e38e3b2f4b79f03fe8a3e655b9f506ab0f2a6",
+  "ground_truth_files": [
+    "sklearn/utils/arpack.py"
+  ],
+  "predicted_files": [
+    "sklearn/cluster/spectral.py",
+    "sklearn/manifold/tests/test_locally_linear.py",
+    "sklearn/decomposition/kernel_pca.py",
+    "sklearn/manifold/locally_linear.py",
+    "sklearn/utils/arpack.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/utils/arpack.py', 'sklearn/cluster/spectral.py', 'sklearn/manifold/locally_linear.py', 'sklearn/decomposition/kernel_pca.py', 'sklearn/manifold/tests/test_locally_linear.py'], 'reasoning': \"Most important is sklearn/utils/arpack.py, containing the wrapper directly interfacing with SciPy's ARPACK implementation; all compatibility fixes and logic changes must be here. Next are sklearn/cluster/spectral.py, sklearn/manifold/locally_linear.py, and sklearn/decomposition/kernel_pca.py, which all use the wrapper for eigenproblems and may require changes for error handling, parameter passing, or adapting to interface changes. Finally, the test file sklearn/manifold/tests/test_locally_linear.py should be updated to ensure the new behavior is verified and regressions are caught.\"}",
+  "error": null
+}

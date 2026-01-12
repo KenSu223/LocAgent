@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/737",
+  "repo_name": "fastapi",
+  "title": "dependency_overrides does not play well with scopes",
+  "base_commit": "543ef7753aff639ad3aed7c153e42f719e361d38",
+  "ground_truth_files": [
+    "fastapi/dependencies/utils.py"
+  ],
+  "predicted_files": [
+    "fastapi/security/oauth2.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/dependencies/models.py",
+    "fastapi/routing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/dependencies/utils.py', 'fastapi/dependencies/models.py', 'fastapi/security/oauth2.py', 'fastapi/routing.py'], 'reasoning': '1. fastapi/dependencies/utils.py: Main location for dependency resolution; override logic and security scopes handling, especially when dependency_overrides is applied.\\n2. fastapi/dependencies/models.py: Defines data structures such as Dependant and SecurityRequirement that store and propagate scope and security info.\\n3. fastapi/security/oauth2.py: Implements OAuth2 security and scope extraction, crucial for scope-related bugs with Security().\\n4. fastapi/routing.py: Coordinates dependency injection for endpoint execution; may need updates for correct scopes propagation under overrides.\\nFewer files are likely sufficient, as the logic is concentrated in dependency resolution, security, and endpoint routing implementation.'}",
+  "error": null
+}

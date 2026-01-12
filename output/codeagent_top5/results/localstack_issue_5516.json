@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/5516",
+  "repo_name": "localstack",
+  "title": "bug: JWT ID Token issued by cognito-idp can not be verified in v0.14.0 but can in 0.11.5",
+  "base_commit": "c07094dbf52c947e77d952825eb4daabf409655d",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "localstack/http/dispatcher.py",
+    "localstack/utils/aws/aws_stack.py",
+    "localstack/services/moto.py",
+    "localstack/services/generic_proxy.py",
+    "localstack/services/edge.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/edge.py', 'localstack/services/moto.py', 'localstack/utils/aws/aws_stack.py', 'localstack/services/generic_proxy.py', 'localstack/http/dispatcher.py'], 'reasoning': '1. localstack/services/edge.py is responsible for routing CognitoIdP requests and may intercept the JWKS endpoint, which could affect JWT token verification flows if not forwarded/handled properly. 2. localstack/services/moto.py dispatches service requests via Moto emulation, which is used for Cognito in LocalStack; it may need modification if there are issues with emulated token/JWKS logic. 3. localstack/utils/aws/aws_stack.py contains Cognito user pool ARN construction and utilities, and may be involved in key discovery or token handling logic. 4. localstack/services/generic_proxy.py routes or forwards HTTP requests for AWS services, and could play a role in custom endpoints like /.well-known/jwks.json. 5. localstack/http/dispatcher.py is part of the HTTP layer and may need updates if JWKS endpoint implementation or JWT validation logic is faulty or incomplete, especially if changes in 0.14.0 affected endpoint response structure.'}",
+  "error": null
+}

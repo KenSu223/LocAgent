@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/187",
+  "repo_name": "localstack",
+  "title": "Pass custom environment variables to lambda functions",
+  "base_commit": "784d5c3329b9fd0b77db92ee464c2f5404eab93b",
+  "ground_truth_files": [
+    "localstack/services/awslambda/lambda_api.py",
+    "localstack/utils/testutil.py",
+    "tests/integration/test_lambda.py"
+  ],
+  "predicted_files": [
+    "localstack/config.py",
+    "tests/integration/test_lambda.py",
+    "localstack/services/awslambda/lambda_api.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/awslambda/lambda_api.py', 'localstack/config.py', 'docker-compose.yml', 'tests/integration/test_lambda.py'], 'reasoning': '1. localstack/services/awslambda/lambda_api.py: Most important. This file contains the logic for running lambda functions in Docker and controls which environment variables are passed. Modifications here are needed to propagate custom environment variables when invoking Docker containers for lambdas. 2. localstack/config.py: If you want to allow users to set custom environment variables via configuration, this is where parsing and propagation from configuration must be supported. 3. docker-compose.yml: If environment variables are defined here for propagation, the relevant section must be referenced and potentially parsed or documented to ensure correct use. 4. tests/integration/test_lambda.py: For test coverage of passing environment variables, integration tests should be updated or extended.'}",
+  "error": null
+}

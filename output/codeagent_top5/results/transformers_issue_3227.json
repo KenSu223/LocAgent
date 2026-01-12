@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/3227",
+  "repo_name": "transformers",
+  "title": "An Error report about pipeline",
+  "base_commit": "010e0460b22ddd7f74e31163f69ab3da2e9741ba",
+  "ground_truth_files": [
+    "examples/utils_multiple_choice.py",
+    "src/transformers/data/processors/squad.py"
+  ],
+  "predicted_files": [
+    "src/transformers/tokenization_xlm_roberta.py",
+    "src/transformers/pipelines.py",
+    "src/transformers/modelcard.py",
+    "src/transformers/__init__.py",
+    "src/transformers/data/processors/squad.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/pipelines.py', 'src/transformers/modelcard.py', 'src/transformers/data/processors/squad.py', 'src/transformers/tokenization_xlm_roberta.py', 'src/transformers/__init__.py'], 'reasoning': '1. src/transformers/pipelines.py: Main location of pipeline logic, including question-answering execution and input preparation. Handles how input features (token_type_ids, etc.) are processed and interacts with model card loading\u2014central to both errors described. 2. src/transformers/modelcard.py: Responsible for downloading/loading model cards. Generates warnings and empty cards when unable to fetch from server, per the issue description. 3. src/transformers/data/processors/squad.py: Contains SQuAD data processing; manages token_type_ids and might be the source of missing/incorrect feature dicts leading to KeyError in the pipeline. 4. src/transformers/tokenization_xlm_roberta.py: Implements logic for generating or managing token_type_ids during tokenization; changes here may resolve cases where token_type_ids are not generated as expected. 5. src/transformers/__init__.py: Connects pipeline API to user, ensuring correct imports and exposure of the main `pipeline` function; update only if interface needs adjusting.'}",
+  "error": null
+}

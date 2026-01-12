@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/28007",
+  "repo_name": "transformers",
+  "title": "Can't do word timestamps and beam search at the same time (whisper)",
+  "base_commit": "b8378b658e9846e647d15a8fd85ad1421326b1e5",
+  "ground_truth_files": [
+    "src/transformers/models/whisper/modeling_whisper.py",
+    "src/transformers/pipelines/automatic_speech_recognition.py",
+    "tests/models/whisper/test_modeling_whisper.py",
+    "tests/pipelines/test_pipelines_automatic_speech_recognition.py"
+  ],
+  "predicted_files": [
+    "src/transformers/pipelines/automatic_speech_recognition.py",
+    "src/transformers/models/whisper/modeling_whisper.py",
+    "src/transformers/models/whisper/feature_extraction_whisper.py",
+    "src/transformers/pipelines/base.py",
+    "src/transformers/pipelines/pt_utils.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/transformers/pipelines/automatic_speech_recognition.py\",\n        \"src/transformers/models/whisper/modeling_whisper.py\",\n        \"src/transformers/models/whisper/feature_extraction_whisper.py\",\n        \"src/transformers/pipelines/base.py\",\n        \"src/transformers/pipelines/pt_utils.py\"\n    ],\n    \"reasoning\": \"1. src/transformers/pipelines/automatic_speech_recognition.py is the primary file managing the ASR pipeline, where the error occurs (incorrect handling of stride and hop_length with word timestamps + beam search). The type mismatch must be fixed here, especially where generate_kwargs are formulated for both options combined. 2. src/transformers/models/whisper/modeling_whisper.py is likely where model-level generation logic interacts with beam search and timestamp output; checking compatibility/modifying how timestamps and beams can be used together may be necessary. 3. src/transformers/models/whisper/feature_extraction_whisper.py holds feature extraction routines, including hop_length; changes here may be required if the type or handling of stride/hop_length is inconsistent. 4. src/transformers/pipelines/base.py defines common pipeline logic and __call__/forward methods; adjustments may be needed to ensure consistent passing/processing of generate_kwargs and arguments for combined settings. 5. src/transformers/pipelines/pt_utils.py contains pipeline utilities used in batching/inference, seen in the error stack; modification may be needed if it incorrectly handles iteration and parameter passing in combined word timestamp/beam cases. These files are prioritized for directly resolving the stride/hop_length/word timestamps + beam search incompatibility, ensuring proper argument handling and model output.\"\n}",
+  "error": null
+}

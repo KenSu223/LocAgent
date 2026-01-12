@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/1224",
+  "repo_name": "flask",
+  "title": "Starting up a public server.",
+  "base_commit": "f88765d504ce2fa9bc3926c76910b11510522892",
+  "ground_truth_files": [
+    "flask/views.py"
+  ],
+  "predicted_files": [
+    "run.py",
+    "flask/app.py",
+    "flask/cli.py",
+    "flask/__main__.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"run.py\",\n        \"flask/app.py\",\n        \"flask/cli.py\",\n        \"flask/__main__.py\"\n    ],\n    \"reasoning\": \"1. run.py: This is almost certainly the application's entry-point script being invoked directly (as seen in `flask\\\\Scripts\\\\python run.py`). It is responsible for starting the Flask app, and it is here you need to specify the `host='0.0.0.0'` argument in `app.run()` to make your server visible on the local network. If this script does not set this (either via environment or as an argument), the server defaults to 127.0.0.1 (localhost). It may also be missing valid route definitions, causing the 404 errors. \\n2. flask/app.py: This file contains the main Flask application class logic. If there is a bug relating to Flask's host-binding default or request handler registry (for 404s), it would be here. However, typically only advanced users need to modify this. \\n3. flask/cli.py: If you start the server via the Flask CLI, the host argument (`--host`) and default logic may be managed here; sometimes, bugs with address binding arise in the CLI code, causing apparent default-to-localhost behavior. \\n4. flask/__main__.py: Handles module execution via `python -m flask` and may also wrap CLI startup; if the entry logic accidentally overwrites user-supplied host arguments, this could cause the observed behavior.\\n\\nIn summary, the most important change is almost always required in your app's run.py script: set `app.run(host='0.0.0.0')` and check that routes are defined. Changes to Flask internals are rarely needed unless debugging the Flask package itself.\"\n}",
+  "error": null
+}

@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/17814",
+  "repo_name": "scikit-learn",
+  "title": "l1_ratio in sklearn.linear_model's ElasticNet greater than 1?",
+  "base_commit": "9b42b0cc7d5cf6978805619bc2433e3888c38d0c",
+  "ground_truth_files": [
+    "sklearn/linear_model/_coordinate_descent.py",
+    "sklearn/linear_model/tests/test_coordinate_descent.py"
+  ],
+  "predicted_files": [
+    "sklearn/linear_model/_coordinate_descent.py",
+    "sklearn/linear_model/tests/test_coordinate_descent.py",
+    "sklearn/linear_model/__init__.py",
+    "doc/modules/linear_model.rst"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/linear_model/_coordinate_descent.py\",\n        \"sklearn/linear_model/tests/test_coordinate_descent.py\",\n        \"sklearn/linear_model/__init__.py\",\n        \"doc/modules/linear_model.rst\"\n    ],\n    \"reasoning\": \n    \"1. sklearn/linear_model/_coordinate_descent.py: This is the main implementation file where ElasticNet (and related classes) are defined and constructed. The validation for l1_ratio must be added here, checking in the relevant __init__, fit, or parameter-handling code for ElasticNet and possibly ElasticNetCV. Even though the class definition was elusive, this file is clearly the canonical location for all coordinate descent-based models in scikit-learn, and all existing references and imports confirm this. You must insert a ValueError (or similar) to ensure l1_ratio is within (0, 1].\\n\\n2. sklearn/linear_model/tests/test_coordinate_descent.py: Once you've added validation in the implementation, a unit test must be added (or modified) to check that passing l1_ratio > 1 or <= 0 raises the expected error. This ensures the change is not regressed in the future and is properly covered.\\n\\n3. sklearn/linear_model/__init__.py: Optional, but you may want to ensure the import and/or the docstring in the import statement is up-to-date or reflects parameter validation. Usually, only minor doc changes here, if any.\\n\\n4. doc/modules/linear_model.rst: Documentation should be updated to clarify the accepted range of l1_ratio for ElasticNet and possibly ElasticNetCV. This aligns the docs with the stricter runtime validation you've implemented.\\n\\nIf you find, upon deeper code inspection, that the validation would be best placed in a shared utility (e.g., for Lasso, MultiTaskElasticNet, etc.), you may consider _base.py, but with the current repo structure and findings, the four files listed are the targets requiring modification to fully resolve this issue.\"\n}",
+  "error": null
+}

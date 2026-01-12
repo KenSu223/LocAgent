@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/612",
+  "repo_name": "localstack",
+  "title": "Uploading to S3 presigned URLs doesn't check Content-MD5 or other presigned constraints",
+  "base_commit": "debb24a792a7e2a1751ddf1f30d5c79f80b4885f",
+  "ground_truth_files": [
+    "localstack/services/generic_proxy.py",
+    "localstack/services/kinesis/kinesis_listener.py",
+    "localstack/services/s3/s3_listener.py",
+    "requirements.txt",
+    "tests/integration/test_s3.py"
+  ],
+  "predicted_files": [
+    "localstack/services/s3/multipart_content.py",
+    "localstack/services/s3/s3_listener.py",
+    "tests/integration/test_s3.py",
+    "s3_listener.py",
+    "generic_proxy.py",
+    "tests/unit/test_s3.py",
+    "localstack/services/generic_proxy.py",
+    "multipart_content.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/s3/s3_listener.py', 'localstack/services/s3/multipart_content.py', 'tests/integration/test_s3.py', 'tests/unit/test_s3.py', 'localstack/services/generic_proxy.py'], 'reasoning': '1) s3_listener.py is the main entrypoint for S3 requests and where header/presigned constraint enforcement should be implemented for PUT/POST operations. 2) multipart_content.py manages S3 multipart uploads and may need updates for multipart-specific checks. 3) tests/integration/test_s3.py should add tests for enforcement of presigned constraints and Content-MD5. 4) tests/unit/test_s3.py should add unit-level tests for these headers and behaviors. 5) generic_proxy.py could require hooks or updates if the enforcement logic must be applied more generically at the proxy layer.'}",
+  "error": null
+}

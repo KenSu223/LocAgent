@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/8833",
+  "repo_name": "localstack",
+  "title": "bug: CDK Table build with replicationRegions failing on latest",
+  "base_commit": "78f635ad3a8f819645f3991dfd244ff09f06a7f0",
+  "ground_truth_files": [
+    "localstack/services/cloudformation/engine/template_deployer.py"
+  ],
+  "predicted_files": [
+    "localstack/services/dynamodb/models.py",
+    "localstack/services/cloudformation/models/dynamodb.py",
+    "localstack/services/providers.py",
+    "localstack/services/dynamodb/provider.py",
+    "localstack/services/cloudformation/models/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/cloudformation/models/dynamodb.py', 'localstack/services/dynamodb/provider.py', 'localstack/services/dynamodb/models.py', 'localstack/services/cloudformation/models/__init__.py', 'localstack/services/providers.py'], 'reasoning': \"1. localstack/services/cloudformation/models/dynamodb.py: This is the central resource model for AWS::DynamoDB::Table via CloudFormation, where property parsing and forwarding for 'replicationRegions' must be added to support CDK Table with global/replicated settings.\\n2. localstack/services/dynamodb/provider.py: Handles underlying DynamoDB table creation, global table, and replication logic. Needed to process replicationRegions and correctly create replicas.\\n3. localstack/services/dynamodb/models.py: Maintains data structures for table replicas and replication groups, likely needing updates for correct tracking and region handling.\\n4. localstack/services/cloudformation/models/__init__.py: If present, handles resource model registration and property mapping; may require adjustments to accept and route replicationRegions for DynamoDB Tables.\\n5. localstack/services/providers.py: Core service provider/dispatcher that may need small updates to safely propagate new or changed resource types and properties related to replication and regions.\"}",
+  "error": null
+}

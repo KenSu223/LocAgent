@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/11294",
+  "repo_name": "transformers",
+  "title": "serious bug with trainer.py when restarting the training from a checkpoint",
+  "base_commit": "95ffbe168690d34e385cdd16c69e9a3f8d877abf",
+  "ground_truth_files": [
+    "src/transformers/configuration_utils.py",
+    "src/transformers/trainer.py",
+    "tests/test_trainer.py"
+  ],
+  "predicted_files": [
+    "examples/seq2seq/run_translation.py",
+    "src/transformers/models/auto/modeling_auto.py",
+    "src/transformers/modeling_utils.py",
+    "src/transformers/trainer_callback.py",
+    "src/transformers/trainer.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/trainer.py', 'examples/seq2seq/run_translation.py', 'src/transformers/trainer_callback.py', 'src/transformers/modeling_utils.py', 'src/transformers/models/auto/modeling_auto.py'], 'reasoning': \"1. src/transformers/trainer.py: The core Trainer reload logic must be changed to allow custom modifications (freeze, wrapping) after loading from a checkpoint, by supporting hooks or user-provided callbacks, so user's model changes persist across restarts.\\n2. examples/seq2seq/run_translation.py: Users must be instructed (or supported via new APIs) to ensure any model modifications are registered and can be reapplied after checkpoint restore.\\n3. src/transformers/trainer_callback.py: May need update to save and reapply custom modifications as part of the Trainer's state, using callback or user hook APIs.\\n4. src/transformers/modeling_utils.py: The base model loading and state dict logic may need slight modifications so custom state can be attached or restored.\\n5. src/transformers/models/auto/modeling_auto.py: If the AutoModel logic resets modifications upon reload, it may need updates so custom wrappers/modifications can be composed after loading.\"}",
+  "error": null
+}

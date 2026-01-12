@@ -1,0 +1,13 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/1972",
+  "repo_name": "fastapi",
+  "title": "French translations",
+  "base_commit": "3127bc4e05b72e39d1681735ec1ee49844b7dc88",
+  "ground_truth_files": [
+    "docs/fr/mkdocs.yml"
+  ],
+  "predicted_files": [],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['docs/fr/docs/index.md', 'docs/fr/docs/features.md', 'docs/fr/docs/alternatives.md', 'docs/fr/docs/fastapi-people.md', 'docs/fr/docs/tutorial/', 'docs/fr/mkdocs.yml', 'docs/missing-translation.md'], 'reasoning': '1. docs/fr/docs/index.md: The main landing page for French documentation, highest priority for translation and coordination.\\n2. docs/fr/docs/features.md: Core features documentation\u2014essential for users deciding to use FastAPI.\\n3. docs/fr/docs/alternatives.md: Guidance on alternative solutions, informative for French users comparing frameworks.\\n4. docs/fr/docs/fastapi-people.md: Credits or contributors often provide community context, welcome in translations.\\n5. docs/fr/docs/tutorial/: All tutorial files are crucial for beginner and advanced guides and need to be maintained/translated.\\n6. docs/fr/mkdocs.yml: Navigation and organization for French docs; must include references to new/translated pages and sections.\\n7. docs/missing-translation.md: Should be kept up-to-date or customized as translation progresses, helps users/contributors see where translation is needed.'}",
+  "error": null
+}

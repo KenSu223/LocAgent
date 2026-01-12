@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/1971",
+  "repo_name": "flask",
+  "title": "Implement RFC 7233",
+  "base_commit": "01081dbe6cdfa3fc43d8e1fff708d4ed95e1be7e",
+  "ground_truth_files": [
+    "CHANGES",
+    "flask/helpers.py",
+    "tests/test_helpers.py"
+  ],
+  "predicted_files": [
+    "flask/helpers.py",
+    "flask/wrappers.py",
+    "docs/api.rst",
+    "tests/test_helpers.py",
+    "flask/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"flask/helpers.py\",\n        \"flask/wrappers.py\",\n        \"docs/api.rst\",\n        \"tests/test_helpers.py\",\n        \"flask/__init__.py\"\n    ],\n    \"reasoning\": \"1. flask/helpers.py: This file is where Flask's helper functions (like send_file and send_from_directory) are implemented. To support RFC 7233 Range Requests, the send_file logic needs to be updated here to handle 'Range' headers and return partial content (206 responses).\\n\\n2. flask/wrappers.py: Any changes to how responses handle file data or HTTP headers (such as parsing or emitting 'Range', 'Content-Range', and status 206 responses) may require updates to Flask's Response or Request wrappers. These often extend Werkzeug's wrappers, so integration for partial content support might also happen here.\\n\\n3. docs/api.rst: Documentation should be updated to describe the new Range Request behavior for send_file, including parameters and RFC 7233 compliance.\\n\\n4. tests/test_helpers.py: To ensure correct RFC 7233 support, new or updated tests validating Range Requests, partial content responses, and edge cases for send_file must be added.\\n\\n5. flask/__init__.py: If send_file is re-exported at the package level, its docstring or import path might require updates to reference its new RFC 7233 capabilities or note possible API changes.\\n\\nThese locations cover the implementation, integration points, user-facing documentation, and testing necessary to support RFC 7233 (Range Requests) in Flask.\"\n}",
+  "error": null
+}

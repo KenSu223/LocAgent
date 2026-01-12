@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/110",
+  "repo_name": "fastapi",
+  "title": "be able to host statics myself",
+  "base_commit": "d03678dfbbdee0018252af3f5899716e824d6e87",
+  "ground_truth_files": [
+    "fastapi/openapi/docs.py"
+  ],
+  "predicted_files": [
+    "fastapi/applications.py",
+    "fastapi/openapi/docs.py",
+    "tests/test_application.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/openapi/docs.py', 'fastapi/applications.py', 'docs/tutorial/static-files.md', 'docs/src/static_files/', 'tests/test_application.py'], 'reasoning': '1. fastapi/openapi/docs.py: This file renders the /docs HTML and includes CDN references. To support self-hosted statics, it must allow asset URL injection based on config. 2. fastapi/applications.py: The FastAPI constructor and setup must accept new config options, and pass them correctly to docs HTML and static routers. Core of the feature addition. 3. docs/tutorial/static-files.md: Documentation for end users on how to use the new feature. 4. docs/src/static_files/: Example usage/code for serving static files, must demo new configuration. 5. tests/test_application.py: Automated tests should be updated or added to verify correct serving and routing of docs and static assets per configuration. Order reflects how changing each is critical to enabling configurable local static hosting for docs.'}",
+  "error": null
+}

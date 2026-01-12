@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1902",
+  "repo_name": "localstack",
+  "title": "changeMessageVisibility function doesn't work",
+  "base_commit": "2641d910cc5f1a04f70dd60a7ebfc25cd716bcd6",
+  "ground_truth_files": [
+    "localstack/services/sqs/sqs_listener.py",
+    "localstack/utils/aws/aws_stack.py",
+    "tests/integration/test_sqs.py"
+  ],
+  "predicted_files": [
+    "localstack/services/sqs/sqs_listener.py",
+    "localstack/services/sqs/sqs_starter.py",
+    "localstack/services/generic_proxy.py",
+    "tests/integration/test_sqs.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/sqs/sqs_listener.py\",\n        \"localstack/services/sqs/sqs_starter.py\",\n        \"localstack/services/generic_proxy.py\",\n        \"tests/integration/test_sqs.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/sqs/sqs_listener.py: This file contains the main request routing logic for SQS operations. The support for message visibility or the ChangeMessageVisibility API is most likely missing or incomplete here. Implementing or patching the handler for this action is the highest priority.\\n\\n2. localstack/services/sqs/sqs_starter.py: This file is a potential initialization or setup module for the SQS service and may need changes to hook up or initialize proper visibility timeout handling if missing.\\n\\n3. localstack/services/generic_proxy.py: If SQS actions are routed through a generic proxy, this file might require changes to ensure proper handling or forwarding of the ChangeMessageVisibility action. This is relevant if the listener pattern in sqs_listener.py doesn't directly support custom actions.\\n\\n4. tests/integration/test_sqs.py: To ensure your fix works and prevent regressions, an integration test should be added (or modified) to cover the use case where a message's visibility is set to zero and is expected to reappear immediately in the queue.\\n\\nThe evidence suggests that the SQS code is implemented in a more abstracted way and that ChangeMessageVisibility is not currently handled, nor are relevant keywords (visibility/timeout) present in the code. Therefore, implementing the handler (or patching request routing) in sqs_listener.py, and then ensuring proper startup logic and test coverage, are most important.\"\n}",
+  "error": null
+}

@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/983",
+  "repo_name": "localstack",
+  "title": "AWS lambda on localstack not seeing its dependencies ",
+  "base_commit": "95f91f68c16cedbcfbf0a51725f88c113224de27",
+  "ground_truth_files": [
+    "tests/integration/test_lambda.py"
+  ],
+  "predicted_files": [
+    "localstack/services/awslambda/lambda_executors.py",
+    "localstack/services/awslambda/lambda_api.py",
+    "localstack/services/awslambda/lambda_utils.py",
+    "bin/lambda/Dockerfile.nodejs14x",
+    "localstack/services/install.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/awslambda/lambda_executors.py\",\n        \"localstack/services/awslambda/lambda_api.py\",\n        \"localstack/services/awslambda/lambda_utils.py\",\n        \"bin/lambda/Dockerfile.nodejs14x\",\n        \"localstack/services/install.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/awslambda/lambda_executors.py: This file sets up constants and logic for executing Java lambdas, including referencing the JAR (LAMBDA_EXECUTOR_JAR) and Java class (LAMBDA_EXECUTOR_CLASS). The core of Java Lambda invocation and (most likely) dependency management happens here, making it the highest priority for modifications to ensure external libraries (from 'lib/') are correctly included in the classpath.\\n2. localstack/services/awslambda/lambda_api.py: Handles the Lambda API interface, from creation to invocation; changes may be required to support compatible extraction and orchestration for Java Lambdas and to ensure proper zip deployment structure recognition.\\n3. localstack/services/awslambda/lambda_utils.py: Contains runtime constants and handler utilities, and may need updates to detect/fix issues in runtime mapping and dependency folder support (e.g., correct mapping for 'lib/' with Java lambdas).\\n4. bin/lambda/Dockerfile.nodejs14x: While primarily for Node.js, Lambda images sometimes share setup routines for various runtimes, and any issues with base images or directory mounting can impact Java dependency visibility. Ensuring Java lambdas are correctly set up in docker containers may require modification here.\\n5. localstack/services/install.py: Responsible for installing JARs and other dependencies needed for Lambda execution. Ensuring the LocalStack Lambda Executor JAR is correctly bundled and instructing it how to load external Java dependencies could need tweaks here for proper extraction and classpath setup.\"\n}",
+  "error": null
+}

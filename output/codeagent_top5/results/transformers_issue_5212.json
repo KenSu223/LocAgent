@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/5212",
+  "repo_name": "transformers",
+  "title": "BartConfig wrong decoder_start_token_id?",
+  "base_commit": "88d7f96e33c3f3e541bcdd913f2ff1e50aa18c1b",
+  "ground_truth_files": [
+    "src/transformers/modeling_tf_utils.py",
+    "src/transformers/modeling_utils.py"
+  ],
+  "predicted_files": [
+    "src/transformers/modeling_utils.py",
+    "src/transformers/tokenization_bart.py",
+    "src/transformers/configuration_bart.py",
+    "src/transformers/modeling_bart.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/modeling_utils.py', 'src/transformers/configuration_bart.py', 'src/transformers/tokenization_bart.py', 'src/transformers/modeling_bart.py', 'docs/source/model_doc/bart.rst'], 'reasoning': \"1. src/transformers/modeling_utils.py: The generate method contains the main logic and documentation regarding decoder_start_token_id, which appears misleading and may require code and docstring updates. 2. src/transformers/configuration_bart.py: BartConfig definition; modifications ensure that decoder_start_token_id's default is clear and possibly matches tokenizer.bos_token_id. 3. src/transformers/tokenization_bart.py: BartTokenizer implements token IDs; clarification or enforcement of bos/eos mapping may be necessary. 4. src/transformers/modeling_bart.py: Bart model may handle or reference decoder_start_token_id for generation; verify and update logic/docstrings accordingly. 5. docs/source/model_doc/bart.rst: Documentation for Bart; update any misleading usage or explanation so users know how decoder_start_token_id is set and used during generation.\"}",
+  "error": null
+}

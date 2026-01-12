@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/27982",
+  "repo_name": "scikit-learn",
+  "title": "Ensure that we have an example in the docstring of each public function or class",
+  "base_commit": "77aeb825b6494de1e3a2c1e7233b182e05d55ab0",
+  "ground_truth_files": [
+    "sklearn/datasets/_samples_generator.py"
+  ],
+  "predicted_files": [
+    "sklearn/covariance/_graph_lasso.py",
+    "sklearn/decomposition/_dict_learning.py",
+    "sklearn/cluster/_kmeans.py",
+    "sklearn/datasets/_base.py",
+    "sklearn/base.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/base.py', 'sklearn/datasets/_base.py', 'sklearn/cluster/_kmeans.py', 'sklearn/covariance/_graph_lasso.py', 'sklearn/decomposition/_dict_learning.py'], 'reasoning': '1. sklearn/base.py is the most important as it contains many listed base classes and utility functions (clone, is_classifier, is_regressor) missing examples.\\n2. sklearn/datasets/_base.py is critical due to its many missing dataset example functions, including most fetch/load routines.\\n3. sklearn/cluster/_kmeans.py is important for the k_means API and key clustering routines.\\n4. sklearn/covariance/_graph_lasso.py is needed for graphical_lasso and might centralize covariance-related missing doc examples.\\n5. sklearn/decomposition/_dict_learning.py implements dict_learning, dict_learning_online, and sparse_encode, which are missing examples per the issue.'}",
+  "error": null
+}

@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/12779",
+  "repo_name": "scikit-learn",
+  "title": "Remove \"from __future__ import XXX\"",
+  "base_commit": "62d205980446a1abc1065f4332fd74eee57fcf73",
+  "ground_truth_files": [
+    "sklearn/utils/_random.pyx"
+  ],
+  "predicted_files": [
+    "_pilutil.py",
+    "sklearn/externals/joblib/logger.py",
+    "sklearn/externals/joblib/memory.py",
+    "memory.py",
+    "sklearn/externals/joblib/_dask.py",
+    "sklearn/externals/joblib/parallel.py",
+    "parallel.py",
+    "_dask.py",
+    "sklearn/externals/_pilutil.py",
+    "logger.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/externals/_pilutil.py', 'sklearn/externals/joblib/_dask.py', 'sklearn/externals/joblib/logger.py', 'sklearn/externals/joblib/parallel.py', 'sklearn/externals/joblib/memory.py'], 'reasoning': \"These files are core to scikit-learn's utility, parallelism, and IO operations. _pilutil.py affects image-processing helpers used in preprocessing. _dask.py, logger.py, parallel.py, and memory.py are crucial modules for joblib's parallel execution, logging, and caching, integral to scalable machine learning workflows. Removing obsolete future imports from these will resolve major parts of the issue.\"}",
+  "error": null
+}

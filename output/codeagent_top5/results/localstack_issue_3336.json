@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/3336",
+  "repo_name": "localstack",
+  "title": "SNS Fifo topic ",
+  "base_commit": "c2c025a96888ce091adc4d9c6c9053af86704c4f",
+  "ground_truth_files": [
+    "localstack/services/awslambda/lambda_api.py"
+  ],
+  "predicted_files": [
+    "tests/integration/test_sns.py",
+    "localstack/services/sns/__init__.py",
+    "tests/unit/test_sns.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/sns/__init__.py', 'localstack/services/sns/', 'tests/integration/test_sns.py', 'tests/unit/test_sns.py'], 'reasoning': \"1. 'localstack/services/sns/__init__.py' likely contains logic for initializing the SNS service, request routing, and potentially the point where topic name validation is enforced or needs change.\\n2. The 'localstack/services/sns/' directory contains the main implementation for SNS service operations including topic creation and should be inspected for model or handler definitions regulating validation or processing.\\n3. 'tests/integration/test_sns.py' must be updated to add/modify tests verifying that FIFO topics can be successfully created, reflecting the bugfix in integration scenarios.\\n4. 'tests/unit/test_sns.py' should be updated to ensure unit-level topic name validation and logic, confirming the fix (or add new test cases as necessary).\\nIf further granularity is needed, inspect all modules in the SNS directory for spread-out logic. These files cover both the backend enforcement, validation logic, and confirmation through testing.\"}",
+  "error": null
+}

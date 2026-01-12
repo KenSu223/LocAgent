@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/894",
+  "repo_name": "fastapi",
+  "title": "RecursionError from response model in 0.47.1",
+  "base_commit": "0f152b4e97a102c0105f26d76d6e1bba3b12fc2a",
+  "ground_truth_files": [
+    "fastapi/utils.py"
+  ],
+  "predicted_files": [
+    "fastapi/exceptions.py",
+    "fastapi/encoders.py",
+    "fastapi/utils.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/utils.py', 'fastapi/routing.py', 'fastapi/exceptions.py', 'fastapi/applications.py', 'fastapi/encoders.py'], 'reasoning': '1. fastapi/utils.py: Contains the core create_cloned_field logic at fault for the RecursionError when models reference each other. 2. fastapi/routing.py: Registers routes and uses the clone response field logic, potentially triggering the error or needing updates for response handling. 3. fastapi/exceptions.py: Used for FastAPIError and could be enhanced for recursion/circular reference specific error handling. 4. fastapi/applications.py: Manages application startup and route registration, integrating with routing/model logic; may need checks or cleanup. 5. fastapi/encoders.py: Involved in serialization and may interact with recursive model structures if model encoding triggers the recursion (lower priority, included for completeness).'}",
+  "error": null
+}

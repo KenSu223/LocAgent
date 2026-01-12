@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1225",
+  "repo_name": "localstack",
+  "title": "Presigned S3 url doesnt notify sqs ",
+  "base_commit": "e65705a6ebf93ed7fbb05b690ebeb2c9c4aa88ae",
+  "ground_truth_files": [
+    "localstack/services/generic_proxy.py",
+    "localstack/services/s3/s3_listener.py",
+    "tests/integration/test_s3.py"
+  ],
+  "predicted_files": [
+    "localstack/utils/aws/aws_stack.py",
+    "localstack/services/s3/multipart_content.py",
+    "localstack/services/s3/s3_listener.py",
+    "tests/integration/test_s3.py",
+    "s3_listener.py",
+    "generic_proxy.py",
+    "aws_stack.py",
+    "localstack/services/generic_proxy.py",
+    "multipart_content.py",
+    "test_s3.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/s3/s3_listener.py', 'localstack/services/s3/multipart_content.py', 'localstack/services/generic_proxy.py', 'localstack/utils/aws/aws_stack.py', 'tests/integration/test_s3.py'], 'reasoning': '1. s3_listener.py: This is the main file for bucket notification dispatch, mappings, and event triggers; probable root of the bug.2. multipart_content.py: Multipart logic affects POST/PUT upload flows including presigned URLs.3. generic_proxy.py: Handles request matching/interception for S3, potentially affecting how presigned URLs flow to object creation logic.4. aws_stack.py: AWS utility integration could affect event bridge/notification logic.5. test_s3.py: Modifications needed for tests to reproduce and confirm resolution of notification failure for presigned URL uploads.These files are prioritized based on their direct relation to S3 object storage and event handling in LocalStack.'}",
+  "error": null
+}

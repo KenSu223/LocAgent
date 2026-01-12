@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/8",
+  "repo_name": "fastapi",
+  "title": "Nesting FastAPI instances doesn't work very well",
+  "base_commit": "92c825be6a7362099400c9c3fe8b01ea13add3dc",
+  "ground_truth_files": [
+    "fastapi/applications.py",
+    "fastapi/openapi/utils.py",
+    "mkdocs.yml"
+  ],
+  "predicted_files": [
+    "tests/test_application.py",
+    "fastapi/openapi/docs.py",
+    "fastapi/openapi/utils.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/applications.py', 'fastapi/openapi/docs.py', 'fastapi/openapi/utils.py', 'fastapi/routing.py', 'tests/test_application.py'], 'reasoning': '1. fastapi/applications.py: Core FastAPI class sets up openapi/docs endpoints with absolute URLs; must be modified to make URLs mounting-aware and create relative links when mounted as a sub-app.\\n2. fastapi/openapi/docs.py: Generates Swagger/ReDoc UIs and injects openapi_url links, must use correct path according to mount context; otherwise the UI will look for /openapi.json.\\n3. fastapi/openapi/utils.py: Common utilities may need updating to ensure the OpenAPI spec and path references are correct based on mount context.\\n4. fastapi/routing.py: Route/APIRouter behavior may need change to better handle mount context and relative paths for endpoints.\\n5. tests/test_application.py: Important to add or update tests to guarantee APIs served from mounted sub-apps correctly serve docs and openapi specs at their mounting path.'}",
+  "error": null
+}

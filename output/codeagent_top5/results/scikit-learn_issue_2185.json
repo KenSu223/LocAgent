@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/2185",
+  "repo_name": "scikit-learn",
+  "title": "MinibatchKMeans bad center reallocation causes duplicate centers",
+  "base_commit": "14d03f60ed366df942be09ee4bc394a69958e09c",
+  "ground_truth_files": [
+    "sklearn/cluster/k_means_.py",
+    "sklearn/cluster/tests/test_k_means.py",
+    "sklearn/utils/setup.py",
+    "sklearn/utils/tests/test_extmath.py"
+  ],
+  "predicted_files": [
+    "examples/cluster/plot_dict_face_patches.py",
+    "benchmarks/bench_plot_fastkmeans.py",
+    "sklearn/cluster/__init__.py",
+    "sklearn/cluster/tests/test_k_means.py",
+    "sklearn/cluster/k_means_.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cluster/k_means_.py', 'sklearn/cluster/tests/test_k_means.py', 'examples/cluster/plot_dict_face_patches.py', 'benchmarks/bench_plot_fastkmeans.py', 'sklearn/cluster/__init__.py'], 'reasoning': \"1. sklearn/cluster/k_means_.py: This is the primary file containing the MiniBatchKMeans implementation and the suspect 'bad center reallocation' logic. 2. sklearn/cluster/tests/test_k_means.py: Contains unit tests for MiniBatchKMeans; should be updated to add tests for duplicate centers and validate the fix. 3. examples/cluster/plot_dict_face_patches.py: Demonstrates the bug in the documentation; should be updated to highlight the fix or prevent demonstration of duplicates. 4. benchmarks/bench_plot_fastkmeans.py: May need update if benchmarking quality/performance relative to fixes in the reallocation logic. 5. sklearn/cluster/__init__.py: Only minor updates are needed if any interface or exposure changes arise, but not for the core bug itself.\"}",
+  "error": null
+}

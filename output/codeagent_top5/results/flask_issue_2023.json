@@ -1,0 +1,29 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2023",
+  "repo_name": "flask",
+  "title": "How should logging in Flask look like?",
+  "base_commit": "85fa8aabf5a7bd0adf204f0c2dacbba1fa6683de",
+  "ground_truth_files": [
+    "CHANGES",
+    "docs/config.rst",
+    "docs/contents.rst.inc",
+    "docs/errorhandling.rst",
+    "flask/app.py",
+    "flask/logging.py",
+    "tests/test_basic.py",
+    "tests/test_helpers.py",
+    "tests/test_subclassing.py",
+    "tests/test_templating.py",
+    "tests/test_testing.py"
+  ],
+  "predicted_files": [
+    "flask/config.py",
+    "flask/cli.py",
+    "flask/logging.py",
+    "flask/__init__.py",
+    "flask/app.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/logging.py', 'flask/cli.py', 'flask/app.py', 'flask/config.py', 'flask/__init__.py'], 'reasoning': \"1. flask/logging.py: Contains the core logic for attaching and setting up default logging handlers. Modifying/removing default handler setup should be done here.\\n2. flask/cli.py: To move default logging setup for development environments into the CLI, modifications are needed here.\\n3. flask/app.py: May require changes to how the logger is exposed or initialized on the Flask app object.\\n4. flask/config.py: Contains/apply config keys affecting logging handler policy such as LOGGER_HANDLER_POLICY.\\n5. flask/__init__.py: For any integration or exposure changes to Flask's public API regarding logging.\"}",
+  "error": null
+}

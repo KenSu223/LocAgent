@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/11194",
+  "repo_name": "scikit-learn",
+  "title": "NumPy dev causes test errors due to use of np.matrix",
+  "base_commit": "bb385394b87e382a34db829bc7ed60d347af73c9",
+  "ground_truth_files": [
+    "sklearn/ensemble/tests/test_iforest.py"
+  ],
+  "predicted_files": [
+    "sklearn/externals/joblib/numpy_pickle.py",
+    "sklearn/utils/testing.py",
+    "sklearn/metrics/tests/test_pairwise.py",
+    "sklearn/utils/tests/test_validation.py",
+    "sklearn/utils/validation.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/utils/validation.py', 'sklearn/utils/tests/test_validation.py', 'sklearn/externals/joblib/numpy_pickle.py', 'sklearn/utils/testing.py', 'sklearn/metrics/tests/test_pairwise.py'], 'reasoning': \"1. sklearn/utils/validation.py: Active usage and type checking for np.matrix\u2014core place to remove use and update code for ndarrays.\\n2. sklearn/utils/tests/test_validation.py: Tests using np.matrix\u2014should be modernized to avoid using np.matrix.\\n3. sklearn/externals/joblib/numpy_pickle.py: Handles pickling np.matrix\u2014should be refactored since np.matrix is deprecated.\\n4. sklearn/utils/testing.py: Implements assert_no_warnings\u2014should be updated to ignore PendingDeprecationWarning, or replaced by numpy's version, per discussion in the issue.\\n5. sklearn/metrics/tests/test_pairwise.py: np.matrix discussed/commented out at line 363\u2014should be checked and potentially refactored.\"}",
+  "error": null
+}

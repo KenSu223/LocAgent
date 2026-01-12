@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/266",
+  "repo_name": "flask",
+  "title": "Blueprint template lookup not documented enough",
+  "base_commit": "e4c712ffd2682f963906e1d0d27e67b7f83d95ce",
+  "ground_truth_files": [
+    "docs/blueprints.rst"
+  ],
+  "predicted_files": [
+    "flask/blueprints.py",
+    "flask/templating.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['docs/blueprints.rst', 'docs/templating.rst', 'docs/tutorial/templates.rst', 'flask/blueprints.py', 'flask/templating.py'], 'reasoning': \"1. docs/blueprints.rst: Main location for blueprint documentation; needs to clearly explain the new template lookup scheme since current coverage is missing or unclear.\\n2. docs/templating.rst: Main template documentation should describe how 'searchpath' now covers blueprint templates, for developer clarity.\\n3. docs/tutorial/templates.rst: Tutorials must teach the new lookup scheme for blueprint templates, reflecting the API change.\\n4. flask/blueprints.py: The actual implementation file for blueprint registration and template folder addition; docstrings and/or inline comments should be updated to match docs and clarify the lookup process.\\n5. flask/templating.py: May contain parts of the loader/searchpath mechanism; updating comments and docstrings here ensures maintainers and contributors understand the revised scheme.\"}",
+  "error": null
+}

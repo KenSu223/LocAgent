@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/4657",
+  "repo_name": "transformers",
+  "title": "--fp causes an issue when running example scripts in distributed mode",
+  "base_commit": "b231a413f5d58592bb4d98304c3d3b668c5d4a42",
+  "ground_truth_files": [
+    "src/transformers/training_args.py"
+  ],
+  "predicted_files": [
+    "classification/run_glue.py",
+    "src/transformers/training_args.py",
+    "modeling/run_language_modeling.py",
+    "src/transformers/trainer_utils.py",
+    "src/transformers/trainer.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/trainer.py', 'examples/language-modeling/run_language_modeling.py', 'examples/text-classification/run_glue.py', 'src/transformers/training_args.py', 'src/transformers/trainer_utils.py'], 'reasoning': '1. src/transformers/trainer.py: This file contains the main logic for fp16 training, apex integration, and distributed setup (numerous matches for these keywords), and is referenced in the issue traceback, making it the most critical. 2 & 3. examples/language-modeling/run_language_modeling.py and examples/text-classification/run_glue.py: These are the official example scripts which parse the --fp16 argument and invoke the training routines; incorrect handling or passing of flags here could cause the bug. 4. src/transformers/training_args.py: Responsible for parsing arguments like fp16, ensuring proper hand-off to Trainer and downstream modules. 5. src/transformers/trainer_utils.py: Provides utility functions for Trainer, which may support distributed/mixed precision setup and might require modification if the bug comes from inter-utility issues, especially in distributed mode.'}",
+  "error": null
+}

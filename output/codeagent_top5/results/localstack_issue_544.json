@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/544",
+  "repo_name": "localstack",
+  "title": "S3 object metadata not saved when uploaded with presigned url",
+  "base_commit": "6c8f52d42563c1207a8cb3fbbfccb6d4af2a0670",
+  "ground_truth_files": [
+    "localstack/services/s3/s3_listener.py",
+    "tests/integration/test_s3.py"
+  ],
+  "predicted_files": [
+    "plugins.py",
+    "tests/integration/test_s3.py",
+    "generic_proxy.py",
+    "tests/unit/test_s3.py",
+    "localstack/localstack/plugins.py",
+    "infra.py",
+    "localstack/localstack/services/generic_proxy.py",
+    "localstack/localstack/services/infra.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/localstack/plugins.py', 'localstack/localstack/services/infra.py', 'localstack/localstack/services/generic_proxy.py', 'tests/integration/test_s3.py', 'tests/unit/test_s3.py'], 'reasoning': '1. plugins.py routes and enables service plugins, so may require changes to patch S3 functionality for metadata passing and event emission. 2. infra.py likely helps initialize/routing S3 backends; S3 PUT/HEAD and metadata may be handled or set up here. 3. generic_proxy.py is where low-level request proxying or header/metadata handling may be done, especially if not surfaced in s3 folder. 4 and 5. The integration and unit S3 test files must be updated to ensure presigned URL uploads correctly persist metadata and that the metadata is returned in HEAD requests, validating the bugfix.'}",
+  "error": null
+}

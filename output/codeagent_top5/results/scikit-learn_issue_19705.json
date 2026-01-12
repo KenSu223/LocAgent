@@ -1,0 +1,31 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/19705",
+  "repo_name": "scikit-learn",
+  "title": "[RFC] Minimal scipy version for 1.0 (or 0.26) release",
+  "base_commit": "053d2d1af477d9dc17e69162b9f2298c0fda5905",
+  "ground_truth_files": [
+    ".circleci/config.yml",
+    ".travis.yml",
+    "azure-pipelines.yml",
+    "build_tools/azure/install.sh",
+    "build_tools/azure/posix-32.yml",
+    "build_tools/azure/test_script.sh",
+    "doc/conftest.py",
+    "doc/modules/sgd.rst",
+    "doc/tutorial/statistical_inference/supervised_learning.rst",
+    "doc/whats_new/v1.0.rst",
+    "pyproject.toml",
+    "sklearn/_min_dependencies.py",
+    "sklearn/decomposition/_truncated_svd.py",
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_loss.py",
+    "sklearn/utils/tests/test_validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/_min_dependencies.py",
+    "_min_dependencies.py",
+    "setup.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/_min_dependencies.py', 'pyproject.toml', 'setup.py'], 'reasoning': '1. sklearn/_min_dependencies.py: Defines the minimal version of scipy, which needs to be set to 1.0.0 to enforce the new requirement\u2014this is the central config for minimal versions.\\n2. pyproject.toml: Specifies build dependencies for scipy; must update to >=1.0.0 to ensure environments install the correct version.\\n3. setup.py: Uses the minimal dependencies from _min_dependencies.py to check installation requirements and must remain consistent with the new version.\\nNo requirements.txt exists, and binder requirements in doc/ are not relevant for core version requirements. No source code changes are needed as linprog usage was not found; changes are all in dependency specification.'}",
+  "error": null
+}

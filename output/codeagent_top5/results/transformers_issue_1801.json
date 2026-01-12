@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/1801",
+  "repo_name": "transformers",
+  "title": "run_glue.py RuntimeError: module must have its parameters and buffers on device cuda:0 (device_ids[0]) but found one of them on device: cuda:3",
+  "base_commit": "6d00033e97e1751a897f2317fdfd35dd853cee29",
+  "ground_truth_files": [
+    "examples/hans/test_hans.py",
+    "examples/mm-imdb/run_mmimdb.py",
+    "examples/ner/run_ner.py",
+    "examples/run_language_modeling.py",
+    "examples/run_multiple_choice.py",
+    "examples/run_xnli.py"
+  ],
+  "predicted_files": [
+    "examples/glue/run_pl_glue.py",
+    "examples/run_glue.py",
+    "examples/benchmarks.py",
+    "examples/transformer_base.py",
+    "transformers/modeling_utils.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['examples/run_glue.py', 'transformers/modeling_utils.py', 'examples/transformer_base.py', 'examples/benchmarks.py', 'examples/glue/run_pl_glue.py'], 'reasoning': '1. examples/run_glue.py: The main source of the bug\u2014model DataParallel and device setup is here and needs careful fixes to assure all model parameters and inputs are placed on the correct CUDA device.\\n2. transformers/modeling_utils.py: Used for loading/saving model checkpoints and could impact device compatibility especially for multi-GPU setups.\\n3. examples/transformer_base.py: May include helper functions for model or device placement if used; should be inspected for edge-case device handling.\\n4. examples/benchmarks.py: Benchmark script could include alternative device or environment setups that conflict with main script logic; worth checking for device assignment.\\n5. examples/glue/run_pl_glue.py: As another glue example script, fixes or consistency with DataParallel/device logic may be required.'}",
+  "error": null
+}

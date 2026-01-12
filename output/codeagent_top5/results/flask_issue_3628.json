@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/3628",
+  "repo_name": "flask",
+  "title": "Returning Response and headers causes duplicate headers",
+  "base_commit": "6f2fdc5ac4ad869a21c4c0281d7fa1eb8aa5a689",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "src/flask/app.py",
+    "tests/test_basic.py"
+  ],
+  "predicted_files": [
+    "src/flask/helpers.py",
+    "json/tag.py",
+    "wrappers.py",
+    "src/flask/wrappers.py",
+    "src/flask/json/__init__.py",
+    "helpers.py",
+    "src/flask/app.py",
+    "src/flask/json/tag.py",
+    "app.py",
+    "json/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/wrappers.py', 'src/flask/app.py', 'src/flask/helpers.py', 'src/flask/json/__init__.py', 'src/flask/json/tag.py'], 'reasoning': '1. wrappers.py: Likely manages response object construction and header extension, where duplicated Content-Type could be prevented.\\n2. app.py: Handles conversion of return values from views into response objects, crucial for managing how headers and types are propagated.\\n3. helpers.py: Typically contains make_response and jsonify, where header logic and arguments are collated before passing to the response machinery.\\n4. json/__init__.py: Central JSON handling, sets default Content-Type, and may interact with helpers/wrappers on JSON responses.\\n5. json/tag.py: Contains customization for JSON serialization, which can impact Content-Type and response formation especially when returning dicts.'}",
+  "error": null
+}

@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/3785",
+  "repo_name": "transformers",
+  "title": "How to fine tune EncoderDecoder model for training a new corpus of data ?",
+  "base_commit": "41750a6cff55e401364568868d619747de3db037",
+  "ground_truth_files": [
+    "docs/source/index.rst",
+    "src/transformers/__init__.py",
+    "src/transformers/configuration_auto.py",
+    "src/transformers/modeling_auto.py",
+    "src/transformers/modeling_bert.py",
+    "src/transformers/modeling_encoder_decoder.py",
+    "src/transformers/modeling_utils.py",
+    "src/transformers/utils_encoder_decoder.py"
+  ],
+  "predicted_files": [
+    "examples/run_encoderdecoder_finetuning.py",
+    "src/transformers/modeling_encoder_decoder.py",
+    "src/transformers/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/modeling_encoder_decoder.py', 'docs/source/model_doc/encoderdecoder.rst', 'examples/run_encoderdecoder_finetuning.py', 'src/transformers/__init__.py', 'docs/source/index.rst'], 'reasoning': '1. src/transformers/modeling_encoder_decoder.py: This file contains the core EncoderDecoder implementation; ensure it fully supports fine-tuning and features for use with new corpora.\\n2. docs/source/model_doc/encoderdecoder.rst: No documentation exists for EncoderDecoder; creating this is essential to help users.\\n3. examples/run_encoderdecoder_finetuning.py: Providing an example script for fine-tuning will guide users practically.\\n4. src/transformers/__init__.py: Confirm and maintain public API exposure for EncoderDecoder models.\\n5. docs/source/index.rst: Update the documentation index to reference the new EncoderDecoder docs so users can find them easily.'}",
+  "error": null
+}

@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/737",
+  "repo_name": "localstack",
+  "title": "Kinesis events to Lambda do not conform to spec",
+  "base_commit": "a23e2fc70542af481fb3a0bd7042627ff50f0802",
+  "ground_truth_files": [
+    "localstack/services/awslambda/lambda_api.py"
+  ],
+  "predicted_files": [
+    "localstack-core/localstack/services/lambda_/event_source_listeners/kinesis_event_source_listener.py",
+    "localstack-core/localstack/services/lambda_/event_source_listeners/stream_event_source_listener.py",
+    "localstack-core/localstack/services/kinesis/provider.py",
+    "localstack-core/localstack/services/lambda_/event_source_mapping/esm_event_processor.py",
+    "localstack-core/localstack/services/lambda_/event_source_listeners/utils.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack-core/localstack/services/lambda_/event_source_listeners/kinesis_event_source_listener.py\",\n        \"localstack-core/localstack/services/lambda_/event_source_listeners/stream_event_source_listener.py\",\n        \"localstack-core/localstack/services/kinesis/provider.py\",\n        \"localstack-core/localstack/services/lambda_/event_source_mapping/esm_event_processor.py\",\n        \"localstack-core/localstack/services/lambda_/event_source_listeners/utils.py\"\n    ],\n    \"reasoning\": \"1. kinesis_event_source_listener.py is almost certainly where Kinesis event records are adapted for Lambda triggers; this is the most likely location to add missing spec fields (eventSourceARN, eventName, awsRegion, etc) to the record structure. 2. stream_event_source_listener.py is often used as the generic base or handler for event stream integrations (like Kinesis, DynamoDB, or SQS), and if the event structure is built there, changes may be needed. 3. kinesis/provider.py might be involved in passing record data for lambda triggers; if the bug is rooted in how the raw records are exposed or forwarded, modification may be needed. 4. esm_event_processor.py likely deals with processing and formatting event source mappings and could influence the envelope sent to Lambda. 5. utils.py in event_source_listeners may contain shared formatting code for event payloads, so if the Kinesis event assembly is utility-driven, this file may also need updates. Start your fix in kinesis_event_source_listener.py, then generalize to stream_event_source_listener.py and supporting files as necessary.\"\n}",
+  "error": null
+}

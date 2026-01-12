@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/18068",
+  "repo_name": "transformers",
+  "title": "StoppingCriteria \"scores\" is always None",
+  "base_commit": "4b423e607455a7aca1edc4beaa713da58e78ef0b",
+  "ground_truth_files": [
+    "src/transformers/generation/stopping_criteria.py",
+    "src/transformers/generation/utils.py"
+  ],
+  "predicted_files": [
+    "src/transformers/generation/beam_search.py",
+    "src/transformers/generation/utils.py",
+    "src/transformers/generation/stopping_criteria.py",
+    "src/transformers/generation/logits_process.py",
+    "src/transformers/generation/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/transformers/generation/beam_search.py\",\n        \"src/transformers/generation/utils.py\",\n        \"src/transformers/generation/stopping_criteria.py\",\n        \"src/transformers/generation/logits_process.py\",\n        \"src/transformers/generation/__init__.py\"\n    ],\n    \"reasoning\": \"1. The most important file is src/transformers/generation/beam_search.py, which likely contains the main generation loop and the calls to stopping criteria during beam search and other generation routines. This is where 'scores' should be computed and passed to StoppingCriteria, but currently may not be supplied, resulting in None. 2. src/transformers/generation/utils.py typically contains the non-beam search generation routines, and might also be responsible for how stopping criteria are called with arguments, so any fix may need to be synchronized here. 3. src/transformers/generation/stopping_criteria.py is where StoppingCriteria is defined and documented. Although its API expects 'scores', you may need to clarify or update docstrings once the code fix is made. 4. src/transformers/generation/logits_process.py can be implicated if logits processing interferes with score propagation to stopping criteria, or you need to hook into a processed form of logits. 5. src/transformers/generation/__init__.py may need to update imports if the fix involves exposing new arguments or fixing module references. In summary, the code calling StoppingCriteria during generation needs to be updated (primarily in beam_search.py and utils.py) to provide 'scores' at every call, so custom StoppingCriteria subclasses receive non-None values as expected.\"\n}",
+  "error": null
+}

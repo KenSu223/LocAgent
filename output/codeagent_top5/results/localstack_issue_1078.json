@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1078",
+  "repo_name": "localstack",
+  "title": "Connect to localhost:4568 [localhost/127.0.0.1] failed: Connection refused (Connection refused)",
+  "base_commit": "1c5f2e9650155a839cc842a9cd07faf3e76ed5d2",
+  "ground_truth_files": [
+    "docker-compose.yml"
+  ],
+  "predicted_files": [
+    "localstack/config.py",
+    "localstack/services/kinesis/kinesis_starter.py",
+    "localstack/utils/aws/aws_stack.py",
+    "localstack/constants.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['docker-compose.yml', 'localstack/config.py', 'localstack/constants.py', 'localstack/utils/aws/aws_stack.py', 'localstack/services/kinesis/kinesis_starter.py'], 'reasoning': \"1. docker-compose.yml: The most important file for fixing service port mappings and container/service DNS alias; ensure port 4568 is open and aliasing permits Jenkins/app communication with Kinesis.\\n2. localstack/config.py: Responsible for host and endpoint discovery; modifying HOSTNAME/HOSTNAME_EXTERNAL/LOCALSTACK_HOSTNAME is vital for correct connection from Jenkins pipelines (should use container alias, not localhost).\\n3. localstack/constants.py: Port constants (especially DEFAULT_PORT_KINESIS_BACKEND) must align with Docker and service execution; wrong values can cause mis-routing.\\n4. localstack/utils/aws/aws_stack.py: Ensures connect_to_service and related logic use the correct network endpoint, not hardcoded 'localhost:4568', inside CI or container contexts.\\n5. localstack/services/kinesis/kinesis_starter.py: Controls the startup and proxying of kinesis service, ensuring exposed ports/host binding are visible to Jenkins and external clients. Order reflects decreasing likelihood/proximity of required modification to solve endpoint/connection issues in Jenkins or Docker.\"}",
+  "error": null
+}

@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/5991",
+  "repo_name": "scikit-learn",
+  "title": "PERF : StratifiedShuffleSplit is slow when using large number of classes",
+  "base_commit": "41e129f1a6eb17a39ff0b25f682d903d0ae3c5af",
+  "ground_truth_files": [
+    "doc/whats_new.rst",
+    "sklearn/model_selection/_split.py"
+  ],
+  "predicted_files": [
+    "sklearn/utils/setup.py",
+    "sklearn/model_selection/tests/test_split.py",
+    "sklearn/model_selection/_split.py",
+    "sklearn/utils/arrayfuncs.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/model_selection/_split.py', 'sklearn/utils/arrayfuncs.pyx', 'sklearn/utils/setup.py', 'sklearn/model_selection/tests/test_split.py', 'doc/model_selection.rst'], 'reasoning': '1. sklearn/model_selection/_split.py: Contains the loop and logic that causes the performance bottleneck, particularly in StratifiedShuffleSplit; main fix required here.\\n2. sklearn/utils/arrayfuncs.pyx: Proposed location for Cython optimization (e.g., bincount_with_ref), enabling a faster index matrix accumulation.\\n3. sklearn/utils/setup.py: Registers arrayfuncs extensions for use by Python, required if new Cython functions are added.\\n4. sklearn/model_selection/tests/test_split.py: Contains unit/performance tests for StratifiedShuffleSplit and must be updated or extended for the new code.\\n5. doc/model_selection.rst: Documentation update, to describe new behavior or improvements, if necessary.'}",
+  "error": null
+}

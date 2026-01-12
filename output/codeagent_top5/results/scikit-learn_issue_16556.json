@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/16556",
+  "repo_name": "scikit-learn",
+  "title": "Add Pre-fit Model to Stacking Model",
+  "base_commit": "5ad3421a5b5759ecfaaab93406592d988f5d487f",
+  "ground_truth_files": [
+    "doc/whats_new/v1.1.rst",
+    "sklearn/ensemble/_stacking.py",
+    "sklearn/ensemble/tests/test_stacking.py"
+  ],
+  "predicted_files": [
+    "sklearn/ensemble/__init__.py",
+    "sklearn/ensemble/_stacking.py",
+    "sklearn/ensemble/tests/test_stacking.py",
+    "sklearn/ensemble/_base.py",
+    "sklearn/ensemble/tests/test_common.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/ensemble/_base.py', 'sklearn/ensemble/_stacking.py', 'sklearn/ensemble/tests/test_stacking.py', 'sklearn/ensemble/tests/test_common.py', 'sklearn/ensemble/__init__.py'], 'reasoning': '1. sklearn/ensemble/_base.py: The `_fit_single_estimator` function enables estimator fitting for stacking; it should be modified to skip fitting already-fit models, allowing pre-fit support. 2. sklearn/ensemble/_stacking.py: Coordinates stacking logic and calls fitting helpers; may require updates for tracking estimator fitted status and proper integration. 3. sklearn/ensemble/tests/test_stacking.py: Contains targeted tests for stacking. Should add/modify tests for pre-fit scenario. 4. sklearn/ensemble/tests/test_common.py: Includes common/broad tests across ensemble estimators, potentially validates new pre-fit logic. 5. sklearn/ensemble/__init__.py: Handles API exposure; update only if API changes or new parameters are introduced.'}",
+  "error": null
+}

@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/18146",
+  "repo_name": "scikit-learn",
+  "title": "Something goes wrong with KernelPCA with 32 bits input data",
+  "base_commit": "e217b68fd00bb7c54b81a492ee6f9db6498517fa",
+  "ground_truth_files": [
+    "doc/whats_new/v0.24.rst",
+    "sklearn/decomposition/tests/test_kernel_pca.py",
+    "sklearn/utils/validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/decomposition/__init__.py",
+    "sklearn/utils/validation.py",
+    "sklearn/decomposition/tests/test_kernel_pca.py",
+    "sklearn/manifold/_isomap.py",
+    "sklearn/decomposition/_kernel_pca.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/decomposition/_kernel_pca.py', 'sklearn/decomposition/tests/test_kernel_pca.py', 'sklearn/decomposition/__init__.py', 'sklearn/manifold/_isomap.py', 'sklearn/utils/validation.py'], 'reasoning': \"1. sklearn/decomposition/_kernel_pca.py: Contains the main logic for KernelPCA, where improper handling of 32-bit float inputs is most likely causing the wrong number of output dimensions. 2. sklearn/decomposition/tests/test_kernel_pca.py: Should be updated to add or enhance test cases covering input data with float32 dtype and ensure correct shape of output. 3. sklearn/decomposition/__init__.py: Exposes KernelPCA in the public API; not usually directly related to bugs, but relevant if any refactoring or parameter fixes are required. 4. sklearn/manifold/_isomap.py: Uses KernelPCA internally; changes to KernelPCA's behavior or signatures might require updates here for compatibility and correct output. 5. sklearn/utils/validation.py: Handles generic input checks that may affect how dtypes are processed throughout scikit-learn; if the fix involves broader dtype handling, changes might be needed here.\"}",
+  "error": null
+}

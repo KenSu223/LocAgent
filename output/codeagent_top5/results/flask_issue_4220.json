@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/4220",
+  "repo_name": "flask",
+  "title": "`template_filter` decorator typing does not support custom filters with multiple arguments",
+  "base_commit": "8e589daaf2cec6a10262b8ff88801127f2fa14fd",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "src/flask/typing.py"
+  ],
+  "predicted_files": [
+    "src/flask/__init__.py",
+    "src/flask/app.py",
+    "src/flask/templating.py",
+    "src/flask/typing.py",
+    "tests/test_templating.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/app.py', 'src/flask/templating.py', 'src/flask/typing.py', 'src/flask/__init__.py', 'tests/test_templating.py'], 'reasoning': 'The core method for registering template filters and its decorator is likely in src/flask/app.py, making it the most important file to update the type hints to allow multiple filter arguments. src/flask/templating.py handles integration with Jinja2, which natively supports multi-argument filters and may need adjustments for type or function signatures. src/flask/typing.py centrally manages type hints and must reflect new Callable definitions to avoid mypy errors. src/flask/__init__.py may expose or alias the decorator or relevant API. Finally, tests/test_templating.py should be updated to ensure and verify that multi-argument filters are accepted and typed correctly in tests.'}",
+  "error": null
+}

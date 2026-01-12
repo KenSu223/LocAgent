@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/10059",
+  "repo_name": "scikit-learn",
+  "title": "Duplicated input points silently create duplicated clusters in KMeans",
+  "base_commit": "effd75dda5f4afa61f988035ff8fe4b3a447464e",
+  "ground_truth_files": [
+    "doc/whats_new/v0.20.rst",
+    "sklearn/cluster/k_means_.py",
+    "sklearn/cluster/tests/test_k_means.py"
+  ],
+  "predicted_files": [
+    "sklearn/cluster/__init__.py",
+    "sklearn/cluster/tests/test_k_means.py",
+    "sklearn/cluster/k_means_.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cluster/k_means_.py', 'sklearn/cluster/tests/test_k_means.py', 'sklearn/cluster/__init__.py', 'doc/modules/clustering.rst'], 'reasoning': '1. sklearn/cluster/k_means_.py: This file contains the KMeans class and initialization logic. Changes here would add error handling or constraints when n_clusters > n_unique, and ensure cluster centers are unique.\\n2. sklearn/cluster/tests/test_k_means.py: Tests must verify that the error or new behavior is triggered for duplicate input points and excessive cluster requests.\\n3. sklearn/cluster/__init__.py: The public API should be updated if new error classes or behaviors are introduced to be user accessible.\\n4. doc/modules/clustering.rst: Documentation must be updated to describe new error behavior or warnings in KMeans when requested clusters exceed unique points.\\nFiles are ordered by where changes are functionally essential, followed by where dependent and documentation changes should appear.'}",
+  "error": null
+}

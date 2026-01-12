@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1808",
+  "repo_name": "localstack",
+  "title": "SNS: unable to ConfirmSubscription: Topic not found",
+  "base_commit": "5b6eee89f41af000b2da5ff43e3292529ff4c56f",
+  "ground_truth_files": [
+    "localstack/services/sns/sns_listener.py",
+    "tests/integration/test_sns.py"
+  ],
+  "predicted_files": [
+    "localstack/utils/aws/aws_stack.py",
+    "tests/unit/test_sns.py",
+    "tests/integration/test_sns.py",
+    "localstack/services/generic_proxy.py",
+    "localstack/services/sns/sns_listener.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/sns/sns_listener.py', 'localstack/utils/aws/aws_stack.py', 'tests/integration/test_sns.py', 'tests/unit/test_sns.py', 'localstack/services/generic_proxy.py'], 'reasoning': '1. localstack/services/sns/sns_listener.py: This is the primary file handling SNS actions, including subscription confirmation, topic existence checking, and error response. The error in the issue is thrown here, and ConfirmSubscription logic will either be handled or needs to be fixed here.\\n2. localstack/utils/aws/aws_stack.py: Contains ARN and protocol utilities crucial for SNS topic identification and validation.\\n3. tests/integration/test_sns.py: Should be updated to cover proper ConfirmSubscription and endpoint behaviors; ensures the integration works as expected.\\n4. tests/unit/test_sns.py: Should provide unit coverage for edge cases around topic existence and ConfirmSubscription.\\n5. localstack/services/generic_proxy.py: Possible request routing and error handling; modifications may be required if error responses or dispatch require more consistency.'}",
+  "error": null
+}

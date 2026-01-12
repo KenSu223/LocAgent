@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/164",
+  "repo_name": "localstack",
+  "title": "Data persistence for all services",
+  "base_commit": "0cf839ae1237e9b5aa9479d80e8f3f1eb3b79b5d",
+  "ground_truth_files": [
+    "README.md",
+    "localstack/constants.py",
+    "localstack/plugins.py",
+    "localstack/services/infra.py",
+    "localstack/services/s3/s3_listener.py",
+    "localstack/services/secretsmanager/secretsmanager_starter.py",
+    "localstack/services/ssm/ssm_listener.py",
+    "localstack/utils/persistence.py"
+  ],
+  "predicted_files": [
+    "localstack/config.py",
+    "localstack/services/es/__init__.py",
+    "localstack/services/s3/__init__.py",
+    "localstack/utils/persistence.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/utils/persistence.py', 'localstack/services/s3/__init__.py', 'localstack/services/es/__init__.py', 'doc/roadmap/README.md', 'localstack/config.py'], 'reasoning': '1. localstack/utils/persistence.py: Primary persistence logic; must be refactored and extended for all services. 2. localstack/services/s3/__init__.py and 3. localstack/services/es/__init__.py: S3 and Elasticsearch already support persistence; need audit/update for completeness and alignment with roadmap. 4. doc/roadmap/README.md: Roadmap documentation must be updated to reflect the plan and status for extended persistence. 5. localstack/config.py: May need config flag(s) or path changes to support enabling/disabling persistence for all or specific services.'}",
+  "error": null
+}

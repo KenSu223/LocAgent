@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/4587",
+  "repo_name": "fastapi",
+  "title": "Use the raw response in Reponse classes",
+  "base_commit": "78b07cb809e97f400e196ff3d89862b9d5bd5dc2",
+  "ground_truth_files": [
+    "fastapi/routing.py"
+  ],
+  "predicted_files": [
+    "fastapi/responses.py",
+    "fastapi/routing.py",
+    "fastapi/encoders.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/routing.py', 'fastapi/responses.py', 'fastapi/encoders.py'], 'reasoning': '1. fastapi/routing.py: The core integration point of request/response handling, where the raw response can be captured before encoding and custom data/encoders passed to responses. 2. fastapi/responses.py: Contains the (re-)implementation of response classes, the right place to modify to provide constructor or method support for receiving/using the raw response. 3. fastapi/encoders.py: Contains the serialization logic for converting Python objects to JSON. Customizing here supports injecting alternate encoders for new response types or raw data handling.'}",
+  "error": null
+}

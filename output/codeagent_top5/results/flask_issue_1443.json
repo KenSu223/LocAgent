@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/1443",
+  "repo_name": "flask",
+  "title": "json_encoder not invoked from flask.jsonify",
+  "base_commit": "f17e6061fcffdc290f615d3fdc9d949e9e719574",
+  "ground_truth_files": [
+    "AUTHORS",
+    "CHANGES",
+    "docs/security.rst",
+    "flask/json.py",
+    "tests/test_helpers.py"
+  ],
+  "predicted_files": [
+    "tests/test_helpers.py",
+    "tests/test_basic.py",
+    "flask/json.py",
+    "flask/app.py",
+    "flask/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/json.py', 'flask/app.py', 'flask/__init__.py', 'tests/test_helpers.py', 'tests/test_basic.py'], 'reasoning': '1. flask/json.py: Contains the jsonify function and the JSONEncoder class. Any change to how custom encoders are used with jsonify must be made here.\\n2. flask/app.py: Defines the app.json_encoder property and links it to the encoder used by jsonify. Ensures custom encoder configuration properly propagates.\\n3. flask/__init__.py: Re-exports jsonify as a public API. Necessary if the import chain affects encoder usage or docstring.\\n4. tests/test_helpers.py: Contains explicit tests for jsonify and custom encoders. Modify/update tests to verify the fix.\\n5. tests/test_basic.py: Broadly tests jsonify and should be updated to assert correct encoder usage when custom encoders are set.'}",
+  "error": null
+}

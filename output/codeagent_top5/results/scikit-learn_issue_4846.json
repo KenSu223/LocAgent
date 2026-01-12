@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/4846",
+  "repo_name": "scikit-learn",
+  "title": "RidgeClassifier triggers data copy",
+  "base_commit": "8453daa6b983ee2fd73d537e81e58b3f6b0e3147",
+  "ground_truth_files": [
+    "sklearn/linear_model/ridge.py"
+  ],
+  "predicted_files": [
+    "sklearn/linear_model/tests/test_ridge.py",
+    "sklearn/linear_model/__init__.py",
+    "sklearn/linear_model/base.py",
+    "sklearn/linear_model/ridge.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/linear_model/ridge.py', 'sklearn/linear_model/tests/test_ridge.py', 'sklearn/linear_model/base.py', 'sklearn/linear_model/__init__.py', 'doc/modules/linear_model.rst'], 'reasoning': '1. sklearn/linear_model/ridge.py: Contains RidgeClassifier, _BaseRidge, and all implementation where the data copy bug occurs; the main fix must go here.\\n2. sklearn/linear_model/tests/test_ridge.py: Ensures bugs are caught and behavior is validated post-fix, covering test cases related to sample_weight and data copying.\\n3. sklearn/linear_model/base.py: Contains LinearClassifierMixin used in RidgeClassifier and so could be relevant if mixin logic affects data copying in classifier flow; included for completeness.\\n4. sklearn/linear_model/__init__.py: Exposes RidgeClassifier at module level; may need updating if API surface changes.\\n5. doc/modules/linear_model.rst: Documents RidgeClassifier behavior; update if sample_weight/data copying change affects user documentation.'}",
+  "error": null
+}

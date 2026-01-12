@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2731",
+  "repo_name": "flask",
+  "title": "Flask 1.0 backwards-incompat with double-slash/no-slash re. #2629",
+  "base_commit": "f808c20139649b747f604492bc33b61a7dd3e13a",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "flask/blueprints.py",
+    "tests/test_blueprints.py"
+  ],
+  "predicted_files": [
+    "flask/app.py",
+    "flask/blueprints.py",
+    "tests/test_blueprints.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/blueprints.py', 'flask/app.py', 'tests/test_blueprints.py', 'docs/blueprints.rst', 'docs/upgrading.rst'], 'reasoning': '1. flask/blueprints.py contains the direct logic for combining blueprint url_prefix and route rule, which is where the double-slash issue occurs and must be fixed. 2. flask/app.py might duplicate or support route registration logic that should be consistent with blueprints and may need adjustments for proper slash handling. 3. tests/test_blueprints.py should have or be extended with tests that verify route joining and slash handling edge cases, ensuring regression protection. 4. docs/blueprints.rst may need to document the correct/changed behavior regarding blueprint routes and prefixes. 5. docs/upgrading.rst should mention this backwards-incompatible issue/fix for users upgrading between Flask versions.'}",
+  "error": null
+}

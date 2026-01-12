@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/5646",
+  "repo_name": "fastapi",
+  "title": "Bad encoding in query parameters with new TestClient using httpx.Client",
+  "base_commit": "4638b2c64e259b90bef6a44748e00e405825a111",
+  "ground_truth_files": [
+    "pyproject.toml",
+    "tests/test_starlette_urlconvertors.py"
+  ],
+  "predicted_files": [
+    "docs_src/app_testing/tutorial001.py",
+    "docs_src/app_testing/test_main.py",
+    "fastapi/testclient.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/testclient.py', 'README.md', 'docs/en/docs/testing.md', 'docs_src/app_testing/test_main.py', 'docs_src/app_testing/tutorial001.py'], 'reasoning': \"1. fastapi/testclient.py: Directly re-exports Starlette's TestClient, so any workaround for encoding issues\u2014including monkey-patching or subclassing\u2014should begin here.\\n2. README.md: Documentation should be updated to alert users of the breaking change and encoding issue with accented query parameters when using TestClient.\\n3. docs/en/docs/testing.md: The main documentation file for testing should note differences, workarounds, or guidance about query encoding issues post-httpx migration.\\n4. docs_src/app_testing/test_main.py: Tutorial and example tests should reproduce, document, or guide users past this issue, especially since direct httpx.Client works but TestClient doesn't.\\n5. docs_src/app_testing/tutorial001.py: Sample files illustrating test methods, which may need revision if they show failing tests or problematic queries.\"}",
+  "error": null
+}

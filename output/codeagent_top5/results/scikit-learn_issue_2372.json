@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/2372",
+  "repo_name": "scikit-learn",
+  "title": "StratifiedKFold should do its best to preserve the dataset dependency structure",
+  "base_commit": "130601e076ec5ca8298b95c3d02122ac5d8cf8eb",
+  "ground_truth_files": [
+    "doc/modules/cross_validation.rst",
+    "doc/tutorial/statistical_inference/model_selection.rst",
+    "doc/whats_new.rst",
+    "sklearn/cross_validation.py",
+    "sklearn/feature_selection/tests/test_rfe.py",
+    "sklearn/tests/test_cross_validation.py",
+    "sklearn/tests/test_naive_bayes.py"
+  ],
+  "predicted_files": [
+    "sklearn/cross_validation.py",
+    "sklearn/base.py",
+    "sklearn/grid_search.py",
+    "sklearn/utils/__init__.py",
+    "sklearn/tests/"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/cross_validation.py\",\n        \"sklearn/base.py\",\n        \"sklearn/grid_search.py\",\n        \"sklearn/utils/__init__.py\",\n        \"sklearn/tests/\"\n    ],\n    \"reasoning\": \"1. sklearn/cross_validation.py: This file is the main location for cross-validation strategies in this repository. Since direct searches for 'StratifiedKFold' and 'KFold' failed, it may use alternative naming conventions; nevertheless, any fix to dependency-structure preservation for stratified folds must be implemented here (including a potential new class or function, or refactoring existing logic). 2. sklearn/base.py: The base classes for estimators and cross-validation are often found here; if there is a _BaseKFold class as mentioned in the issue, removing or refactoring it should occur here. 3. sklearn/grid_search.py: Since GridSearchCV defaults to using stratified CV on classification tasks, if its interface or selection logic for split strategies needs an update (e.g., to support dependency-preserving stratification or shuffling), those changes should be made here. 4. sklearn/utils/__init__.py: Utility functions and helpers (e.g., for shuffling or stratification) may need updates to support improved dependency-preserving splits. 5. sklearn/tests/: Associated tests must be updated and/or new tests created to verify the new dependency-preserving behavior of StratifiedKFold, and possibly to test shuffle support as indicated in the issue. If tests are not in this location, substitute with the actual test folder identified by the repo layout.\"\n}",
+  "error": null
+}

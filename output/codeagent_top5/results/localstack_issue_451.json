@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/451",
+  "repo_name": "localstack",
+  "title": "Unable to use self-signed certs - CN incorrect, and/or missing subject alternative name field",
+  "base_commit": "23cd5fba5b3a2012f280a10b0d7266514fc46eb5",
+  "ground_truth_files": [
+    "localstack/utils/common.py",
+    "tests/integration/test_sqs.py"
+  ],
+  "predicted_files": [
+    "localstack/config.py",
+    "localstack/utils/aws/aws_stack.py",
+    "localstack/utils/common.py",
+    "localstack/services/generic_proxy.py",
+    "localstack/services/infra.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/utils/common.py', 'localstack/services/generic_proxy.py', 'localstack/config.py', 'localstack/services/infra.py', 'localstack/utils/aws/aws_stack.py'], 'reasoning': \"1. localstack/utils/common.py: Contains the certificate generation code. The CN is currently set to 'LocalStack' and no Subject Alternative Name (SAN) is set. This file should be changed to set CN to the configured hostname, and add a SAN field.\\n2. localstack/services/generic_proxy.py: Calls certificate generation, but does not pass the hostname. Needs modification to pass the correct hostname/SAN values from configuration to cert generation.\\n3. localstack/config.py: Holds configuration, including USE_SSL and possibly the hostname. Should expose a hostname config var to propagate to cert generation.\\n4. localstack/services/infra.py: Starts service proxies with SSL options, may need adjustment to pass hostname/config when initializing SSL and ensure the correct certificate is used for each service.\\n5. localstack/utils/aws/aws_stack.py: Handles Elasticsearch client setup (which verifies SSL), may need updates to correctly handle the truststore or hostname for compatibility with self-signed certs.\"}",
+  "error": null
+}

@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/3689",
+  "repo_name": "scikit-learn",
+  "title": "using sparse matrix in fit_params",
+  "base_commit": "439c19596a248a31cd1aa8220f54a622a0322160",
+  "ground_truth_files": [
+    "sklearn/cross_validation.py",
+    "sklearn/tests/test_cross_validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/pipeline.py",
+    "sklearn/grid_search.py",
+    "sklearn/utils/validation.py",
+    "sklearn/cross_validation.py",
+    "sklearn/utils/sparsefuncs.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cross_validation.py', 'sklearn/utils/validation.py', 'sklearn/utils/sparsefuncs.py'], 'reasoning': \"1. sklearn/cross_validation.py: This is the primary location of the bug. The fit_params dict is processed with hasattr(v, '__len__') and len(v) logic that fails for sparse matrices; a fix is required here to circumpass TypeError.\\n2. sklearn/utils/validation.py: May need to expose or implement helper functions (e.g., is_sparse or type-safe length checks) that enable robust detection of sparse matrices for safe parameter handling.\\n3. sklearn/utils/sparsefuncs.py: Contains additional helpers for sparse matrix operations and type checking. May be used to extend support, or consolidate sparse matrix handling if refactoring is needed.\\nOther files such as sklearn/grid_search.py and sklearn/pipeline.py handle fit_params indirectly and only need changes if they repeat this specific logic, which is not evident from current code inspection.\"}",
+  "error": null
+}

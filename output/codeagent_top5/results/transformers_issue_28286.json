@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/28286",
+  "repo_name": "transformers",
+  "title": "`contrastive-image-text/run_clip.py` example problems",
+  "base_commit": "edb314ae2ba4ac0e89d6a31d48037b8943978bff",
+  "ground_truth_files": [
+    "examples/pytorch/contrastive-image-text/run_clip.py"
+  ],
+  "predicted_files": [
+    "text/run_clip.py",
+    "image_caption_dataset.py",
+    "utils/trainer_utils.py",
+    "text/image_caption_dataset.py",
+    "transformers/Trainer.py",
+    "TrainingArguments.py",
+    "transformers/utils/trainer_utils.py",
+    "Trainer.py",
+    "run_clip.py",
+    "transformers/TrainingArguments.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['examples/pytorch/contrastive-image-text/run_clip.py', 'examples/pytorch/contrastive-image-text/image_caption_dataset.py', 'transformers/Trainer.py', 'transformers/TrainingArguments.py', 'transformers/utils/trainer_utils.py'], 'reasoning': \"1. The main script run_clip.py must be modified to sanitize captions like 'None', 'null', 'NA', integrate hub repository targeting, and optionally add experiment tracking such as wandb.\\n2. image_caption_dataset.py (if present, as referenced in dataset_name_mapping) may need updates to data loading/cleaning logic. If this script does not exist, data handoff occurs solely in run_clip.py.\\n3. Trainer.py in transformers manages training workflow, including push_to_hub calls; modifications may be needed for custom hub repo integration or improvement.\\n4. TrainingArguments.py controls setup and configuration for the Trainer; changes here may allow finer-grained hub and logging options.\\n5. utils/trainer_utils.py in transformers may facilitate telemetry and experiment tracking, including integrating wandb or custom hub logic.\"}",
+  "error": null
+}

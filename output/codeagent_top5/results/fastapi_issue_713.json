@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/713",
+  "repo_name": "fastapi",
+  "title": "Support body in GET and other methods with undefined behavior",
+  "base_commit": "3ff504f03fb5ba852def5a0a41653c6bed7efb1b",
+  "ground_truth_files": [
+    "docs/en/docs/tutorial/body.md",
+    "fastapi/dependencies/utils.py",
+    "fastapi/openapi/constants.py"
+  ],
+  "predicted_files": [
+    "fastapi/openapi/utils.py",
+    "fastapi/params.py",
+    "fastapi/param_functions.py",
+    "fastapi/openapi/models.py",
+    "fastapi/routing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/openapi/utils.py', 'fastapi/routing.py', 'fastapi/params.py', 'fastapi/param_functions.py', 'fastapi/openapi/models.py'], 'reasoning': '1. fastapi/openapi/utils.py: Responsible for OpenAPI schema construction. The absence of body parameters in GET methods is most likely implemented or filtered here, so this file is the primary target for change.\\n2. fastapi/routing.py: Handles route definitions and registration. It may block GET requests with bodies at the application logic level; changes here could allow/describe bodies for GET.\\n3. fastapi/params.py: Involved in handling/defining parameter types including query, path, and body\u2014may need adjustment to support body for GET.\\n4. fastapi/param_functions.py: Contains logic for parsing and converting parameters at runtime; might need edits to permit/recognize request body for GET.\\n5. fastapi/openapi/models.py: The OpenAPI models may need to be updated to ensure bodies for GET requests are faithfully represented in the generated specification.'}",
+  "error": null
+}

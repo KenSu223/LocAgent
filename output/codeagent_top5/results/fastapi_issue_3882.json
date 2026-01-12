@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/3882",
+  "repo_name": "fastapi",
+  "title": "Doing work after the HTTP response has been sent",
+  "base_commit": "1760da0efa55585c19835d81afa8ca386036c325",
+  "ground_truth_files": [
+    "fastapi/background.py"
+  ],
+  "predicted_files": [
+    "fastapi/middleware/__init__.py",
+    "fastapi/responses.py",
+    "fastapi/background.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/applications.py', 'fastapi/background.py', 'fastapi/responses.py', 'fastapi/routing.py', 'fastapi/middleware/__init__.py'], 'reasoning': \"1. fastapi/applications.py: The main application controller. To enable post-response hooks globally or per request, logic must be added here to register, track, and trigger post-response callbacks.\\n2. fastapi/background.py: Handles FastAPI's BackgroundTasks. Changes may be needed to extend background task registration, tie background operations to middleware, or streamline invocation post-response.\\n3. fastapi/responses.py: Manages Response objects. Integrating post-response callbacks into response finalization may need changes here, or ensure compatibility with background tasks.\\n4. fastapi/routing.py: Responsible for dispatching requests through endpoints; integrating post-response behavior may occur at this level for route-specific hooks.\\n5. fastapi/middleware/__init__.py: If a new middleware approach is needed to handle post-response hooks distinct from current lifecycle, it should be introduced or registered here.\"}",
+  "error": null
+}

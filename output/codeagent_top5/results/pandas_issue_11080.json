@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/11080",
+  "repo_name": "pandas",
+  "title": "PERF: checking is_monotonic_increasing/decreasing before sorting on an index",
+  "base_commit": "51a70dcb7133bc7cb8e6bea5da39a2cf58fa8319",
+  "ground_truth_files": [
+    "asv_bench/benchmarks/frame_methods.py",
+    "doc/source/whatsnew/v0.17.1.txt",
+    "pandas/core/frame.py"
+  ],
+  "predicted_files": [
+    "pandas/core/index.py",
+    "pandas/core/algorithms.py",
+    "pandas/core/indexes/multi.py",
+    "pandas/core/generic.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/index.py\",\n        \"pandas/core/frame.py\",\n        \"pandas/core/indexes/multi.py\",\n        \"pandas/core/algorithms.py\",\n        \"pandas/core/generic.py\"\n    ],\n    \"reasoning\": \n    \"1. pandas/core/index.py: This is the core location for Index manipulation, where monotonicity checks (e.g., is_monotonic_increasing/decreasing) and sorting methods are implemented for all index types. Any fast-check logic for sortedness before sorting would be placed here.\n    2. pandas/core/frame.py: The DataFrame's sort_index method relies on Index logic and orchestrates the high-level sort_index operation that is slow according to the issue. Optimizing sort_index to use monotonicity checks belongs here.\n    3. pandas/core/indexes/multi.py: MultiIndex handling, including lexsorted logic, is almost certainly implemented here. It may need to check `is_lexsorted` before sorting, as mentioned in the issue.\n    4. pandas/core/algorithms.py: Utility methods for sorting, ranking, and potentially for monotonic checks are often placed in this shared module, so optimizations may be required here for performance gains.\n    5. pandas/core/generic.py: This file is likely where shared logic between Series, DataFrame, etc. (such as mixins for sort_index or index-related operations) reside and could require updates to utilize new sortedness check logic.\n\nIn summary, the main changes will be in the Index, MultiIndex, and DataFrame method logic, with supporting modifications to shared algorithms and generic base classes that orchestrate DataFrame/Series operations. This selection is based on the structure and logical locations for such features in a pandas-like repository, given that deeper pattern matching did not surface the exact method names.\"\n}",
+  "error": null
+}

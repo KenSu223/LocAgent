@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/3074",
+  "repo_name": "flask",
+  "title": "send_file doesn't urlencode ':/' in unicode attachment_filename",
+  "base_commit": "6ed68f015a50ab35b84a8ea71b0f846ca6a75281",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "flask/helpers.py",
+    "tests/test_helpers.py"
+  ],
+  "predicted_files": [
+    "flask/helpers.py",
+    "flask/__init__.py",
+    "flask/app.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"flask/helpers.py\",\n        \"flask/__init__.py\",\n        \"flask/app.py\"\n    ],\n    \"reasoning\": \"1. flask/helpers.py is the most critical location. Based on the repo comments and structure, helpers related to file sending (such as send_from_directory) are either implemented or proxied in this file. Even though function names were not matched directly, the file header mentions safeguards and alternate separators for directory functions, suggesting it interacts with the filename and attachment logic. Addressing proper URL encoding of special characters in Content-Disposition headers would likely require changes here where file-sending helpers process filenames.\\n\\n2. flask/__init__.py may expose or re-export helpers relevant to file sending. Modifications here can ensure the patched or improved helpers are properly exposed to the Flask public API, maintaining compatibility and correct interface documentation.\\n\\n3. flask/app.py is the Flask application core, importing helpers and possibly managing route-level file sending. Any change to the file sending function signatures or helper defaults (for example, to add improved encoding or normalization) may need updates or compatibility checks here to ensure routes work as expected and tests pass.\\n\\nThe underlying implementation for Content-Disposition header construction is actually handled within Werkzeug (not present directly in this repo), and in real deployments, fixes may be more fundamental in Werkzeug's response-handling modules. In the Flask repo, helpers.py is the primary touchpoint for addressing issues with filename processing in send_file or send_from_directory.\"\n}",
+  "error": null
+}

@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/21668",
+  "repo_name": "scikit-learn",
+  "title": "CI with boundscheck=False",
+  "base_commit": "bb7e34bc52461749e6014787a05a9507eda11011",
+  "ground_truth_files": [
+    "azure-pipelines.yml",
+    "doc/computing/parallelism.rst",
+    "sklearn/_build_utils/__init__.py"
+  ],
+  "predicted_files": [
+    "sklearn/setup.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['azure-pipelines.yml', 'build_tools/azure/posix.yml', 'build_tools/azure/install.sh', 'sklearn/setup.py', 'build_tools/azure/test_script.sh'], 'reasoning': '1. azure-pipelines.yml: Main CI runner config, injects environment variables and triggers CI builds. 2. build_tools/azure/posix.yml: Orchestrates the build/test workflow; best place to set build envvars for cython. 3. build_tools/azure/install.sh: Handles environment installation, a logical place to propagate CYTHON directives during builds. 4. sklearn/setup.py: Actually calls cythonize_extensions, must be patched to respect a global boundscheck envvar for building extensions during CI. 5. build_tools/azure/test_script.sh: Runs tests; should propagate global settings to ensure tests are built and run with boundscheck=True if desired.'}",
+  "error": null
+}

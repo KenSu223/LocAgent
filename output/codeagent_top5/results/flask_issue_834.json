@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/834",
+  "repo_name": "flask",
+  "title": "How to get the serialized version of the session cookie in 0.10?",
+  "base_commit": "2d8a21c7321a9ead8e27208b49a18f4b8b27e2c1",
+  "ground_truth_files": [
+    "flask/sessions.py"
+  ],
+  "predicted_files": [
+    "flask/globals.py",
+    "flask/app.py",
+    "flask/json.py",
+    "flask/sessions.py",
+    "flask/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/sessions.py', 'flask/globals.py', 'flask/app.py', 'flask/__init__.py', 'flask/json.py'], 'reasoning': '1. flask/sessions.py \u2013 Implements SecureCookieSession and SecureCookieSessionInterface; add a serialize method or API here to serialize session objects for the user. 2. flask/globals.py \u2013 global session proxy; modify if a new serialization method needs to be exposed on the session global. 3. flask/app.py \u2013 wires up session handling, public interface, and interacts with the session interface; ensure serialization API is exposed correctly. 4. flask/__init__.py \u2013 maintains API imports and exports for users. 5. flask/json.py \u2013 contains shared serialization logic, which may need changes if API is changed or extended.'}",
+  "error": null
+}

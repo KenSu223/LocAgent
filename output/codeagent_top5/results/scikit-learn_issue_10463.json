@@ -1,0 +1,43 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/10463",
+  "repo_name": "scikit-learn",
+  "title": "Toward a consistent API for NearestNeighbors & co",
+  "base_commit": "c56bce482db698c7c7e7b583b8b2e08a211eb48b",
+  "ground_truth_files": [
+    "doc/glossary.rst",
+    "doc/modules/classes.rst",
+    "doc/modules/neighbors.rst",
+    "doc/whats_new/v0.22.rst",
+    "sklearn/cluster/dbscan_.py",
+    "sklearn/cluster/spectral.py",
+    "sklearn/cluster/tests/test_dbscan.py",
+    "sklearn/cluster/tests/test_spectral.py",
+    "sklearn/manifold/_utils.pyx",
+    "sklearn/manifold/isomap.py",
+    "sklearn/manifold/locally_linear.py",
+    "sklearn/manifold/spectral_embedding_.py",
+    "sklearn/manifold/t_sne.py",
+    "sklearn/manifold/tests/test_isomap.py",
+    "sklearn/manifold/tests/test_spectral_embedding.py",
+    "sklearn/manifold/tests/test_t_sne.py",
+    "sklearn/neighbors/__init__.py",
+    "sklearn/neighbors/base.py",
+    "sklearn/neighbors/classification.py",
+    "sklearn/neighbors/graph.py",
+    "sklearn/neighbors/lof.py",
+    "sklearn/neighbors/regression.py",
+    "sklearn/neighbors/tests/test_neighbors.py",
+    "sklearn/neighbors/unsupervised.py",
+    "sklearn/utils/estimator_checks.py"
+  ],
+  "predicted_files": [
+    "sklearn/manifold/isomap.py",
+    "sklearn/cluster/dbscan_.py",
+    "sklearn/neighbors/classification.py",
+    "sklearn/neighbors/base.py",
+    "sklearn/manifold/t_sne.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/neighbors/base.py', 'sklearn/manifold/t_sne.py', 'sklearn/cluster/dbscan_.py', 'sklearn/neighbors/classification.py', 'sklearn/manifold/isomap.py'], 'reasoning': '1. sklearn/neighbors/base.py: Contains NeighborsBase and shared parameter/api validation logic \u2013 modifications here ripple to all NN-based estimators for consistent parameter and input handling.\\n2. sklearn/manifold/t_sne.py: Directly named as suffering from parameter inconsistencies and sparse/precomputed X handling; also representative of manifold estimators.\\n3. sklearn/cluster/dbscan_.py: Cited in the issue for both custom estimator parameter passing and input X handling (especially precomputed matrix and sparse support).\\n4. sklearn/neighbors/classification.py: Hosts KNeighborsClassifier and RadiusNeighborsClassifier, which are core NN estimators\u2014updating parameter propagation and custom estimator support is essential here.\\n5. sklearn/manifold/isomap.py: Explicitly mentioned with documentation/output mismatches in X handling (custom and precomputed neighbors support) issues, and is broadly representative of manifold API inconsistencies.'}",
+  "error": null
+}

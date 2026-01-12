@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/19248",
+  "repo_name": "scikit-learn",
+  "title": "Birch should be called BIRCH",
+  "base_commit": "23d8761615d0417eef5f52cc796518e44d41ca2a",
+  "ground_truth_files": [
+    "doc/modules/clustering.rst",
+    "examples/cluster/plot_birch_vs_minibatchkmeans.py",
+    "examples/cluster/plot_cluster_comparison.py",
+    "sklearn/cluster/_birch.py"
+  ],
+  "predicted_files": [
+    "examples/cluster/plot_birch_vs_minibatchkmeans.py",
+    "sklearn/cluster/__init__.py",
+    "sklearn/cluster/tests/test_birch.py",
+    "sklearn/cluster/_birch.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cluster/_birch.py', 'sklearn/cluster/__init__.py', 'sklearn/cluster/tests/test_birch.py', 'doc/modules/clustering.rst', 'examples/cluster/plot_birch_vs_minibatchkmeans.py'], 'reasoning': '1. sklearn/cluster/_birch.py is the core implementation file and contains the class name, docstrings, and references to Birch. 2. sklearn/cluster/__init__.py is critical for exposing the algorithm in the public API via imports and the __all__ list. 3. sklearn/cluster/tests/test_birch.py covers all testing and references in error messages and test names. 4. doc/modules/clustering.rst provides the main user and algorithm documentation, containing extensive references to Birch throughout, in explanations and guides. 5. examples/cluster/plot_birch_vs_minibatchkmeans.py is the main example showing usage, comparison, and visualizations, with user-facing references to Birch.'}",
+  "error": null
+}

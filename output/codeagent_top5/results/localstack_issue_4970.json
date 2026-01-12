@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/4970",
+  "repo_name": "localstack",
+  "title": "Lambda invocation exception",
+  "base_commit": "5d11af78ae1d19560f696a9e1abb707bd115c390",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "localstack/services/awslambda/lambda_executors.py",
+    "localstack/utils/docker_utils.py",
+    "localstack/services/awslambda/lambda_api.py",
+    "cloudwatch_util.py",
+    "docker_utils.py",
+    "lambda_utils.py",
+    "localstack/services/awslambda/lambda_utils.py",
+    "lambda_starter.py",
+    "lambda_executors.py",
+    "lambda_api.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/awslambda/lambda_executors.py', 'localstack/utils/docker_utils.py', 'bin/lambda/Dockerfile.nodejs14x', 'localstack/services/awslambda/lambda_utils.py', 'localstack/services/awslambda/lambda_api.py'], 'reasoning': \"1. lambda_executors.py: Central logic for launching Lambda containers, managing process execution and mapping runtime to container startup. 2. docker_utils.py: Manages Docker container lifecycle and exceptions, directly implicated by the stack trace and responsible for container startup (the likely source of exec format error). 3. Dockerfile.nodejs14x: Lambda runtime Dockerfile; misconfiguration here (wrong architecture, binary mismatch) is a common source of exec format error. 4. lambda_utils.py: Handles Lambda runtime resolution and handler file selection, which can determine the container's entrypoint and startup commands. 5. lambda_api.py: Orchestrates API-level Lambda invocation, feeds into the executor logic, and may need changes to tolerate/fix compatibility issues or configuration for Lambda invocations. Other files (cloudwatch_util.py, lambda_starter.py) are involved in logging and server setup, but less likely to need direct fixes for exec format errors.\"}",
+  "error": null
+}

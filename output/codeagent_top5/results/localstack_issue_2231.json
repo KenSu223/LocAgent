@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/2231",
+  "repo_name": "localstack",
+  "title": "[IAM] AmazonIdentityManagement with null message is thrown instead of EntityAlreadyExistsException",
+  "base_commit": "28d3b76087979229f586911423307e6fd8995f19",
+  "ground_truth_files": [
+    ".dockerignore",
+    "localstack/services/iam/iam_listener.py",
+    "tests/integration/test_iam.py"
+  ],
+  "predicted_files": [
+    "iam_listener.py",
+    "localstack/utils/aws/aws_stack.py",
+    "localstack/services/iam/iam_starter.py",
+    "generic_proxy.py",
+    "localstack/services/iam/iam_listener.py",
+    "aws_stack.py",
+    "iam_starter.py",
+    "localstack/services/generic_proxy.py",
+    "tests/integration/test_iam.py",
+    "test_iam.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/iam/iam_listener.py', 'localstack/services/iam/iam_starter.py', 'localstack/services/generic_proxy.py', 'tests/integration/test_iam.py', 'localstack/utils/aws/aws_stack.py'], 'reasoning': \"1. iam_listener.py: ProxyListenerIAM could be patched to intercept Moto's error or map the duplicate entity errors to AWS-style exceptions, ensuring EntityAlreadyExistsException is thrown for existing roles.\\n2. iam_starter.py: Actual error is rooted in logic patched from Moto; patch create_role or entity creation logic to intercept and throw the correct AWS exception when a duplicate is created.\\n3. generic_proxy.py: Contains core proxy logic and may require updating error/exception translation for IAM responses if this is handled generically.\\n4. test_iam.py: Needs an added integration test specifically covering IAM role creation, duplicate creation, and that the correct exception is thrown.\\n5. aws_stack.py: If error messages or exception types are normalized globally, error mapping logic should be checked and updated here as well.\"}",
+  "error": null
+}

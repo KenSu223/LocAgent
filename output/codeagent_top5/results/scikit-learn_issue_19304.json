@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/19304",
+  "repo_name": "scikit-learn",
+  "title": "Poisson criterion in RandomForestRegressor",
+  "base_commit": "a0ba256dbe9380b5d2cf9cee133482fc87768267",
+  "ground_truth_files": [
+    "sklearn/ensemble/_forest.py"
+  ],
+  "predicted_files": [
+    "sklearn/ensemble/_forest.py",
+    "sklearn/ensemble/tests/test_forest.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/ensemble/_forest.py', 'sklearn/ensemble/tests/test_forest.py', 'doc/modules/ensemble.rst', 'doc/modules/generated/sklearn.ensemble.RandomForestRegressor.rst'], 'reasoning': \"1. sklearn/ensemble/_forest.py: This is the core implementation site for RandomForestRegressor where:   - The class docstring should be updated to mention the poisson criterion.   - Input validation for non-negative y needs to be added in the fit routine when criterion='poisson'.\\n2. sklearn/ensemble/tests/test_forest.py: This is the main test file for RandomForestRegressor, which should be expanded to test the poisson criterion and input validation.\\n3. doc/modules/ensemble.rst: The primary module documentation for ensemble methods should be updated to mention the new poisson criterion for RandomForestRegressor.\\n4. doc/modules/generated/sklearn.ensemble.RandomForestRegressor.rst: The generated API documentation for RandomForestRegressor should be updated to list poisson as an available splitting criterion.\\n\\nThese four files will address implementation, input validation, documentation, and required testing for full support of the poisson criterion in RandomForestRegressor.\"}",
+  "error": null
+}

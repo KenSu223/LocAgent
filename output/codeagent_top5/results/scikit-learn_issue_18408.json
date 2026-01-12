@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/18408",
+  "repo_name": "scikit-learn",
+  "title": "Data type mismatch problem when calling HistGradientBoostingClassifier.predict()",
+  "base_commit": "2b79665b90bd54fa59701090d5f608a1fc4dd33a",
+  "ground_truth_files": [
+    "doc/whats_new/v0.24.rst",
+    "sklearn/ensemble/_hist_gradient_boosting/gradient_boosting.py",
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_gradient_boosting.py"
+  ],
+  "predicted_files": [
+    "sklearn/ensemble/_hist_gradient_boosting/_predictor.py",
+    "_predictor.py",
+    "sklearn/ensemble/_hist_gradient_boosting/gradient_boosting.py",
+    "sklearn/utils/validation.py",
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_gradient_boosting.py",
+    "gradient_boosting.py",
+    "sklearn/ensemble/_hist_gradient_boosting/predictor.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/ensemble/_hist_gradient_boosting/gradient_boosting.py', 'sklearn/utils/validation.py', 'sklearn/ensemble/_hist_gradient_boosting/tests/test_gradient_boosting.py', 'sklearn/ensemble/_hist_gradient_boosting/predictor.py', 'sklearn/ensemble/_hist_gradient_boosting/_predictor.pyx'], 'reasoning': '1. sklearn/ensemble/_hist_gradient_boosting/gradient_boosting.py is where HistGradientBoostingClassifier and its prediction logic reside; dtype checks/conversions must occur here to fix the root cause. 2. sklearn/utils/validation.py defines check_array, which is the standard scikit-learn utility for enforcing correct input types; further improvements to validation and float conversion are handled here. 3. sklearn/ensemble/_hist_gradient_boosting/tests/test_gradient_boosting.py should be updated to ensure tests adequately cover float and non-float input types, catching regressions. 4. sklearn/ensemble/_hist_gradient_boosting/predictor.py and 5. _predictor.pyx may require defensive programming updates if predictors directly use input X without guaranteed float conversion in gradient_boosting.py, or if type errors propagate to them.'}",
+  "error": null
+}

@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/1498",
+  "repo_name": "fastapi",
+  "title": "RedirectResponse from a POST request route to GET request route shows 405 Error code.",
+  "base_commit": "a0e4d38bea74940de013e04a6d6f399d62f04280",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "fastapi/responses.py",
+    "fastapi/routing.py",
+    "tests/test_response_change_status_code.py",
+    "fastapi/applications.py",
+    "docs_src/custom_response/tutorial006.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/responses.py', 'fastapi/routing.py', 'fastapi/applications.py', 'docs_src/custom_response/tutorial006.py', 'tests/test_response_change_status_code.py'], 'reasoning': '1. fastapi/responses.py should offer an official PRG RedirectResponse helper (or subclass) to set status_code=303, or provide documentation/warning regarding redirect status codes for POST->GET. 2. fastapi/routing.py may be updated to support PRG logic or ensure correct redirect behavior at the route level. 3. fastapi/applications.py can provide convenience via decorators or helper integration. 4. docs_src/custom_response/tutorial006.py needs improved docs/examples to demonstrate correct PRG status code use. 5. tests/test_response_change_status_code.py should cover a POST->GET redirect with proper status code, ensuring regression protection.'}",
+  "error": null
+}

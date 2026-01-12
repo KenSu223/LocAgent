@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/9620",
+  "repo_name": "transformers",
+  "title": "SQuAD 2.0 metric not supported",
+  "base_commit": "fa876aee2adf525b597495c10ad9c96896953dbd",
+  "ground_truth_files": [
+    "examples/question-answering/requirements.txt",
+    "examples/question-answering/run_qa.py",
+    "examples/question-answering/run_qa_beam_search.py",
+    "examples/question-answering/squad_v2_local/evaluate.py",
+    "examples/question-answering/squad_v2_local/squad_v2_local.py"
+  ],
+  "predicted_files": [
+    "utils_qa.py",
+    "answering/run_qa_beam_search.py",
+    "trainer_qa.py",
+    "answering/trainer_qa.py",
+    "run_qa_beam_search.py",
+    "run_qa.py",
+    "answering/run_qa.py",
+    "answering/utils_qa.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['examples/question-answering/run_qa.py', 'examples/question-answering/run_qa_beam_search.py', 'examples/question-answering/utils_qa.py', 'examples/question-answering/trainer_qa.py', 'examples/question-answering/squad_v2_local/'], 'reasoning': '1. run_qa.py: Primary file where metric loading logic is broken; direct bug location and metric usage.\\n2. run_qa_beam_search.py: Shares nearly identical metric loading logic and evaluation block.\\n3. utils_qa.py: Contains postprocessing/prediction logic likely affecting input formatting for metric computation.\\n4. trainer_qa.py: Contains custom Trainer implementation likely calling compute_metrics and handling metric input.\\n5. squad_v2_local/: May contain local metric scripts or stubs; needs updating or removing for proper metric discovery/loading.'}",
+  "error": null
+}

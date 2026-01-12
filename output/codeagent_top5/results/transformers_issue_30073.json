@@ -1,0 +1,27 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/30073",
+  "repo_name": "transformers",
+  "title": "SPDA/FA2 Attention for the Wav2Vec2 Family of Models",
+  "base_commit": "836e88caee95eb37a860a6c82bbd2becc6b9dc7b",
+  "ground_truth_files": [
+    "docs/source/en/model_doc/hubert.md",
+    "docs/source/en/model_doc/wav2vec2.md",
+    "docs/source/en/perf_infer_gpu_one.md",
+    "src/transformers/models/data2vec/modeling_data2vec_audio.py",
+    "src/transformers/models/hubert/modeling_hubert.py",
+    "src/transformers/models/sew/modeling_sew.py",
+    "src/transformers/models/unispeech/modeling_unispeech.py",
+    "src/transformers/models/unispeech_sat/modeling_unispeech_sat.py",
+    "src/transformers/models/wav2vec2/modeling_wav2vec2.py",
+    "src/transformers/models/wav2vec2_conformer/modeling_wav2vec2_conformer.py",
+    "tests/models/wav2vec2/test_modeling_wav2vec2.py"
+  ],
+  "predicted_files": [
+    "tests/models/wav2vec2/test_modeling_wav2vec2.py",
+    "src/transformers/models/wav2vec2/modeling_wav2vec2.py",
+    "src/transformers/models/wav2vec2/configuration_wav2vec2.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/wav2vec2/modeling_wav2vec2.py', 'src/transformers/models/wav2vec2/configuration_wav2vec2.py', 'tests/models/wav2vec2/test_modeling_wav2vec2.py'], 'reasoning': '1. src/transformers/models/wav2vec2/modeling_wav2vec2.py must be modified to add SDPA and Flash Attention 2 support, importing and enabling these newer fast attention implementations just as BART does. 2. src/transformers/models/wav2vec2/configuration_wav2vec2.py should be updated if new configuration flags/arguments for attention modes (SDPA/FA2) are to be exposed. 3. tests/models/wav2vec2/test_modeling_wav2vec2.py must be updated to add unit (fast) and integration (slow) tests to verify all attention modes, echoing the BART PR and style referenced in Whisper and Gemma tests. These three files are sufficient to fully resolve the issue\u2014other files do not require modifications.'}",
+  "error": null
+}

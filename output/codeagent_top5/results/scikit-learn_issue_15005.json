@@ -1,0 +1,32 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/15005",
+  "repo_name": "scikit-learn",
+  "title": "Implement SLEP009: keyword-only arguments",
+  "base_commit": "839b356f45fac7724eab739dcc129a0c8f650a23",
+  "ground_truth_files": [
+    "sklearn/datasets/_base.py",
+    "sklearn/datasets/_california_housing.py",
+    "sklearn/datasets/_covtype.py",
+    "sklearn/datasets/_kddcup99.py",
+    "sklearn/datasets/_lfw.py",
+    "sklearn/datasets/_olivetti_faces.py",
+    "sklearn/datasets/_openml.py",
+    "sklearn/datasets/_rcv1.py",
+    "sklearn/datasets/_samples_generator.py",
+    "sklearn/datasets/_species_distributions.py",
+    "sklearn/datasets/_svmlight_format_io.py",
+    "sklearn/datasets/_twenty_newsgroups.py",
+    "sklearn/datasets/tests/test_base.py",
+    "sklearn/linear_model/tests/test_omp.py"
+  ],
+  "predicted_files": [
+    "sklearn/decomposition/_pca.py",
+    "sklearn/pipeline.py",
+    "sklearn/model_selection/_search.py",
+    "sklearn/manifold/_t_sne.py",
+    "sklearn/base.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/base.py', 'sklearn/pipeline.py', 'sklearn/decomposition/_pca.py', 'sklearn/manifold/_t_sne.py', 'sklearn/model_selection/_search.py'], 'reasoning': '1. sklearn/base.py: Edits here to BaseEstimator will propagate keyword-only enforcement across all estimators, supporting widespread, consistent change and deprecation logic for positional arguments as per SLEP009.\\n2. sklearn/pipeline.py: Houses Pipeline, whose steps, signature, and public API are heavily discussed as requiring clarification under SLEP009.\\n3. sklearn/decomposition/_pca.py: PCA is a paradigm case for careful positional-to-keyword argument transition, recognized by SLEP009 as requiring explicit support.\\n4. sklearn/manifold/_t_sne.py: Complex keyword/positional argument logic (especially regarding n_components) means modification here is important for both clarity and user experience.\\n5. sklearn/model_selection/_search.py: Implements GridSearchCV and related model selection utilities, which must handle estimator and param_grid arguments with clear, enforced semantics.'}",
+  "error": null
+}

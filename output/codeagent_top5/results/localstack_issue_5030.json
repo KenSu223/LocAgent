@@ -1,0 +1,27 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/5030",
+  "repo_name": "localstack",
+  "title": "bug: State machines in non-default regions can't be deleted and fail to create proper ARN",
+  "base_commit": "60d2c3dc68d9fae0f1e0acb7d0c705df408bd8c5",
+  "ground_truth_files": [
+    "localstack/services/install.py",
+    "localstack/services/stepfunctions/stepfunctions_listener.py",
+    "localstack/services/stepfunctions/stepfunctions_starter.py",
+    "tests/integration/test_stepfunctions.py"
+  ],
+  "predicted_files": [
+    "deployment_utils.py",
+    "localstack/services/cloudformation/cloudformation_api.py",
+    "localstack/services/stepfunctions/stepfunctions_listener.py",
+    "localstack/services/cloudformation/deployment_utils.py",
+    "stepfunctions_listener.py",
+    "cloudformation_api.py",
+    "localstack/services/stepfunctions/stepfunctions_utils.py",
+    "stepfunctions_utils.py",
+    "localstack/services/cloudformation/service_models.py",
+    "service_models.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/cloudformation/cloudformation_api.py', 'localstack/services/stepfunctions/stepfunctions_listener.py', 'localstack/services/stepfunctions/stepfunctions_utils.py', 'localstack/services/cloudformation/deployment_utils.py', 'localstack/services/cloudformation/service_models.py'], 'reasoning': '1. cloudformation_api.py: Main logic for resource creation/deletion. If nested state machines fail to delete properly, the bug is almost certainly here. This file orchestrates stack operations and bridge to underlying resource handlers.2. stepfunctions_listener.py: Likely handles event-driven creation/deletion, and might patch ARNs. Bugs such as double region in ARN are probably generated or corrected here during event flow.3. stepfunctions_utils.py: Utility for ARN and region handling, which could contribute to improper ARN formatting for state machines.4. deployment_utils.py: May contain functions for cleaning up or deleting nested resources from stacks.5. service_models.py: Maps CloudFormation resource types to underlying AWS/LocalStack services, possible point of error for ARN translation and resource mapping.These five files together cover resource creation, deletion, event management and ARN formatting for state machines in LocalStack CF integration.'}",
+  "error": null
+}

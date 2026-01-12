@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1777",
+  "repo_name": "localstack",
+  "title": "Lambda executor \"docker-reuse\" errors with \"tcp :9001: bind: address already in use\"",
+  "base_commit": "2d3a44fdb977213589ba202a5e495710097ce88b",
+  "ground_truth_files": [
+    "localstack/services/awslambda/lambda_executors.py"
+  ],
+  "predicted_files": [
+    "localstack/config.py",
+    "localstack/utils/common.py",
+    "localstack/services/awslambda/lambda_executors.py",
+    "localstack/services/awslambda/lambda_api.py",
+    "config.py",
+    "utils/common.py",
+    "lambda_executors.py",
+    "lambda_api.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/awslambda/lambda_executors.py', 'localstack/services/awslambda/lambda_api.py', 'localstack/config.py', 'localstack/utils/common.py', 'localstack/bin/docker-entrypoint.sh'], 'reasoning': '1. lambda_executors.py: Contains the docker-reuse executor logic, port assignment, and invocation strategy\u2014core of the bug, must be modified to fix port reuse and container cleanup.\\n2. lambda_api.py: Upstream Lambda service handler that triggers execution and handles errors and cleanup; necessary for error propagation or additional workaround logic.\\n3. config.py: Handles important environment variables for Lambda executors, Docker host, and port ranges. Must be adapted if config needs stricter parsing or support for alternate executor modes.\\n4. utils/common.py: Contains shared helpers for port finding, process management, and may need patching if root cause is in utility functions.\\n5. bin/docker-entrypoint.sh: If fixes require additional Docker process cleanup, exposure, or port management.'}",
+  "error": null
+}

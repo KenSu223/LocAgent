@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/5424",
+  "repo_name": "fastapi",
+  "title": "How to identify query params with keys only and no value",
+  "base_commit": "c6aa28bea2f751a91078bd8d845133ff83f352bf",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "fastapi/dependencies/utils.py",
+    "fastapi/security/api_key.py",
+    "fastapi/dependencies/models.py",
+    "fastapi/routing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/security/api_key.py', 'fastapi/dependencies/utils.py', 'fastapi/dependencies/models.py', 'fastapi/routing.py', 'docs/en/docs/query-params.md'], 'reasoning': '1. fastapi/security/api_key.py: Directly accesses request.query_params and must be updated to distinguish between missing keys and keys without values. 2. fastapi/dependencies/utils.py: Handles extraction and combination of query param dependencies so may need to support new logic for key-only params. 3. fastapi/dependencies/models.py: Core data structures for dependency management may require slight modifications if handling changes. 4. fastapi/routing.py: Central request handling and routing, may require updates to propagate/extract key-only params or to wrap Starlette behavior. 5. docs/en/docs/query-params.md: Documentation should clearly explain FastAPI behavior with query params, and how to handle key-only cases.'}",
+  "error": null
+}
