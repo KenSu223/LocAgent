@@ -19,6 +19,12 @@ def list_folders(path):
     return [p.name for p in Path(path).iterdir() if p.is_dir()]
 
 
+def load_benchmark_dataset(dataset_name: str, split: str):
+    if osp.isfile(dataset_name):
+        return load_dataset("json", data_files=dataset_name, split="train")
+    return load_dataset(dataset_name, split=split)
+
+
 def run(rank, repo_queue, repo_path, out_path,
         download_repo=False, instance_data=None, similarity_top_k=10):
     while True:
@@ -76,14 +82,14 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     
-    dataset_name = args.dataset.split('/')[-1]
+    dataset_name = osp.splitext(osp.basename(args.dataset))[0]
     args.index_dir = f'{args.index_dir}/{dataset_name}/BM25_index/'
     os.makedirs(args.index_dir, exist_ok=True)
         
     # load selected repo instance id and instance_data
     if args.download_repo:
         selected_instance_data = {}
-        bench_data = load_dataset(args.dataset, split=args.split)
+        bench_data = load_benchmark_dataset(args.dataset, args.split)
         if args.instance_id_path and osp.exists(args.instance_id_path):
             with open(args.instance_id_path, 'r') as f:
                 repo_folders = json.loads(f.read())

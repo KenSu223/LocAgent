@@ -51,6 +51,17 @@ from util.runtime.fn_call_converter import (
 # os.environ['LITELLM_LOG'] = 'DEBUG
 
 
+def load_benchmark_dataset(dataset_name: str, split: str):
+    if os.path.isfile(dataset_name):
+        return load_dataset("json", data_files=dataset_name, split="train")
+    return load_dataset(dataset_name, split=split)
+
+
+def throttled_completion(**litellm_kwargs):
+    sleep(1)
+    return litellm.completion(**litellm_kwargs)
+
+
 def _normalize_azure_base(api_base: str) -> str:
     # Strip Azure OpenAI path suffix if present to avoid duplicate path segments.
     if not api_base:
@@ -240,13 +251,13 @@ def auto_search_process(result_queue,
                     'repetition_penalty': 1.05,
                     'stop': NON_FNCALL_STOP_WORDS
                 })
-                response = litellm.completion(**litellm_kwargs)
+                response = throttled_completion(**litellm_kwargs)
             elif tools:
                 litellm_kwargs['tools'] = tools
-                response = litellm.completion(**litellm_kwargs)
+                response = throttled_completion(**litellm_kwargs)
             else:
                 litellm_kwargs['stop'] = ['</execute_ipython>']
-                response = litellm.completion(**litellm_kwargs)
+                response = throttled_completion(**litellm_kwargs)
         except litellm.BadRequestError as e:
             # If there's an error, send the error info back to the parent process
             result_queue.put({'error': str(e), 'type': 'BadRequestError'})
@@ -467,7 +478,7 @@ def run_localize(rank, args, bug_queue, log_queue, output_file_lock, traj_file_l
                     continue
                 except APITimeoutError:
                     logger.warning(f"APITimeoutError. Try again.")
-                    sleep(10)
+                    sleep(30)
                     continue
                 except TimeoutError:
                     logger.warning(f"Processing time exceeded 15 minutes. Try again.")
@@ -549,7 +560,7 @@ def run_localize(rank, args, bug_queue, log_queue, output_file_lock, traj_file_l
 
 
 def localize(args):
-    bench_data = load_dataset(args.dataset, split=args.split)
+    bench_data = load_benchmark_dataset(args.dataset, args.split)
     bench_tests = filter_dataset(bench_data, 'instance_id', args.used_list)
     if args.eval_n_limit:
         eval_n_limit = min(args.eval_n_limit, len(bench_tests))
