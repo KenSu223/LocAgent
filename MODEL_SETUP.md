@@ -1,7 +1,3 @@
-# Model Setup Guide
-
-Your Azure OpenAI models have been configured and are ready to use!
-
 ## Available Models
 
 1. **azure/gpt-4.1** (Default) - Endpoint: `cielara-bkash02.openai.azure.com`
@@ -40,7 +36,7 @@ Your Azure OpenAI models have been configured and are ready to use!
 
 ## Configuration Details
 
-API keys should live in `scripts/env/set_env.local.sh` (this file is git-ignored). The configuration automatically:
+All API keys and endpoints are configured in `scripts/env/set_env.sh`. The configuration automatically:
 - Maps model names to the correct Azure endpoints
 - Uses the correct deployment names for each model
 - Handles authentication for all your Azure resources
@@ -53,6 +49,6 @@ The default model is **azure/gpt-4.1**. You can change it by:
 
 ## Notes
 
-- Store API keys in `scripts/env/set_env.local.sh` and keep `scripts/env/set_env.sh` committed without secrets
+- All API keys are stored in `scripts/env/set_env.sh` (this file is git-ignored for security)
 - The code automatically routes to the correct Azure endpoint based on the model name
 - Deployment names are automatically handled (e.g., "DeepSeek-V3.2" for deepseek-v3.2)
