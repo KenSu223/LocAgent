@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/16607",
+  "repo_name": "pandas",
+  "title": "to_datetime should support ISO week year",
+  "base_commit": "65c0441a41b2dcaeebb648274d30978419a8661a",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v0.25.0.rst",
+    "pandas/_libs/tslibs/strptime.pyx",
+    "pandas/core/tools/datetimes.py",
+    "pandas/tests/indexes/datetimes/test_tools.py"
+  ],
+  "predicted_files": [
+    "pandas/_libs/tslibs/strptime.py",
+    "pandas/core/tools/datetimes.py",
+    "strptime.py",
+    "pandas/tests/scalar/timestamp/test_timestamp.py",
+    "setup.py",
+    "pandas/tests/indexes/datetimes/test_tools.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/_libs/tslibs/strptime.pyx', 'pandas/core/tools/datetimes.py', 'pandas/tests/indexes/datetimes/test_tools.py', 'pandas/tests/scalar/timestamp/test_timestamp.py', 'setup.py'], 'reasoning': '1. pandas/_libs/tslibs/strptime.pyx: Core location for strptime format code parsing; add ISO week year support. 2. pandas/core/tools/datetimes.py: High-level interface dispatches parsing to array_strptime; may need logic tweaks or docs. 3. pandas/tests/indexes/datetimes/test_tools.py: Modify/add tests to cover ISO week year parsing changes. 4. pandas/tests/scalar/timestamp/test_timestamp.py: Ensure Timestamp constructor and parsing tests include ISO formats. 5. setup.py: Confirm the Cython extension is properly built and referenced after changes to strptime.pyx.'}",
+  "error": null
+}

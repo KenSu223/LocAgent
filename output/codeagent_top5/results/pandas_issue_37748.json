@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/37748",
+  "repo_name": "pandas",
+  "title": "BUG: ValueError is mistakenly raised if a numpy array is assigned to a pd.Series of dtype=object and both have the same length",
+  "base_commit": "03e58585036c83ca3d4c86d7d3d7ede955c15130",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v1.2.0.rst",
+    "pandas/core/indexers.py",
+    "pandas/tests/indexing/test_indexers.py",
+    "pandas/tests/indexing/test_loc.py"
+  ],
+  "predicted_files": [
+    "pandas/core/internals/managers.py",
+    "pandas/core/indexing.py",
+    "pandas/core/dtypes/common.py",
+    "pandas/core/series.py",
+    "pandas/core/internals/blocks.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/internals/blocks.py', 'pandas/core/internals/managers.py', 'pandas/core/indexing.py', 'pandas/core/series.py', 'pandas/core/dtypes/common.py'], 'reasoning': '1. pandas/core/internals/blocks.py: Contains block assignment and dtype coercion logic\u2014directly involved in raising the ValueError during array assignment to object dtype.\\n2. pandas/core/internals/managers.py: Manages blocks and handles dispatch of assignment requests; implicated in the stack trace flow.\\n3. pandas/core/indexing.py: Handles .loc assignment for Series/DataFrame and interfaces with internals; source of user-facing assignment.\\n4. pandas/core/series.py: Series API may require defensive wrappers or fix misdetection edge cases for assignment to dtype=object.\\n5. pandas/core/dtypes/common.py: Often involved in type checking and detection logic; modifications here may be needed for correct dtype/object assignment behavior.'}",
+  "error": null
+}

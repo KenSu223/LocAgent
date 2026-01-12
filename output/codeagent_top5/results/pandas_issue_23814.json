@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/23814",
+  "repo_name": "pandas",
+  "title": "equality comparison with a scalar is slow for category (performance regression)",
+  "base_commit": "d865e5213515cef6344f16f4c77386be9ce8f223",
+  "ground_truth_files": [
+    "asv_bench/benchmarks/categoricals.py",
+    "doc/source/whatsnew/v0.24.0.rst",
+    "pandas/core/arrays/categorical.py"
+  ],
+  "predicted_files": [
+    "pandas/core/arrays/categorical.py",
+    "pandas/core/arrays/base.py",
+    "pandas/core/ops.py",
+    "asv_bench/benchmarks/categoricals.py",
+    "pandas/core/series.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/arrays/categorical.py', 'pandas/core/series.py', 'pandas/core/ops.py', 'pandas/core/arrays/base.py', 'asv_bench/benchmarks/categoricals.py'], 'reasoning': '1) pandas/core/arrays/categorical.py: This file implements most of the comparison logic for categoricals, including scalar equality using codes and is key to performance fixes. 2) pandas/core/series.py: Series == scalar comparison for categoricals is handled or forwarded here; needs change to use codes directly for category dtype. 3) pandas/core/ops.py: Registers and dispatches binary operators, may need update for efficient category/scalar handling. 4) pandas/core/arrays/base.py: Provides generic comparison logic for extension arrays and may need hooks for optimal category handling. 5) asv_bench/benchmarks/categoricals.py: Contains performance benchmarks for categoricals and should verify any proposed optimizations and prevent regressions.'}",
+  "error": null
+}

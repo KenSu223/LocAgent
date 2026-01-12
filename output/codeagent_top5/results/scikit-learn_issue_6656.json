@@ -1,0 +1,27 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/6656",
+  "repo_name": "scikit-learn",
+  "title": "var.monotone option in GradientBoosting",
+  "base_commit": "dcfb3df9a3df5aa2a608248316d537cd6b3643ee",
+  "ground_truth_files": [
+    "doc/modules/ensemble.rst",
+    "doc/whats_new/v0.23.rst",
+    "sklearn/ensemble/_hist_gradient_boosting/common.pxd",
+    "sklearn/ensemble/_hist_gradient_boosting/gradient_boosting.py",
+    "sklearn/ensemble/_hist_gradient_boosting/grower.py",
+    "sklearn/ensemble/_hist_gradient_boosting/splitting.pyx",
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_gradient_boosting.py",
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_grower.py",
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_splitting.py"
+  ],
+  "predicted_files": [
+    "sklearn/ensemble/_gb.py",
+    "sklearn/ensemble/_gradient_boosting.pyx",
+    "sklearn/ensemble/__init__.py",
+    "sklearn/ensemble/_gb_losses.py",
+    "doc/modules/ensemble.rst"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/ensemble/_gb.py\",\n        \"sklearn/ensemble/_gradient_boosting.pyx\",\n        \"sklearn/ensemble/__init__.py\",\n        \"sklearn/ensemble/_gb_losses.py\",\n        \"doc/modules/ensemble.rst\"\n    ],\n    \"reasoning\": [\n        \"sklearn/ensemble/_gb.py: This is the main Python implementation file for gradient boosting in scikit-learn. Adding support for monotonic constraints (var.monotone) will require changes to model API (parameter validation, fitting logic, constraint propagation) here. The primary integration and high-level class changes for GradientBoostingClassifier/Regressor will occur in this file.\",\n        \"sklearn/ensemble/_gradient_boosting.pyx: This Cython file contains the low-level portions of the gradient boosting algorithm, including core routines for tree growing and splitting. Actual enforcement of monotonic constraints typically happens here, where splits are chosen, so modifications will be necessary to add and respect monotonicity logic during growth.\",\n        \"sklearn/ensemble/__init__.py: This file is the public API surface, importing and exposing GradientBoostingClassifier/Regressor. Any new parameter (like monotonic constraints), documentation, and potential API changes should be added and made visible here.\",\n        \"sklearn/ensemble/_gb_losses.py: Changes may be needed in loss functions to ensure correct behavior in the presence of monotonic constraints, especially if enforcing or verifying constraints during training affects gradient/loss computation.\",\n        \"doc/modules/ensemble.rst: To ensure users know about the new feature, the documentation for ensemble methods should be updated to include usage instructions and parameter descriptions for var.monotone or its equivalent.\"\n    ]\n}",
+  "error": null
+}

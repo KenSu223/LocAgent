@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/16924",
+  "repo_name": "scikit-learn",
+  "title": "Matthews correlation coefficient metric throws misleading division by zero RuntimeWarning",
+  "base_commit": "bf0886bae0ccbc8c5d285b6e2affe7e40474f970",
+  "ground_truth_files": [
+    "sklearn/metrics/_classification.py",
+    "sklearn/metrics/tests/test_classification.py",
+    "sklearn/utils/_testing.py"
+  ],
+  "predicted_files": [
+    "sklearn/metrics/__init__.py",
+    "sklearn/metrics/tests/test_classification.py",
+    "sklearn/metrics/_classification.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/metrics/_classification.py', 'sklearn/metrics/tests/test_classification.py', 'sklearn/metrics/__init__.py', 'doc/modules/model_evaluation.rst'], 'reasoning': '1. sklearn/metrics/_classification.py contains the implementation of matthews_corrcoef and is where the division by zero fix must be applied. 2. sklearn/metrics/tests/test_classification.py should be updated or created to add/verify tests for division by zero in MCC. 3. sklearn/metrics/__init__.py may need changes if the public metric exposure or API changes as part of the fix. 4. doc/modules/model_evaluation.rst may require documentation updates if behavior for edge cases or warning handling is clarified.'}",
+  "error": null
+}

@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/28435",
+  "repo_name": "transformers",
+  "title": "Skip some weights for load_in_8bit and keep them as fp16/32?",
+  "base_commit": "cef2e40e0f8eaad13b8d32817a48fdddc32eb2a5",
+  "ground_truth_files": [
+    "src/transformers/modeling_utils.py",
+    "src/transformers/utils/quantization_config.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/blip_2/modeling_blip_2.py",
+    "src/transformers/utils/quantization_config.py",
+    "src/transformers/modeling_utils.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/modeling_utils.py', 'src/transformers/utils/quantization_config.py', 'src/transformers/models/blip_2/modeling_blip_2.py'], 'reasoning': \"1. src/transformers/modeling_utils.py: The main model loading logic for quantization and dtype conversion. It must be reworked to support per-module (e.g., vision encoder vs LLM) selective quantization instead of all-or-nothing 8bit. 2. src/transformers/utils/quantization_config.py: This config file manages quantization arguments and already has some support for skipping modules; its API and internals should be updated to enable more fine-grained precision specification (not just 'skip'). 3. src/transformers/models/blip_2/modeling_blip_2.py: The BLIP2 implementation separates image encoder and LLM; changes should ensure the vision encoder stays fp16/32 while allowing LLM quantization, actually applying the new config logic at model creation.No distinct Llava module is present, so if future similar models are added, analogous changes may be needed there.\"}",
+  "error": null
+}

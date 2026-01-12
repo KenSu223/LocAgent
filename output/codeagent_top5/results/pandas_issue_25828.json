@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/25828",
+  "repo_name": "pandas",
+  "title": "Use Substitution Decorator for CustomBusinessMonthEnd",
+  "base_commit": "923ac2bdee409e4fa8c47414b07f52e036bb21bc",
+  "ground_truth_files": [
+    "pandas/tseries/offsets.py"
+  ],
+  "predicted_files": [
+    "pandas/tseries/offsets.py",
+    "pandas/util/_decorators.py",
+    "pandas/util/_doctools.py",
+    "pandas/tests/tseries/test_offsets.py",
+    "doc/source/reference/offsets.rst"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/tseries/offsets.py\",\n        \"pandas/util/_decorators.py\",\n        \"pandas/util/_doctools.py\",\n        \"pandas/tests/tseries/test_offsets.py\",\n        \"doc/source/reference/offsets.rst\"\n    ],\n    \"reasoning\": \"1. pandas/tseries/offsets.py: This is where all the business offset classes (including CBMonthEnd and likely CustomBusinessMonthEnd or similar) are defined and where the Substitution decorator should be applied to generate docstrings in a more idiomatic way. 2. pandas/util/_decorators.py: Contains the implementation of the Substitution decorator; any necessary adjustments or enhancements to its usage (such as supporting new patterns or fixing edge cases) should be done here. 3. pandas/util/_doctools.py: May contain helper functions or docstring template logic necessary for creating or integrating docstring templates for business offsets. 4. pandas/tests/tseries/test_offsets.py: Related test file that will verify if docstrings, initialization, and offset functionality (possibly including doctest validation) behave correctly after using the Substitution decorator. 5. doc/source/reference/offsets.rst: Documentation where the new docstring format may need to be reflected or referenced if docstring/user guide content is auto-generated from code. \\n\\nThe list is ordered by importance, focusing first on implementation and decorator logic, then test coverage, and finally user-facing docs. If the test or documentation files do not exist or are named differently, substitute with the relevant test and doc files for offsets.\"\n}",
+  "error": null
+}

@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/49247",
+  "repo_name": "pandas",
+  "title": "BUG: Getting FutureWarning for Groupby.mean when using .pivot_table",
+  "base_commit": "f09d514cf0b09e65baf210a836de04e69b208cef",
+  "ground_truth_files": [
+    "pandas/core/reshape/pivot.py",
+    "pandas/tests/reshape/test_pivot.py",
+    "pandas/util/_exceptions.py"
+  ],
+  "predicted_files": [
+    "pandas/core/reshape/pivot.py",
+    "pandas/core/groupby/groupby.py",
+    "pandas/core/groupby/generic.py",
+    "pandas/core/frame.py",
+    "pandas/core/reshape/api.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/reshape/pivot.py\",\n        \"pandas/core/groupby/groupby.py\",\n        \"pandas/core/groupby/generic.py\",\n        \"pandas/core/frame.py\",\n        \"pandas/core/reshape/api.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/reshape/pivot.py is the core implementation of pivot_table, including its public API signature and internal call to aggregation (such as mean). To resolve the FutureWarning, this file must be modified to allow forwarding a numeric_only argument to the internal groupby.mean operation, and/or to suppress or handle the warning appropriately.\\n2. pandas/core/groupby/groupby.py contains the lower-level logic for groupby operations, including delegation and warnings for deprecated argument defaults, such as numeric_only. Updates may be needed to its handling of aggregation or warning logic to correspond with changes from pivot_table. \\n3. pandas/core/groupby/generic.py provides the DataFrameGroupBy class with aggregation methods (such as .mean), where numeric_only is handled and warnings are raised. Ensuring proper argument propagation and safe aggregation will require changes here to match the new interface.\\n4. pandas/core/frame.py exposes the DataFrame.pivot_table method, which may need adjustment to accept or document the numeric_only argument, or to forward it correctly to pandas/core/reshape/pivot.py. Modifications ensure the API matches user-facing behavior.\\n5. pandas/core/reshape/api.py might be involved in exposing the pivot_table function at the module level and could require updates if the signature or import/export behavior changes.\\n\\nEach file plays a critical role in the pivot_table\u2013groupby\u2013mean aggregation chain where the numeric_only warning is triggered. Changes must ensure pivot_table can accept and propagate numeric_only, resolve the warning, and maintain API consistency.\"\n}",
+  "error": null
+}

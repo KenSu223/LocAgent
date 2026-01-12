@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/10202",
+  "repo_name": "transformers",
+  "title": "Fast Tokenizers instantiated via vocab/merge files do not respect skip_special_tokens=True",
+  "base_commit": "1c8c2d9ab34b8c8d326db9e0608f8e54cfccb885",
+  "ground_truth_files": [
+    "src/transformers/tokenization_utils_base.py"
+  ],
+  "predicted_files": [
+    "src/transformers/tokenization_utils_fast.py",
+    "src/transformers/models/gpt2/tokenization_gpt2_fast.py",
+    "src/transformers/tokenization_utils_base.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/transformers/tokenization_utils_fast.py\",\n        \"src/transformers/models/gpt2/tokenization_gpt2_fast.py\",\n        \"src/transformers/tokenization_utils_base.py\"\n    ],\n    \"reasoning\": \"1. src/transformers/tokenization_utils_fast.py: This is the core file for all 'fast' tokenizers (including GPT2TokenizerFast). The logic for decoding, and for the handling of the skip_special_tokens argument, resides here or is passed through here to the underlying tokenizers library. The bug is most likely due to an incomplete implementation of skip_special_tokens support when the fast tokenizer is instantiated from vocab/merges files rather than from a serialized config. \\n2. src/transformers/models/gpt2/tokenization_gpt2_fast.py: This file implements GPT2TokenizerFast and (indirectly) the initialization logic for GPT-2 fast tokenizers using vocab/merges. If special tokens are not registered or mapped correctly at initialization, skip_special_tokens will not function as expected. It's also the most likely place to fix how the vocab/merges->tokenizer pipeline is configured, so that special tokens get registered and respected.\\n3. src/transformers/tokenization_utils_base.py: As the foundational base for both slow and fast tokenizers, this file may need auxiliary changes if argument propagation, fallback, or common utility logic for special token handling is located here. \\n\\nThe slow tokenizer files (tokenization_gpt2.py, tokenization_utils.py) do not require modification, as the issue does not appear there (slow tokenizers work as expected). If the fix only involves correcting how special tokens are registered or decoded in the fast pipeline, changes may be limited to the first two files.\"\n}",
+  "error": null
+}

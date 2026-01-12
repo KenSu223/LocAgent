@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/22046",
+  "repo_name": "pandas",
+  "title": "Replacing multiple columns (or just one) with iloc does not work",
+  "base_commit": "9b4dfa195e3f23d81389745c26bff8e0087e74b0",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v1.2.0.rst",
+    "pandas/core/indexing.py",
+    "pandas/tests/frame/indexing/test_setitem.py",
+    "pandas/tests/indexing/test_iloc.py",
+    "pandas/tests/indexing/test_indexing.py"
+  ],
+  "predicted_files": [
+    "pandas/core/indexing.py",
+    "pandas/core/frame.py",
+    "pandas/core/internals/managers.py",
+    "pandas/core/internals/blocks.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/indexing.py\",\n        \"pandas/core/frame.py\",\n        \"pandas/core/internals/managers.py\",\n        \"pandas/core/internals/blocks.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/indexing.py: This file defines the logic for iloc and the core indexer classes. Assignment operations using iloc are handled here, including specialized logic for assigning DataFrames, arrays, or scalars to DataFrame slices. The bug (incorrectly assigning a DataFrame and resulting in NaNs) is rooted in how assignment dispatches handle DataFrame values versus arrays/lists.\\n\\n2. pandas/core/frame.py: The DataFrame's own __setitem__ and related methods ultimately receive the assignments, and the frame may contain logic specific to how incoming values (like columns.iloc[:, [0]]) are interpreted\u2014particularly for shape, dtype, or special cases against its own BlockManager.\\n\\n3. pandas/core/internals/managers.py: BlockManager is the primary handler for how underlying DataFrame data blocks are updated during assignment. When a DataFrame is assigned via iloc, the BlockManager is tasked with placing the new values in the correct blocks; if something is misinterpreted as NDFrame instead of array-like, assignments may fail or introduce NaNs.\\n\\n4. pandas/core/internals/blocks.py: For certain complex assignments or dtype conversions, the block logic (for updating blocks representing columns) is engaged. Errors in how the Block interprets or aligns values (array-like vs DataFrame) can bubble up here (e.g., leading to unexpected upcasting or NaN results when types do not meet expectations).\\n\\nThe issue does not appear to require modifications in broader places\u2014it's rooted in how iloc assignment and value broadcasting/coercion works. It's very likely these four files together contain all relevant assignment dispatch, type/shape checking, and block-update logic needed to fix the bug with assigning DataFrame columns via iloc.\"\n}",
+  "error": null
+}

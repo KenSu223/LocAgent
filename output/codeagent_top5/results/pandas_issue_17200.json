@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/17200",
+  "repo_name": "pandas",
+  "title": "read_json(lines=True) broken for s3 urls in Python 3 (v0.20.3)",
+  "base_commit": "674fb96b33c07c680844f674fcdf0767b6e3c2f9",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v0.21.1.txt",
+    "pandas/io/json/json.py",
+    "pandas/tests/io/json/test_pandas.py",
+    "pandas/tests/io/parser/test_network.py"
+  ],
+  "predicted_files": [
+    "pandas/io/json/json.py",
+    "pandas/io/common.py",
+    "pandas/compat/__init__.py",
+    "pandas/io/formats/printing.py",
+    "pandas/io/parsers.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/io/json/json.py\",\n        \"pandas/io/common.py\",\n        \"pandas/compat/__init__.py\",\n        \"pandas/io/formats/printing.py\",\n        \"pandas/io/parsers.py\"\n    ],\n    \"reasoning\": \"1. pandas/io/json/json.py is the primary location for read_json and its surrounding logic; the bug and stack trace directly implicate usage of StringIO with a bytes stream, especially when lines=True. The fix involves converting underlying s3 binary stream to string (e.g., decode bytes or utilize BytesIO/appropriate encoding), before passing to StringIO. 2. pandas/io/common.py is responsible for get_filepath_or_buffer and IO abstraction: changes may be needed to correctly handle s3 binary handles and transparently decode to str (or warn/convert as appropriate for JSON). 3. pandas/compat/__init__.py manages StringIO/BytesIO shims and compatibility between Python versions; updates may assist in generic handling of text vs binary IO where called. 4. pandas/io/formats/printing.py and 5. pandas/io/parsers.py are potential indirect dependencies referenced by json.py for file/buffer handling, type validation, and could require tweaks to support new/modified IO handling if changes in core IO logic propagate. The key modifications should occur first in json.py and common.py, with minor updates or support added in compat if string/bytes management changes and elsewhere if type IO contracts are affected.\"\n}",
+  "error": null
+}

@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/8403",
+  "repo_name": "transformers",
+  "title": "[s2s finetune] huge increase in memory demands with --fp16 native amp",
+  "base_commit": "77a257fc210a56f1fd0d75166ecd654cf58111f3",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "examples/seq2seq/lightning_base.py",
+    "examples/seq2seq/finetune.py",
+    "transformers/trainer.py",
+    "transformers/training_args.py",
+    "examples/seq2seq/convert_model_to_fp16.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"examples/seq2seq/lightning_base.py\",\n        \"examples/seq2seq/finetune.py\",\n        \"transformers/trainer.py\",\n        \"transformers/training_args.py\",\n        \"examples/seq2seq/convert_model_to_fp16.py\"\n    ],\n    \"reasoning\": \"1. 'examples/seq2seq/lightning_base.py' is the core base class and glue code providing the training infrastructure for the seq2seq example. It is responsible for configuring and passing fp16/AMP options to the training backend (likely PyTorch Lightning or similar abstraction). The issue almost certainly requires reviewing and patching how arguments like '--fp16' and '--fp16_opt_level' are interpreted and forwarded, as well as how Apex and native AMP logic are switched and handled.\\n\\n2. 'examples/seq2seq/finetune.py' is the user-facing training script that parses all training arguments and instantiates the seq2seq training run. It needs to parse and correctly pass fp16 options downstream, and possibly provide workaround logic or guardrails if the underlying infrastructure (see above) is not mapping arguments as intended.\\n\\n3. 'transformers/trainer.py' implements the core Hugging Face Trainer logic, including integration with AMP and Apex. If there are deeper architectural bugs in how memory/context are handled for native amp in seq2seq use, a fix may require patching this file. It's also where memory-efficient mixed precision strategies may need to be enabled, or where Apex/native AMP selection is managed.\\n\\n4. 'transformers/training_args.py' contains argument definitions and validation (e.g., fp16/amp parameters), ensuring that the provided options (like --fp16) are properly interpreted and dispatched. Memory usage behavior can be impacted by argument parsing errors, defaults, or improper state handling here.\\n\\n5. 'examples/seq2seq/convert_model_to_fp16.py': If model weights are ever explicitly (or accidentally) cast to half-precision everywhere using this utility (instead of only using autocast conte",
+  "error": null
+}

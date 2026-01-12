@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/6783",
+  "repo_name": "scikit-learn",
+  "title": "\"scoring must return a number\" error with custom scorer",
+  "base_commit": "417788c6a54c39614b82acf1a04b1f97f8a32199",
+  "ground_truth_files": [
+    "sklearn/cross_validation.py",
+    "sklearn/model_selection/_validation.py",
+    "sklearn/model_selection/tests/test_validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/cross_validation.py",
+    "sklearn/metrics/scorer.py",
+    "sklearn/model_selection/_validation.py",
+    "sklearn/utils/validation.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/cross_validation.py\",\n        \"sklearn/metrics/scorer.py\",\n        \"sklearn/model_selection/_validation.py\",\n        \"sklearn/utils/validation.py\"\n    ],\n    \"reasoning\": \"1. sklearn/cross_validation.py is the primary location where the error occurs and where the scoring output's type is checked and the exception is raised. This file should be updated to ensure that custom scoring functions return proper numeric types, possibly adding more robust type conversion (e.g., to float) for numpy types like memmap to avoid ValueError. 2. sklearn/metrics/scorer.py contains logic for custom scorers and their wrappers, so improvements to enforce numeric return types or to coerce outputs to float can be added here to prevent similar issues with custom scorers. 3. sklearn/model_selection/_validation.py is included because cross-validation logic has moved there in modern scikit-learn and such checks are often centralized in validation routines, so numeric result validation/conversion may be relevant here for future-proofing and consistency. 4. sklearn/utils/validation.py is where shared validation helpers live, making it a logical place to implement or enhance robust type checking or conversion utilities leveraged across scoring and model evaluation modules.\"\n}",
+  "error": null
+}

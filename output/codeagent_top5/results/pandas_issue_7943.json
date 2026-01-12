@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/7943",
+  "repo_name": "pandas",
+  "title": "tz_localize should support is_dst input array",
+  "base_commit": "abd5333e7a3332921707888de9621c52dd3408e6",
+  "ground_truth_files": [
+    "doc/source/timeseries.rst",
+    "doc/source/v0.15.0.txt",
+    "pandas/core/generic.py",
+    "pandas/tseries/index.py",
+    "pandas/tseries/tests/test_timezones.py",
+    "pandas/tseries/tests/test_tslib.py",
+    "pandas/tslib.pyx"
+  ],
+  "predicted_files": [
+    "pandas/core/index.py",
+    "pandas/core/common.py",
+    "pandas/tslib.pyx",
+    "pandas/tseries/tools.py",
+    "pandas/tseries/common.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/index.py\",\n        \"pandas/core/common.py\",\n        \"pandas/tslib.pyx\",\n        \"pandas/tseries/tools.py\",\n        \"pandas/tseries/common.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/index.py likely contains the main Index class or related subclasses, where the tz_localize functionality for DatetimeIndex would be implemented, so this is where support for an array input (is_dst_flat) argument should be added. 2. pandas/core/common.py is used for shared functions and logic across Index types and may help in updating the signature, validation, or utility for timezone-aware localization. 3. pandas/tslib.pyx handles Cythonized time operations used internally for performance in pandas, including timezone conversion and offset calculation\u2014changing how is_dst inputs are handled might require updates here for efficient application across arrays. 4. pandas/tseries/tools.py collects time-related utility functions including conversions and localization, so this may need changes for supporting series/array arguments to tz_localize or underlying conversions. 5. pandas/tseries/common.py is a supporting module in the time series logic, and would be updated if shared DST logic or helper functions are needed for the fix. These files were selected based on typical pandas organization and file roles, as well as how and where extending tz_localize to handle array-like is_dst data would touch core, utility, and performance paths in the codebase.\"\n}",
+  "error": null
+}

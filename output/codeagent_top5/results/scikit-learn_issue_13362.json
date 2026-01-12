@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/13362",
+  "repo_name": "scikit-learn",
+  "title": "return_intercept==True in ridge_regression raises an exception",
+  "base_commit": "eda99f3cec70ba90303de0ef3ab7f988657fadb9",
+  "ground_truth_files": [
+    "doc/whats_new/v0.21.rst",
+    "sklearn/linear_model/ridge.py",
+    "sklearn/linear_model/tests/test_ridge.py"
+  ],
+  "predicted_files": [
+    "sklearn/linear_model/__init__.py",
+    "sklearn/linear_model/ridge.py",
+    "sklearn/decomposition/sparse_pca.py",
+    "sklearn/linear_model/tests/test_ridge.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/linear_model/ridge.py', 'sklearn/linear_model/tests/test_ridge.py', 'sklearn/decomposition/sparse_pca.py', 'doc/modules/linear_model.rst', 'sklearn/linear_model/__init__.py'], 'reasoning': \"1. sklearn/linear_model/ridge.py: Contains the ridge_regression implementation and is where the bug with 'return_intercept' occurs.\\n2. sklearn/linear_model/tests/test_ridge.py: Contains tests for ridge_regression and should be updated to cover the bug and ensure its fix.\\n3. sklearn/decomposition/sparse_pca.py: Calls ridge_regression, so needs review if output changes affect downstream code.\\n4. doc/modules/linear_model.rst: Documentation may describe ridge_regression and its parameters, should clarify correct usage of 'return_intercept'.\\n5. sklearn/linear_model/__init__.py: If the function signature or outputs change, public exports may need updating, but typically this is less critical unless the API changes.\"}",
+  "error": null
+}

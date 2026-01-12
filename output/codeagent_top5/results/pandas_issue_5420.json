@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/5420",
+  "repo_name": "pandas",
+  "title": "BUG: loc should not fallback for integer indexing for multi-index",
+  "base_commit": "324208eaa66a528f1e88f938c71c2d8efb8304f3",
+  "ground_truth_files": [
+    "doc/source/v0.14.1.txt",
+    "pandas/core/index.py",
+    "pandas/tests/test_indexing.py"
+  ],
+  "predicted_files": [
+    "pandas/core/index.py",
+    "pandas/core/indexing.py",
+    "pandas/core/algorithms.py",
+    "pandas/core/generic.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/indexing.py', 'pandas/core/index.py', 'pandas/core/frame.py', 'pandas/core/generic.py', 'pandas/core/algorithms.pyx'], 'reasoning': '1. pandas/core/indexing.py: This file implements all indexing mechanics, especially .loc and integer-based fallback for MultiIndex.\\n2. pandas/core/index.py: Defines index types (e.g., MultiIndex), which are crucial for handling fallback and label/integer distinctions.\\n3. pandas/core/frame.py: Contains DataFrame methods, which directly interact with indexing logic.\\n4. pandas/core/generic.py: Contains logic for NDFrame, shared for all core data structures, covers get_value/loc/iloc introduction.\\n5. pandas/core/algorithms.pyx: Provides underlying high-performance operations sometimes called in advanced or fallback indexing paths.'}",
+  "error": null
+}

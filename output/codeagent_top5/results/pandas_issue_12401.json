@@ -1,0 +1,28 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/12401",
+  "repo_name": "pandas",
+  "title": "DEPR: filter & select",
+  "base_commit": "48d0460ab9acbee223bae1be699344f8fd232224",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v0.21.0.txt",
+    "pandas/core/common.py",
+    "pandas/core/generic.py",
+    "pandas/core/indexing.py",
+    "pandas/tests/frame/test_alter_axes.py",
+    "pandas/tests/frame/test_axis_select_reindex.py",
+    "pandas/tests/frame/test_mutate_columns.py",
+    "pandas/tests/groupby/test_groupby.py",
+    "pandas/tests/series/test_indexing.py",
+    "pandas/tests/test_multilevel.py"
+  ],
+  "predicted_files": [
+    "pandas/core/frame.py",
+    "pandas/core/series.py",
+    "pandas/core/generic.py",
+    "pandas/core/indexing.py",
+    "doc/source/api.rst"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/frame.py\",\n        \"pandas/core/series.py\",\n        \"pandas/core/generic.py\",\n        \"pandas/core/indexing.py\",\n        \"doc/source/api.rst\"\n    ],\n    \"reasoning\": \"1. pandas/core/frame.py: This is where DataFrame methods (including selection/filtering logic) are defined. Modifying or removing the .filter method and implementing/unifying under .query_labels would require changes here as it's the main entrypoint for DataFrame selection APIs.\\n\\n2. pandas/core/series.py: Series may also expose a .filter or selection-like method, especially if the unified API should apply across Series as well as DataFrame.\\n\\n3. pandas/core/generic.py: Common methods that are shared across Series and DataFrame are frequently defined here. If unifying filter/select/query_labels is meant to apply to both series and dataframe (which is typical in pandas), changes may be required here for shared logic and for deprecation warnings.\\n\\n4. pandas/core/indexing.py: This file often manages the infrastructure for label/location based selection. If label selectors are being reworked or unified, logic here may need to be adapted or deprecated and the new API routed appropriately.\\n\\n5. doc/source/api.rst: Any user-facing method or deprecation in the API must be documented/updated in the API docs. The change proposal will require removing references to separate .filter/.select methods and documenting the new (or unified) .query_labels method instead. \\n\\nThese files are prioritized with the API surface (frame.py) first, then analogous Series support, followed by common/shared and low-level selection infrastructure, and finally documentation. Additional tests or benchmarks would also need edits in a complete PR, but those are not included here as they are indirect.\"\n}",
+  "error": null
+}

@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/8499",
+  "repo_name": "scikit-learn",
+  "title": "Memory leak in LogisticRegression",
+  "base_commit": "38c7e93b1edcbfb85060cf7c14cca3ab47b9267c",
+  "ground_truth_files": [
+    "sklearn/svm/src/liblinear/liblinear_helper.c",
+    "sklearn/svm/src/liblinear/linear.cpp"
+  ],
+  "predicted_files": [
+    "sklearn/linear_model/logistic.py",
+    "sklearn/linear_model/sag.py",
+    "sklearn/linear_model/sag_fast.pyx",
+    "sklearn/linear_model/sgd_fast.pyx",
+    "sklearn/linear_model/coordinate_descent.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/linear_model/logistic.py\",\n        \"sklearn/linear_model/sag.py\",\n        \"sklearn/linear_model/sag_fast.pyx\",\n        \"sklearn/linear_model/sgd_fast.pyx\",\n        \"sklearn/linear_model/coordinate_descent.py\"\n    ],\n    \"reasoning\": \"1. `sklearn/linear_model/logistic.py` is the main implementation file for LogisticRegression. The memory leak most likely occurs due to improper cleanup after fitting, or inappropriate handling of attributes/resources (e.g., leftover references in the class). The fit method here coordinates solver selection and model fitting.\\n\\n2. `sklearn/linear_model/sag.py` is the Python wrapper for the SAG and SAGA solvers that LogisticRegression may call. If these are not finalizing arrays or releasing solver state, they may cause persistent leaks between fits, especially if used in a loop. Reviewing/deleting solver objects and resource scopes is necessary here.\\n\\n3. `sklearn/linear_model/sag_fast.pyx` is the Cython/C extension backend for SAG/SAGA. If native resources (such as buffers or arrays) are not freed or handled via proper deallocation, or if references are kept alive in the parent Python objects, leaks can occur. This file must be checked for proper memory release after every call.\\n\\n4. `sklearn/linear_model/sgd_fast.pyx` is included because LogisticRegression also supports the SAGA solver (an evolution of SAG, closely tied to the implementation), and it is common for memory/resource bugs in Cython files to affect resource management even if called by another solver.\\n\\n5. `sklearn/linear_model/coordinate_descent.py` is a common solver utility for linear models in scikit-learn and may be used by the 'liblinear' or other solvers for regularized/fitting paths. Any persistent object/allocation here may need to be freed.\\n\\nIn summary, these files should be examined: the main LogisticRegression implementation and its direct solver dependencies, especially those handling memory allocations at the ",
+  "error": null
+}

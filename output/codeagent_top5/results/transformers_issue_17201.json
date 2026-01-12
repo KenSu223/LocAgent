@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/17201",
+  "repo_name": "transformers",
+  "title": "a memory leak in qqp prediction using bart",
+  "base_commit": "1a688709b34b10bd372e3e0860c8d39d170ebf53",
+  "ground_truth_files": [
+    "src/transformers/trainer.py"
+  ],
+  "predicted_files": [
+    "classification/run_glue.py",
+    "src/transformers/data/processors/glue.py",
+    "src/transformers/trainer.py",
+    "src/transformers/models/bart/modeling_bart.py",
+    "src/transformers/training_args.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/trainer.py', 'examples/pytorch/text-classification/run_glue.py', 'src/transformers/training_args.py', 'src/transformers/models/bart/modeling_bart.py', 'src/transformers/data/processors/glue.py'], 'reasoning': \"1. src/transformers/trainer.py: Handles batch evaluation, accumulation, and prediction; primary location for fixing eval_accumulation_steps memory issues. 2. examples/pytorch/text-classification/run_glue.py: Main GLUE/QQP example script; may need modification for data/batch handling and proper invocation of Trainer. 3. src/transformers/training_args.py: Defines and validates the eval_accumulation_steps argument; adjustments here can improve correct usage. 4. src/transformers/models/bart/modeling_bart.py: BART's inference operations; memory leaks during prediction may originate here, especially in buffer or no_grad blocks. 5. src/transformers/data/processors/glue.py: Responsible for dataset processing and handling for QQP/GLUE; may require optimization to avoid large RAM usage.\"}",
+  "error": null
+}

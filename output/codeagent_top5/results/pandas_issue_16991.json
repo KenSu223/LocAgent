@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/16991",
+  "repo_name": "pandas",
+  "title": "ValueError on df.columns.isin(pd.Series())",
+  "base_commit": "fcb0263762a31724ba6db39bf1564569dda068a0",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v0.21.0.txt",
+    "pandas/core/algorithms.py",
+    "pandas/tests/frame/test_analytics.py",
+    "pandas/tests/indexes/test_base.py",
+    "pandas/tests/series/test_analytics.py",
+    "pandas/tests/test_algos.py"
+  ],
+  "predicted_files": [
+    "pandas/_libs/hashtable.py",
+    "pandas/core/common.py",
+    "pandas/core/series.py",
+    "pandas/core/algorithms.py",
+    "algorithms.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/algorithms.py', 'pandas/_libs/hashtable.pyx', 'pandas/_libs/hashtable_func_helper.pxi.in', 'pandas/core/common.py', 'pandas/core/series.py'], 'reasoning': '1. pandas/core/algorithms.py: Main site of the ValueError, where dtype-handling is not robust when values is an empty Series (default float dtype); needs patching for buffer conversion.\\n2. pandas/_libs/hashtable.pyx: Cython implementation of membership tests, expects object dtype but may receive floats\u2014defensive adjustments may help.\\n3. pandas/_libs/hashtable_func_helper.pxi.in: Contains underlying membership helper logic, ensuring dtype compatibility.\\n4. pandas/core/common.py: Contains dtype utility functions used in algorithms.py, and may need enhancing for cross-dtype comparisons.\\n5. pandas/core/series.py: Entry point for .isin method on Series, could ensure proper dtype conversion before passing to algorithms.'}",
+  "error": null
+}

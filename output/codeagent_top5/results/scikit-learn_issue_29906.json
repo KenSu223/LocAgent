@@ -1,0 +1,29 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/29906",
+  "repo_name": "scikit-learn",
+  "title": "Incorrect sample weight handling in `KBinsDiscretizer`",
+  "base_commit": "e25e8e2119ab6c5aa5072b05c0eb60b10aee4b05",
+  "ground_truth_files": [
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_gradient_boosting.py",
+    "sklearn/inspection/tests/test_permutation_importance.py",
+    "sklearn/preprocessing/_discretization.py",
+    "sklearn/preprocessing/tests/test_discretization.py",
+    "sklearn/preprocessing/tests/test_polynomial.py",
+    "sklearn/preprocessing/tests/test_target_encoder.py",
+    "sklearn/tests/test_docstring_parameters.py",
+    "sklearn/utils/_indexing.py",
+    "sklearn/utils/_test_common/instance_generator.py",
+    "sklearn/utils/stats.py",
+    "sklearn/utils/tests/test_indexing.py",
+    "sklearn/utils/tests/test_stats.py"
+  ],
+  "predicted_files": [
+    "sklearn/preprocessing/_data.py",
+    "sklearn/preprocessing/tests/test_discretization.py",
+    "sklearn/utils/validation.py",
+    "sklearn/preprocessing/_discretization.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/preprocessing/_discretization.py', 'sklearn/utils/validation.py', 'sklearn/preprocessing/_data.py', 'sklearn/preprocessing/tests/test_discretization.py'], 'reasoning': \"1. sklearn/preprocessing/_discretization.py: Core bug\u2014sample_weight must be subsampled to match X's indices after resampling. 2. sklearn/utils/validation.py: Validate/clarify sample_weight documentation and support vector consistency. 3. sklearn/preprocessing/_data.py: If resample helper function is used, ensure it can also subsample sample_weight or adapt helper. 4. sklearn/preprocessing/tests/test_discretization.py: Add/extend tests verifying sample_weight with subsample logic. These files together ensure proper passing, validation, and testing of sample_weight when subsampling occurs.\"}",
+  "error": null
+}

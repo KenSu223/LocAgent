@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/14938",
+  "repo_name": "transformers",
+  "title": "Question: Object of type EncoderDecoderConfig is not JSON serializable",
+  "base_commit": "705ca7f21b2b557e0cfd5d0853b297fa53489d20",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "src/transformers/models/encoder_decoder/modeling_encoder_decoder.py",
+    "src/transformers/modeling_utils.py",
+    "src/transformers/models/encoder_decoder/configuration_encoder_decoder.py",
+    "configuration_encoder_decoder.py",
+    "configuration_utils.py",
+    "modeling_utils.py",
+    "src/transformers/configuration_utils.py",
+    "configuration_vision_encoder_decoder.py",
+    "src/transformers/models/vision_encoder_decoder/configuration_vision_encoder_decoder.py",
+    "modeling_encoder_decoder.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/encoder_decoder/configuration_encoder_decoder.py', 'src/transformers/configuration_utils.py', 'src/transformers/models/vision_encoder_decoder/configuration_vision_encoder_decoder.py', 'src/transformers/models/encoder_decoder/modeling_encoder_decoder.py', 'src/transformers/modeling_utils.py'], 'reasoning': '1. configuration_encoder_decoder.py: Defines EncoderDecoderConfig and is the main source of the serialization bug, since encoder/decoder sub-configs are stored as objects, which are not serializable as-is. Should ensure these are converted to dicts during serialization.2. configuration_utils.py: Handles config serialization; may need changes if deeper serialization for nested config objects is required.3. configuration_vision_encoder_decoder.py: Defines VisionEncoderDecoderConfig, which may have identical structural issues with serialization.4. modeling_encoder_decoder.py: Uses EncoderDecoderConfig; may require small adaptations depending on how configs are loaded after a fix.5. modeling_utils.py: Orchestrates model/config saving; only minimally affected as it calls save_pretrained, but should be considered for completeness.'}",
+  "error": null
+}

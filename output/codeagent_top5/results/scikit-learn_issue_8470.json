@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/8470",
+  "repo_name": "scikit-learn",
+  "title": "How to let gbdt = GradientBoostingRegressor(), gbdt.fit(X_feature, X_label) know whether the feature of input X is categorical or numerical?",
+  "base_commit": "0ab5c678bba02888b62b777b4c757e367b3458d5",
+  "ground_truth_files": [
+    "sklearn/preprocessing/_encoders.py"
+  ],
+  "predicted_files": [
+    "sklearn/ensemble/gradient_boosting.py",
+    "sklearn/tree/tree.py",
+    "sklearn/ensemble/__init__.py",
+    "sklearn/ensemble/tests/test_gradient_boosting.py",
+    "sklearn/utils/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/ensemble/gradient_boosting.py\",\n        \"sklearn/tree/tree.py\",\n        \"sklearn/ensemble/__init__.py\",\n        \"sklearn/ensemble/tests/test_gradient_boosting.py\",\n        \"sklearn/utils/__init__.py\"\n    ],\n    \"reasoning\": \"1. sklearn/ensemble/gradient_boosting.py is the primary file for GradientBoostingRegressor and where enhancements to accept/process categorical feature info must be implemented (e.g., modifying __init__, fit, or internal fitting logic to handle feature types and pass this info to trees).\\n2. sklearn/tree/tree.py contains the core BaseDecisionTree infrastructure including fit validation and tree construction. Changes are needed here to support feature-type annotations and to ensure that tree/split determination leverages categorical vs numerical information.\\n3. sklearn/ensemble/__init__.py may require changes if feature-type support is reflected in the public API or constructors, since it exposes GradientBoostingRegressor.\\n4. sklearn/ensemble/tests/test_gradient_boosting.py is where you will need to add or update test coverage to ensure correct behavior when categorical features are present (and possibly add more tests for the new feature-type handling code).\\n5. sklearn/utils/__init__.py or associated utility modules may need to be modified (or extended) to add functions for feature-type detection and preprocessing, to keep logic clean and reusable across the codebase.\\n\\nThe most critical and direct logic changes are in the first two files. The last three are supporting files for API exposure, test coverage, and auxiliary utilities.\"\n}",
+  "error": null
+}

@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/653",
+  "repo_name": "transformers",
+  "title": "Different Results from version 0.4.0 to version 0.5.0",
+  "base_commit": "45d21502f0b67eb8a5ad244d469dcc0dfb7517a7",
+  "ground_truth_files": [
+    "pytorch_pretrained_bert/modeling.py"
+  ],
+  "predicted_files": [
+    "pytorch_pretrained_bert/modeling.py",
+    "examples/lm_finetuning/finetune_on_pregenerated.py",
+    "examples/lm_finetuning/pregenerate_training_data.py",
+    "pytorch_pretrained_bert/file_utils.py",
+    "examples/lm_finetuning/simple_lm_finetuning.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pytorch_pretrained_bert/modeling.py', 'pytorch_pretrained_bert/file_utils.py', 'examples/lm_finetuning/simple_lm_finetuning.py', 'examples/lm_finetuning/pregenerate_training_data.py', 'examples/lm_finetuning/finetune_on_pregenerated.py'], 'reasoning': '1. pytorch_pretrained_bert/modeling.py: Handles the model architecture, loading, and pretrained weights mapping; changes here could explain different results if weight URLs, loading logic, or initialization were updated in v0.5.0.\\n2. pytorch_pretrained_bert/file_utils.py: Responsible for download and cache logic for model weights; changes here affect which weights and configs are loaded.\\n3. examples/lm_finetuning/simple_lm_finetuning.py: Oversees the quick fine-tuning process and may include changes to script defaults, seed initialization, or data feeding.\\n4. examples/lm_finetuning/pregenerate_training_data.py: Generates the training data with random sampling; any change in random state or preprocessing logic directly impacts reproducibility.\\n5. examples/lm_finetuning/finetune_on_pregenerated.py: Runs training on pregenerated data; changes in training, seed, or how model weights are loaded here would affect results. '}",
+  "error": null
+}

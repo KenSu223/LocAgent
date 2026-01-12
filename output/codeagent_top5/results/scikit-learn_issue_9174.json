@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/9174",
+  "repo_name": "scikit-learn",
+  "title": "SVC and OneVsOneClassifier decision_function inconsistent on sub-sample",
+  "base_commit": "adc1e590d4dc1e230b49a4c10b4cd7b672bb3d69",
+  "ground_truth_files": [
+    "doc/modules/multiclass.rst",
+    "doc/modules/svm.rst",
+    "doc/whats_new/v0.21.rst",
+    "sklearn/svm/base.py",
+    "sklearn/utils/estimator_checks.py",
+    "sklearn/utils/multiclass.py",
+    "sklearn/utils/tests/test_multiclass.py"
+  ],
+  "predicted_files": [
+    "sklearn/svm/base.py",
+    "sklearn/svm/libsvm.py",
+    "sklearn/multiclass.py",
+    "sklearn/svm/libsvm_sparse.py",
+    "sklearn/svm/classes.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/svm/classes.py', 'sklearn/svm/base.py', 'sklearn/multiclass.py', 'sklearn/svm/libsvm.pyx', 'sklearn/svm/libsvm_sparse.pyx'], 'reasoning': '1. sklearn/svm/classes.py: Most likely contains the SVC class and its Python-level logic for decision_function, including how inputs (batch vs sample) are handled; changes likely needed here for consistent behavior. 2. sklearn/svm/base.py: May contain base logic for SVM classes and their interfaces, including batch processing and matrix handling. 3. sklearn/multiclass.py: Handles the multiclass wrapper logic (OVR, OneVsOneClassifier), deciding how per-class decision scores are combined for multiclass; inconsistencies in aggregation may reside here. 4. sklearn/svm/libsvm.pyx: Cython implementation of SVM, where actual decision values are computed; relevant if inconsistency stems from backend calculations between vectorized and scalar input. 5. sklearn/svm/libsvm_sparse.pyx: Sparse matrix support for SVM decision logic; could be affected if input format variations (dense vs sparse) play a role. These are listed in order of importance and most likely direct involvement in the Python/Cython backend for SVC and multiclass decision_function computations.'}",
+  "error": null
+}

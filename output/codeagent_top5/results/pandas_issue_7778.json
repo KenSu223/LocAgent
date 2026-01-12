@@ -1,0 +1,29 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/7778",
+  "repo_name": "pandas",
+  "title": "BUG: df.apply handles np.timedelta64 as timestamp, should be timedelta",
+  "base_commit": "a797b28c87d90a439dfa2c12b4a11e62bf0d6db2",
+  "ground_truth_files": [
+    "doc/source/v0.15.0.txt",
+    "pandas/core/frame.py",
+    "pandas/core/internals.py",
+    "pandas/core/series.py",
+    "pandas/tests/test_frame.py",
+    "pandas/tests/test_internals.py"
+  ],
+  "predicted_files": [
+    "pandas/core/common.py",
+    "common.py",
+    "ops.py",
+    "frame.py",
+    "pandas/core/algorithms.py",
+    "pandas/core/internals.py",
+    "internals.py",
+    "pandas/core/ops.py",
+    "algorithms.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/frame.py', 'pandas/core/internals.py', 'pandas/core/common.py', 'pandas/core/ops.py', 'pandas/core/algorithms.py'], 'reasoning': \"Based on pandas' legacy structure and the issue's symptoms, the DataFrame logic (apply/applymap) resides in frame.py, datatype handling and conversions are implemented in internals.py and common.py, and ops.py or algorithms.py are likely involved in type inference, binary operations, or type-dispatch logic. These files collectively cover how np.timedelta64 and np.datetime64 are managed during DataFrame row-wise operations and require modification to correct type recognition and resulting behavior.\"}",
+  "error": null
+}

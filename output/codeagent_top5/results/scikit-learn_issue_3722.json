@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/3722",
+  "repo_name": "scikit-learn",
+  "title": "preprocessing.scale provides consistent results on arrays with zero variance",
+  "base_commit": "3f49cee020a91a0be5d0d5602d29b3eefce9d758",
+  "ground_truth_files": [
+    "doc/whats_new.rst",
+    "sklearn/preprocessing/_weights.py",
+    "sklearn/preprocessing/data.py",
+    "sklearn/preprocessing/tests/test_data.py"
+  ],
+  "predicted_files": [
+    "sklearn/preprocessing/data.py",
+    "sklearn/preprocessing/tests/test_data.py",
+    "doc/modules/preprocessing.rst"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/preprocessing/data.py\",\n        \"sklearn/preprocessing/tests/test_data.py\",\n        \"doc/modules/preprocessing.rst\"\n    ],\n    \"reasoning\": \"1. sklearn/preprocessing/data.py contains both the scale() function and _mean_and_std() logic where standard deviation is calculated and zero stds are reset to 1.0 only if exactly zero. The core logic should be changed here to account for near-zero (machine epsilon) stds, making calculations robust and consistent. 2. sklearn/preprocessing/tests/test_data.py (or equivalent test file) should be modified/extended to add or correct tests on arrays/matrices with near-zero variance/constant features to confirm correct standardized output (always zero, not arbitrary constants). 3. doc/modules/preprocessing.rst should be updated to clearly document the new behavior and edge case handling for users (since preprocessing.scale is widely used). Other files are not likely candidates unless scale's logic is reused/called via wrappers elsewhere, but all crucial calculations and documentation will live in these top three files.\"\n}",
+  "error": null
+}

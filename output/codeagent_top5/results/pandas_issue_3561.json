@@ -1,0 +1,31 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/3561",
+  "repo_name": "pandas",
+  "title": "DataFrame.ix losing row ordering when index has duplicates",
+  "base_commit": "6d2c57fa010c12f21f700034b5651519670b9b9d",
+  "ground_truth_files": [
+    "RELEASE.rst",
+    "doc/source/indexing.rst",
+    "pandas/core/index.py",
+    "pandas/core/indexing.py",
+    "pandas/index.pyx",
+    "pandas/lib.pyx",
+    "pandas/tests/test_frame.py",
+    "pandas/tests/test_indexing.py"
+  ],
+  "predicted_files": [
+    "pandas/core/common.py",
+    "common.py",
+    "index.py",
+    "pandas/core/index.py",
+    "pandas/core/indexing.py",
+    "frame.py",
+    "pandas/core/internals.py",
+    "internals.py",
+    "indexing.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/frame.py', 'pandas/core/indexing.py', 'pandas/core/index.py', 'pandas/core/internals.py', 'pandas/core/common.py'], 'reasoning': 'These files are central to DataFrame row selection and ordering with duplicate indices: 1. frame.py manages DataFrame and its row selection interfaces, including .ix handling. 2. indexing.py is the main indexer implementation for .ix, .loc, etc. 3. index.py governs how Index objects map and look up keys, affecting order and duplicates. 4. internals.py handles the underlying storage of row data, critical for alignment on selection. 5. common.py contains generic row/column selection utilities possibly used across indexing logic. Together, changes in these files will ensure key-based selection honors input row order regardless of Index duplicates.'}",
+  "error": null
+}

@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/27200",
+  "repo_name": "transformers",
+  "title": "dataset download error in speech recognition examples",
+  "base_commit": "82c7e879876822864b5ceaf2c99eb01159266bcd",
+  "ground_truth_files": [
+    "examples/pytorch/speech-recognition/README.md"
+  ],
+  "predicted_files": [
+    "examples/pytorch/speech-recognition/run_speech_recognition_ctc.py",
+    "examples/pytorch/speech-recognition/README.md",
+    "examples/pytorch/speech-recognition/run_speech_recognition_ctc_adapter.py",
+    "examples/pytorch/speech-recognition/run_speech_recognition_seq2seq.py",
+    "examples/pytorch/speech-recognition/requirements.txt"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"examples/pytorch/speech-recognition/run_speech_recognition_ctc.py\",\n        \"examples/pytorch/speech-recognition/README.md\",\n        \"examples/pytorch/speech-recognition/run_speech_recognition_ctc_adapter.py\",\n        \"examples/pytorch/speech-recognition/run_speech_recognition_seq2seq.py\",\n        \"examples/pytorch/speech-recognition/requirements.txt\"\n    ],\n    \"reasoning\": \"1. The most important file is run_speech_recognition_ctc.py, where dataset loading logic uses the dataset_name argument and invokes load_dataset. Logic should be added here to warn users if they select deprecated dataset names (like 'common_voice') and internally remap them to the new canonical names (e.g., 'mozilla-foundation/common_voice_11_0'), or update the documentation/comments to guide users to use the correct dataset identifier. This is where the error manifests directly and must be fixed to prevent download issues and header errors.\\n\\n2. The README.md should be updated to reflect the change and to prevent new users from following outdated usage instructions, since default commands previously likely referenced the now-deprecated 'common_voice'. Proper documentation is crucial to prevent recurrence of the issue.\\n\\n3. and 4. The adapter (run_speech_recognition_ctc_adapter.py) and seq2seq (run_speech_recognition_seq2seq.py) variants might use similar dataset loading logic and argument parsing, even if not directly referenced in this issue. For robustness and consistency, checks and documentation should be updated across all speech recognition scripts, in case users attempt to use the same dataset name there.\\n\\n5. The requirements.txt should be reviewed (and possibly updated) to ensure the datasets library supports the latest Common Voice versions and is pinned to a compatible release if necessary for broader compatibility, especially since dataset handling changes between releases may impact error rates or support for the new dataset identifiers.\"\n}",
+  "error": null
+}

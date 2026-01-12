@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/24607",
+  "repo_name": "pandas",
+  "title": "DES: Should util.is_nan check for complex('nan')?",
+  "base_commit": "19f715c51d16995fc6cd0c102fdba2f213a83a0f",
+  "ground_truth_files": [
+    "pandas/_libs/missing.pyx",
+    "pandas/_libs/tslibs/nattype.pxd",
+    "pandas/_libs/tslibs/nattype.pyx",
+    "pandas/_libs/tslibs/util.pxd",
+    "pandas/tests/dtypes/test_missing.py"
+  ],
+  "predicted_files": [
+    "pandas/core/arrays/period.py",
+    "pandas/core/arrays/datetimelike.py",
+    "pandas/core/dtypes/missing.py",
+    "pandas/core/nanops.py",
+    "pandas/core/missing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/dtypes/missing.py', 'pandas/core/missing.py', 'pandas/core/nanops.py', 'pandas/core/arrays/period.py', 'pandas/core/arrays/datetimelike.py'], 'reasoning': \"1. pandas/core/dtypes/missing.py: This is where the main isna() function lives, and should be updated to detect complex('nan'). This single change will propagate correct nan detection.\\n2. pandas/core/missing.py: Uses isna() for missing data routines; any deduplicated manual complex nan detection can be removed after isna() update.\\n3. pandas/core/nanops.py: Handles nan operations and uses isna(); should be verified for benefitting from new logic.\\n4 & 5. pandas/core/arrays/period.py and pandas/core/arrays/datetimelike.py: These modules implement/override custom missing/nan handling, often calling isna(); should be updated/refactored as necessary.\"}",
+  "error": null
+}

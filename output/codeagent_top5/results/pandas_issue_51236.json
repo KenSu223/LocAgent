@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/51236",
+  "repo_name": "pandas",
+  "title": "DOC fix EX02 errors in docstrings",
+  "base_commit": "0e8331f85cde8db2841aad92054d8e896e88fcef",
+  "ground_truth_files": [
+    "ci/code_checks.sh",
+    "pandas/core/dtypes/common.py",
+    "pandas/plotting/_core.py",
+    "pandas/plotting/_misc.py"
+  ],
+  "predicted_files": [
+    "pandas/core/base.py",
+    "pandas/util/_decorators.py",
+    "pandas/core/series.py",
+    "pandas/core/generic.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/frame.py', 'pandas/core/series.py', 'pandas/core/generic.py', 'pandas/core/base.py', 'pandas/util/_decorators.py'], 'reasoning': '1. pandas/core/frame.py \u2013 defines DataFrame methods, a key source of public API docstrings, and likely to have EX02 docstring failures.\\n2. pandas/core/series.py \u2013 defines Series methods, another core pandas API class with docstrings needing validation.\\n3. pandas/core/generic.py \u2013 contains base NDFrame class and generic public API functions.\\n4. pandas/core/base.py \u2013 defines other base classes and utility functions with public docstrings.\\n5. pandas/util/_decorators.py \u2013 involved in handling docstring templates, composition, and may affect docstring formatting as used by main classes.\\nThese files are the main targets for fixing EX02 errors in docstrings, as they contain the most critical and visible API functions for pandas.'}",
+  "error": null
+}

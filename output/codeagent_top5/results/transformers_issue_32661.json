@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/32661",
+  "repo_name": "transformers",
+  "title": "RoBERTa config defaults are inconsistent with fairseq implementation",
+  "base_commit": "5bcbdff15922b1d0eeb035879630ca61c292122a",
+  "ground_truth_files": [
+    "src/transformers/models/roberta/configuration_roberta.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/roberta/modeling_tf_roberta.py",
+    "modeling_roberta.py",
+    "src/transformers/models/roberta/modeling_roberta.py",
+    "modeling_flax_roberta.py",
+    "src/transformers/models/roberta/configuration_roberta.py",
+    "configuration_roberta.py",
+    "modeling_tf_roberta.py",
+    "__init__.py",
+    "src/transformers/models/roberta/modeling_flax_roberta.py",
+    "src/transformers/models/roberta/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/roberta/configuration_roberta.py', 'src/transformers/models/roberta/modeling_roberta.py', 'src/transformers/models/roberta/modeling_flax_roberta.py', 'src/transformers/models/roberta/modeling_tf_roberta.py', 'src/transformers/models/roberta/__init__.py'], 'reasoning': '1. configuration_roberta.py: Contains RobertaConfig and default values (including max_position_embeddings) that need alignment with the fairseq implementation and pretrained base model.\\n2. modeling_roberta.py: Directly uses config values for position id handling and may need logic updates to match config shifts and avoid out-of-bounds errors.\\n3. modeling_flax_roberta.py: Flax implementation also uses RobertaConfig defaults and needs consistent logic for other frameworks.\\n4. modeling_tf_roberta.py: TensorFlow implementation similarly instantiates config and embeds position ids.\\n5. __init__.py: Lowest priority, adjusting import exposure if config/model changes are needed elsewhere.'}",
+  "error": null
+}

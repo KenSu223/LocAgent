@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2866",
+  "repo_name": "flask",
+  "title": "DispatcherMiddleware with different loggers per app in flask 1.0",
+  "base_commit": "465da9f610a04d379bb39a0ff03fb6c0b0ea1c45",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "docs/config.rst",
+    "docs/errorhandling.rst",
+    "docs/logging.rst",
+    "src/flask/app.py",
+    "src/flask/logging.py",
+    "tests/test_logging.py",
+    "tests/test_templating.py"
+  ],
+  "predicted_files": [
+    "src/flask/logging.py",
+    "src/flask/app.py",
+    "src/flask/blueprints.py",
+    "docs/logging.rst",
+    "tests/test_logging.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/flask/logging.py\",\n        \"src/flask/app.py\",\n        \"src/flask/blueprints.py\",\n        \"docs/logging.rst\",\n        \"tests/test_logging.py\"\n    ],\n    \"reasoning\": \"1. src/flask/logging.py: This is the most important file. The root cause of the issue is that the create_logger(app) function always uses logging.getLogger('flask.app'), meaning all Flask apps share the same logging namespace and thus handlers overlap. This function must be changed so each app's logger uses a unique name (e.g. based on app.name).\\n\\n2. src/flask/app.py: The main Flask application class code lives here. It directly imports create_logger and likely attaches loggers to app instances, so it must be updated to ensure per-instance loggers are used and properly initialized.\\n\\n3. src/flask/blueprints.py: If blueprints or current_app.logger reference the same 'flask.app' logger, or rely on the logger setup from app.py/logging.py, this file should be checked to ensure per-app logger context is respected (especially inheritance/chaining).\\n\\n4. docs/logging.rst: Documentation should be updated to clarify the logger-per-app change and usage details for users wanting independent log files or handler configurations for multiple apps via DispatcherMiddleware.\\n\\n5. tests/test_logging.py: New or updated tests should be added to assert that logging for each app via DispatcherMiddleware results in independent loggers and handlers, preventing cross-logging and handler overlap.\"\n}",
+  "error": null
+}

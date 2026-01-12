@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/31778",
+  "repo_name": "transformers",
+  "title": "Bug in whisper word-level timestamps (`tokenizer._decode_asr`)",
+  "base_commit": "85a1269e19af022e04bc2aad82572cd5a9e8cdd9",
+  "ground_truth_files": [
+    "src/transformers/models/whisper/tokenization_whisper.py",
+    "tests/models/whisper/test_tokenization_whisper.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/whisper/tokenization_whisper.py",
+    "src/transformers/models/whisper/feature_extraction_whisper.py",
+    "src/transformers/models/whisper/generation_whisper.py",
+    "src/transformers/pipelines/automatic_speech_recognition.py",
+    "src/transformers/models/whisper/tokenization_whisper_fast.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/whisper/tokenization_whisper.py', 'src/transformers/models/whisper/tokenization_whisper_fast.py', 'src/transformers/pipelines/automatic_speech_recognition.py', 'src/transformers/models/whisper/generation_whisper.py', 'src/transformers/models/whisper/feature_extraction_whisper.py'], 'reasoning': \"1. 'src/transformers/models/whisper/tokenization_whisper.py': Main site of '_decode_asr' and word-timestamp alignment, where the core bug arises.\\n2. 'src/transformers/models/whisper/tokenization_whisper_fast.py': Delegates to slow tokenizer, must be updated to propagate/fix bug appropriately and ensure API parity.\\n3. 'src/transformers/pipelines/automatic_speech_recognition.py': Calls tokenizer and processes output, can require updates to data flow, output format, or logic around timestamps (integration).\\n4. 'src/transformers/models/whisper/generation_whisper.py': Prepares/generates token and word timestamps, may need fixes for generation-side discrepancies or extraction routines influencing downstream results.\\n5. 'src/transformers/models/whisper/feature_extraction_whisper.py': Handles info on feature and token extraction, must guarantee word/timestamp data is structured and passed consistently.\"}",
+  "error": null
+}

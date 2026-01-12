@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/33428",
+  "repo_name": "pandas",
+  "title": "DOC: Data links in Pandas API Reference are broken 404",
+  "base_commit": "e88c39225ef545123860c679822f1b567fe65c27",
+  "ground_truth_files": [
+    "pandas/plotting/_misc.py"
+  ],
+  "predicted_files": [
+    "pandas/plotting/_misc.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/plotting/_misc.py', 'doc/source/user_guide/visualization.rst', 'doc/source/getting_started/comparison/comparison_with_sas.rst', 'doc/source/getting_started/comparison/comparison_with_stata.rst', 'doc/source/getting_started/comparison/comparison_with_sql.rst'], 'reasoning': \"1. pandas/plotting/_misc.py: Contains the actual docstring for the 'parallel_coordinates' function whose API reference is cited in the issue; critical for direct code and doc fixes. 2. doc/source/user_guide/visualization.rst: Contains user guide examples at multiple locations with the broken URL, affecting user experience for plotting/data import guides. 3-5. doc/source/getting_started/comparison/comparison_with_sas.rst, comparison_with_stata.rst, comparison_with_sql.rst: Each provides getting-started documentation with incorrect dataset links in examples. Test files (not included in top 5): The test files contain the wrong links but are less urgent for documentation and user-facing reliability.\"}",
+  "error": null
+}

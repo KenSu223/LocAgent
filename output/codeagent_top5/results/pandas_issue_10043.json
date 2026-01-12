@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/10043",
+  "repo_name": "pandas",
+  "title": "iloc breaks on read-only dataframe",
+  "base_commit": "2e087c7841aec84030fb489cec9bfeb38fe8086f",
+  "ground_truth_files": [
+    "pandas/src/generate_code.py",
+    "pandas/tests/test_common.py"
+  ],
+  "predicted_files": [
+    "pandas/core/indexing.py",
+    "pandas/core/internals.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/indexing.py\",\n        \"pandas/core/internals.py\",\n        \"pandas/core/frame.py\"\n    ],\n    \"reasoning\": \"The error with iloc on read-only data occurs during the process of taking or copying data from the underlying numpy arrays inside a DataFrame. The critical code paths for iloc-based extraction use indexer logic (handled in pandas/core/indexing.py), which triggers the underlying block/data extraction (handled in pandas/core/internals.py), and are coordinated via the DataFrame API (pandas/core/frame.py). \\n\\n1. pandas/core/indexing.py: This file contains the _iLocIndexer class and related functions for DataFrame/Series indexing. The issue is most likely to be fixed by changing how iloc and related classes (e.g., via __getitem__) handle cases where the numpy buffer is not writeable\u2014specifically, during row extraction or slice logic, the code will need to enforce a copy (perhaps using arr.copy() or np.copy()) to avoid triggering a ValueError on buffers that are flagged as read-only.\\n\\n2. pandas/core/internals.py: This file manages the actual data storage blocks and likely contains the methods that assemble new DataFrames from indexed slices. Any adjustment to always make a copy instead of a (possibly readonly) view when extracting blocks will need to be updated here as well.\\n\\n3. pandas/core/frame.py: While direct references were not found, this file contains the DataFrame class and may have API surface that's involved in copy/view decisions, construction from blocks, or integration with iloc.\\n\\nOther core modules (like pandas/core/common.py) and top-level construction code are less likely to need changes because the problem is specific to extracting slices out of existing DataFrames that wrap read-only numpy arrays, not general DataFrame creation or utility code.\\n\\nThus, the first priority is to implement (or route) an enforce-copy logic for read-only array slices in pandas/core/indexing.py and pandas/core/interna",
+  "error": null
+}

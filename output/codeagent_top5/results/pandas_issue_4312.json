@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/4312",
+  "repo_name": "pandas",
+  "title": "BUG: astype assignment via iloc/loc not working",
+  "base_commit": "9ea0d4485e77c95ff0d8766990ab55d43472b66e",
+  "ground_truth_files": [
+    "doc/source/release.rst",
+    "pandas/core/common.py",
+    "pandas/core/groupby.py",
+    "pandas/core/indexing.py",
+    "pandas/core/internals.py",
+    "pandas/tests/test_common.py",
+    "pandas/tests/test_frame.py",
+    "pandas/tests/test_indexing.py"
+  ],
+  "predicted_files": [
+    "pandas/core/common.py",
+    "pandas/core/indexing.py",
+    "pandas/core/internals.py",
+    "pandas/core/series.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/frame.py', 'pandas/core/indexing.py', 'pandas/core/internals.py', 'pandas/core/series.py', 'pandas/core/common.py'], 'reasoning': '1. pandas/core/frame.py: Implements DataFrame assignment, interfaces with indexers, and manages dtype changes; main coordinator for solving the bug.\\n2. pandas/core/indexing.py: Handles logic for .iloc and .loc operations and their assignments; corrects type coercion path for indexers.\\n3. pandas/core/internals.py: Manages the BlockManager and Block objects where actual data (and dtypes) are stored and updated; changes needed for correct dtype coercion upon assignment.\\n4. pandas/core/series.py: Handles Series assignment; needs update if Series is affected similarly by assignment bugs.\\n5. pandas/core/common.py: Contains shared utilities for type inference, coercion, and error handling used by other files; may need supporting changes for assignment & dtype behavior.'}",
+  "error": null
+}

@@ -1,0 +1,27 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/3925",
+  "repo_name": "pandas",
+  "title": "Access DateTimeIndexed dataframe by timestamp",
+  "base_commit": "b03df731095154e94d23db51d11df5dd736622f8",
+  "ground_truth_files": [
+    "RELEASE.rst",
+    "pandas/core/indexing.py",
+    "pandas/tseries/index.py",
+    "pandas/tseries/tests/test_timeseries.py"
+  ],
+  "predicted_files": [
+    "index.py",
+    "pandas/core/index.py",
+    "pandas/core/indexing.py",
+    "frame.py",
+    "pandas/core/internals.py",
+    "internals.py",
+    "indexing.py",
+    "pandas/core/generic.py",
+    "generic.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/frame.py', 'pandas/core/generic.py', 'pandas/core/internals.py', 'pandas/core/index.py', 'pandas/core/indexing.py'], 'reasoning': 'These files constitute the core of pandas DataFrame and indexing logic: frame.py contains the DataFrame class and distinguishes between column/index access in __getitem__; generic.py contains the NDFrame superclass and generic item-access methods like get; internals.py implements Block/BlockManager where actual data storage/retrieval logic lives; index.py controls label and location mapping for row/column selection; and indexing.py manages conversion and utilities for advanced index/label slicing. To fix the bug where `df[datetime]` does not access rows like df.loc does, changes must be coordinated across these files, with highest priority on frame.py.'}",
+  "error": null
+}

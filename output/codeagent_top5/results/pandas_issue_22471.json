@@ -1,0 +1,28 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/22471",
+  "repo_name": "pandas",
+  "title": "TST/CLN: remove TestData from frame-tests; replace with fixtures",
+  "base_commit": "953757a3e37ffb80570a20a8eca52dae35fc27bb",
+  "ground_truth_files": [
+    "pandas/tests/frame/common.py",
+    "pandas/tests/frame/test_indexing.py",
+    "pandas/tests/frame/test_query_eval.py"
+  ],
+  "predicted_files": [
+    "pandas/tests/frame/test_nonunique_indexes.py",
+    "pandas/tests/frame/test_convert_to.py",
+    "pandas/tests/frame/test_period.py",
+    "test_constructors.py",
+    "pandas/tests/frame/test_dtypes.py",
+    "test_period.py",
+    "test_quantile.py",
+    "test_nonunique_indexes.py",
+    "test_query_eval.py",
+    "pandas/tests/frame/test_constructors.py",
+    "test_convert_to.py",
+    "test_dtypes.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/tests/frame/test_constructors.py', 'pandas/tests/frame/test_convert_to.py', 'pandas/tests/frame/test_dtypes.py', 'pandas/tests/frame/test_nonunique_indexes.py', 'pandas/tests/frame/test_period.py'], 'reasoning': 'These files are listed as unchecked in the issue checklist, indicating they have not yet been migrated from using TestData-derived patterns to the new fixture-based approach. \\n1. test_constructors.py: Directly marked in the issue as needing changes; likely covers many object creation paths using old patterns.\\n2. test_convert_to.py: Also listed, may still use old setup for conversion logic.\\n3. test_dtypes.py: Needs update for dtype-related tests converting from TestData attributes to fixtures.\\n4. test_nonunique_indexes.py: Explicitly mentioned for migration, typically contains indexing logic tests.\\n5. test_period.py: On the checklist for update, likely contains legacy class-based tests.\\nOthers marked in the checklist (e.g., test_quantile.py, test_query_eval.py, etc.) should also be migrated after these top priorities, but these five best represent a broad test coverage and are directly pointed out in the issue.'}",
+  "error": null
+}

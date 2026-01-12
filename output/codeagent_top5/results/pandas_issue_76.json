@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/76",
+  "repo_name": "pandas",
+  "title": "Sparse cumsum functions do not work",
+  "base_commit": "05123af1b2f8db1bc4f05c22515ef378cbeefbd3",
+  "ground_truth_files": [
+    "pandas/core/frame.py",
+    "pandas/core/generic.py",
+    "pandas/core/series.py",
+    "pandas/core/sparse.py",
+    "pandas/tests/test_frame.py",
+    "pandas/tests/test_sparse.py"
+  ],
+  "predicted_files": [
+    "pandas/core/sparse.py",
+    "pandas/src/sparse.pyx",
+    "pandas/core/series.py",
+    "pandas/core/tests/test_libsparse.py",
+    "pandas/core/common.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/sparse.py\",\n        \"pandas/src/sparse.pyx\",\n        \"pandas/core/series.py\",\n        \"pandas/core/tests/test_libsparse.py\",\n        \"pandas/core/common.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/sparse.py: This is the primary file for sparse data structures; adding or fixing the implementation of a .cumsum method for sparse objects should be done here (or to the class/functions present in this file).\\n2. pandas/src/sparse.pyx: Since performance-critical operations for sparse objects are typically implemented here in Cython, a low-level 'cumsum' or equivalent routine may need to be added or fixed if it doesn't already exist.\\n3. pandas/core/series.py: Even if 'SparseSeries' isn't found as a class in current code, any public API or dispatching of Series methods (e.g., .cumsum on a Series which happens to be sparse) would likely require adjustment to route to the correct sparse implementation.\\n4. pandas/core/tests/test_libsparse.py: Appropriate (or missing) tests for cumulative summation with sparse series/data are usually here; this file should be modified to add or update test coverage for the cumsum functionality on sparse arrays or series, according to the issue's example.\\n5. pandas/core/common.py: This file contains shared utility functions and compatibility logic; if Series/DataFrame cumulative operations use helpers/dispatchers (e.g., function wrappers, method dispatch), adjustments may be required here to ensure correct routing for sparse input.\"\n}",
+  "error": null
+}

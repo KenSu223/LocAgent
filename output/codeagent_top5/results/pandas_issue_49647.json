@@ -1,0 +1,43 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/49647",
+  "repo_name": "pandas",
+  "title": "STYLE place standard library imports at top of file",
+  "base_commit": "fa78ea801392f4f0d37ea7ddbbfe44e9c8c102bd",
+  "ground_truth_files": [
+    "pandas/tests/apply/test_series_apply.py",
+    "pandas/tests/arrays/test_datetimelike.py",
+    "pandas/tests/frame/indexing/test_indexing.py",
+    "pandas/tests/frame/methods/test_to_records.py",
+    "pandas/tests/frame/test_constructors.py",
+    "pandas/tests/groupby/test_filters.py",
+    "pandas/tests/groupby/test_grouping.py",
+    "pandas/tests/groupby/test_timegrouper.py",
+    "pandas/tests/indexes/test_common.py",
+    "pandas/tests/indexing/multiindex/test_slice.py",
+    "pandas/tests/io/excel/test_readers.py",
+    "pandas/tests/io/formats/test_printing.py",
+    "pandas/tests/io/formats/test_to_csv.py",
+    "pandas/tests/io/json/test_pandas.py",
+    "pandas/tests/io/parser/test_c_parser_only.py",
+    "pandas/tests/io/parser/test_encoding.py",
+    "pandas/tests/io/parser/test_python_parser_only.py",
+    "pandas/tests/io/pytables/test_store.py",
+    "pandas/tests/io/test_orc.py",
+    "pandas/tests/io/xml/test_xml.py",
+    "pandas/tests/plotting/frame/test_frame.py",
+    "pandas/tests/reshape/concat/test_concat.py",
+    "pandas/tests/reshape/concat/test_index.py",
+    "pandas/tests/reshape/test_get_dummies.py",
+    "pandas/tests/series/test_arithmetic.py"
+  ],
+  "predicted_files": [
+    "pandas/io/common.py",
+    "pandas/io/html.py",
+    "pandas/io/sql.py",
+    "pandas/io/pytables.py",
+    "pandas/io/stata.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/io/common.py\",\n        \"pandas/io/html.py\",\n        \"pandas/io/sql.py\",\n        \"pandas/io/pytables.py\",\n        \"pandas/io/stata.py\"\n    ],\n    \"reasoning\": \"Based on the issue description and the file structure, large IO-related modules in pandas such as common.py, html.py, sql.py, pytables.py, and stata.py are the most likely places where standard library imports are placed inside functions (often for platform, encoding, or format-specific routines). These files are lengthy and handle many different cases, making them prone to having imports buried in function scope rather than at the top of the file. They cover essential IO functionality for users and are likely to be flagged by an automated style checker for misplaced imports. Cleaning these up improves maintainability and consistency. Smaller or less core files (such as pandas/__init__.py, config.py, and conftest.py) were inspected and shown to follow correct import placement. Prioritization is as follows: (1) common.py is most important as it underpins IO for many formats; (2) html.py, sql.py, pytables.py, and stata.py are all critical for widely-used features.\"\n}",
+  "error": null
+}

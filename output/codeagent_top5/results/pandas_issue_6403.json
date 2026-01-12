@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/6403",
+  "repo_name": "pandas",
+  "title": "ExcelFile parse of empty sheet fails with \"IndexError: list index out of range\"",
+  "base_commit": "0b74c72e1c7fe320440fa97a3d256107ea329307",
+  "ground_truth_files": [
+    "ci/requirements-3.4.txt",
+    "ci/requirements-3.4_SLOW.txt",
+    "doc/source/install.rst",
+    "doc/source/io.rst",
+    "doc/source/whatsnew/v0.17.0.txt",
+    "pandas/core/frame.py",
+    "pandas/io/excel.py",
+    "pandas/io/tests/test_excel.py",
+    "vb_suite/packers.py"
+  ],
+  "predicted_files": [
+    "pandas/io/parsers.py",
+    "pandas/io/excel.py",
+    "pandas/io/tests/test_excel.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/io/excel.py', 'pandas/io/tests/test_excel.py'], 'reasoning': '1. pandas/io/excel.py is the source of the bug: it accesses data[header] without verifying that the data has enough rows to support this. The code in _parse_excel should be fixed to handle blank sheets gracefully. 2. pandas/io/tests/test_excel.py should be updated to add or expand tests that verify ExcelFile.parse does not fail on blank sheets, ensuring the bug is covered. Other files (e.g., pandas/io/parsers.py) handle more generic data parsing and do not need modification for this bug.'}",
+  "error": null
+}

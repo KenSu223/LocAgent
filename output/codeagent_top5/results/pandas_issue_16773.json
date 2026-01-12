@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/16773",
+  "repo_name": "pandas",
+  "title": "SparseDataFrame constructor has horrible performance for df with many columns",
+  "base_commit": "a9421af1aac906cc38d025ed5db4a2b55cb8b9bc",
+  "ground_truth_files": [
+    "asv_bench/benchmarks/sparse.py",
+    "doc/source/whatsnew/v0.21.0.txt",
+    "pandas/core/sparse/frame.py",
+    "pandas/tests/reshape/test_reshape.py",
+    "pandas/tests/sparse/test_frame.py"
+  ],
+  "predicted_files": [
+    "pandas/core/sparse/series.py",
+    "pandas/core/sparse/frame.py",
+    "pandas/core/internals.py",
+    "asv_bench/benchmarks/sparse.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/sparse/frame.py', 'pandas/core/internals.py', 'pandas/core/sparse/series.py', 'pandas/core/frame.py', 'asv_bench/benchmarks/sparse.py'], 'reasoning': \"1. pandas/core/sparse/frame.py: Contains SparseDataFrame and its construction logic where the core performance bottleneck resides, particularly in _init_dict. 2. pandas/core/internals.py: Manages low-level data structures (BlockManager) involved in SparseDataFrame creation and may need optimization to support efficient column assignments. 3. pandas/core/sparse/series.py: Includes SparseSeries and SparseArray, integral to sparse data representation and transformation, possibly requiring interface or performance tweaks for proposed changes. 4. pandas/core/frame.py: Implements DataFrame's efficient dict-based construction and can guide refactoring to improve SparseDataFrame initialization process. 5. asv_bench/benchmarks/sparse.py: Holds performance benchmarks for sparse structures and should be updated to test and evidence improvements after modification.\"}",
+  "error": null
+}

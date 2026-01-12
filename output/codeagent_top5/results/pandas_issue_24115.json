@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/24115",
+  "repo_name": "pandas",
+  "title": "DTA/TDA/PA inplace methods should actually be inplace",
+  "base_commit": "710df2140555030e4d86e669d6df2deb852bcaf5",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v1.0.0.rst",
+    "pandas/core/arrays/datetimelike.py",
+    "pandas/tests/arrays/test_datetimelike.py"
+  ],
+  "predicted_files": [
+    "pandas/core/arrays/datetimes.py",
+    "pandas/core/arrays/timedeltas.py",
+    "pandas/core/arrays/period.py",
+    "pandas/core/arrays/datetimelike.py",
+    "pandas/core/arrays/base.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/arrays/datetimes.py\",\n        \"pandas/core/arrays/timedeltas.py\",\n        \"pandas/core/arrays/period.py\",\n        \"pandas/core/arrays/datetimelike.py\",\n        \"pandas/core/arrays/base.py\"\n    ],\n    \"reasoning\": \"The code for DatetimeArray (DTA), TimedeltaArray (TDA), and PeriodArray (PA) is implemented in pandas/core/arrays/datetimes.py, timedeltas.py, and period.py, respectively, where their non-inplace methods currently follow Index-like patterns (returning new objects). Modification is required in these files to refactor or add methods so they properly operate in-place. pandas/core/arrays/datetimelike.py provides shared mixins and utilities for these arrays, which may also need updates to enable or support in-place execution. pandas/core/arrays/base.py contains the ExtensionArray base class logic, which governs general array behavior\u2014potentially needing changes if inplace semantics or signatures are standardized for extension arrays. These locations are presented in order of importance, starting with the files housing each specific array type.\"\n}",
+  "error": null
+}

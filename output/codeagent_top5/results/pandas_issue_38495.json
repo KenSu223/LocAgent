@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/38495",
+  "repo_name": "pandas",
+  "title": "Major Performance regression of df.groupby(..).indices",
+  "base_commit": "89b3d6b201b5d429a202b5239054d5a70c8b5071",
+  "ground_truth_files": [
+    "asv_bench/benchmarks/groupby.py"
+  ],
+  "predicted_files": [
+    "pandas/_libs/hashtable.py",
+    "pandas/core/groupby/groupby.py",
+    "pandas/core/groupby/generic.py",
+    "pandas/_libs/groupby.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/_libs/groupby.pyx', 'pandas/core/groupby/groupby.py', 'pandas/core/groupby/generic.py', 'pandas/_libs/hashtable.pyx', 'pandas/core/frame.py'], 'reasoning': \"1. 'pandas/_libs/groupby.pyx': The Cython backend for groupby, where high-performance logic and indices grouping are implemented. Likely source of the regression.\\n2. 'pandas/core/groupby/groupby.py': Central Python groupby coordination logic, interfaces with the backend and manages indices exposure.\\n3. 'pandas/core/groupby/generic.py': Contains user-facing classes such as DataFrameGroupBy, which exposes the indices property/method to users.\\n4. 'pandas/_libs/hashtable.pyx': Backend for grouping/indices, facilitating efficient mapping and grouping operations; may be impacted by changes in underlying logic.\\n5. 'pandas/core/frame.py': Handles dispatch between DataFrame and groupby, connecting user calls to the relevant groupby machinery.\\nThese files are ordered by likelihood of containing the root cause and importance for fixing performance regressions in df.groupby(..).indices.\"}",
+  "error": null
+}

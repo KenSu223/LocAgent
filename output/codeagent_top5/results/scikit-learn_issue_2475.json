@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/2475",
+  "repo_name": "scikit-learn",
+  "title": "Multinomial Naive Bayes: Scikit and Weka have different results",
+  "base_commit": "f7026b04f5e5909aa15848b25de2becd675871a9",
+  "ground_truth_files": [
+    "sklearn/cross_validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/naive_bayes.py",
+    "sklearn/tests/test_multiclass.py",
+    "sklearn/metrics/metrics.py",
+    "sklearn/tests/test_naive_bayes.py",
+    "sklearn/metrics/tests/test_metrics.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/naive_bayes.py', 'sklearn/metrics/metrics.py', 'sklearn/tests/test_naive_bayes.py', 'sklearn/metrics/tests/test_metrics.py', 'sklearn/tests/test_multiclass.py'], 'reasoning': '1. sklearn/naive_bayes.py: Implements MultinomialNB and related probability calculations; any fix to prediction or score computation must start here.\\n2. sklearn/metrics/metrics.py: Implements AUC and related metrics; changes to how AUC is computed or interpreted should be made here if the issue relates to metric differences.\\n3. sklearn/tests/test_naive_bayes.py: Provides direct tests for Naive Bayes implementations; must be updated to verify any fixes.\\n4. sklearn/metrics/tests/test_metrics.py: Contains tests of AUC and metric evaluation\u2014necessary to ensure metric changes resolve the issue.\\n5. sklearn/tests/test_multiclass.py: MultinomialNB is used with multiclass/OneVsRest setups, so fixing or verifying changes here is important for general compatibility.'}",
+  "error": null
+}
