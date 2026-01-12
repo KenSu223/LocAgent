@@ -163,10 +163,6 @@ loc_bench_data/
 test
 test/
 playground/
-evaluation_results/
-evaluation_results
-evaluation/loc_output/
-evaluation/loc_output
 scripts/env/set_env.local.sh
 scripts/env/
 scripts/plot/
@@ -182,8 +178,6 @@ baselines/
 sft/wandb
 sft/qwen-w-lora-test
 *.pdf
-evaluation/gt_data/
-evaluation/agentless/
 sft/
 config.toml
 unsloth_compiled_cache/
