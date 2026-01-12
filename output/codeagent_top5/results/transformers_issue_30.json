@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/30",
+  "repo_name": "transformers",
+  "title": "[Feature request] Add example of finetuning the pretrained models on custom corpus",
+  "base_commit": "d2871b29754abd0f72cf42c299bb1c041519f7bc",
+  "ground_truth_files": [
+    "src/transformers/modeling_utils.py",
+    "src/transformers/trainer.py",
+    "src/transformers/training_args.py"
+  ],
+  "predicted_files": [
+    "run_clm.py",
+    "run_clm_no_trainer.py",
+    "modeling/run_clm.py",
+    "modeling/run_clm_no_trainer.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['examples/pytorch/language-modeling/README.md', 'examples/pytorch/language-modeling/run_clm.py', 'examples/pytorch/language-modeling/run_clm_no_trainer.py', 'examples/README.md', 'examples/pytorch/language-modeling/requirements.txt'], 'reasoning': '1. README.md (language-modeling): Main place to add a finetuning example and step-by-step guide for using a custom corpus, making this the most important file to modify for discoverability and user instructions. 2. run_clm.py: The central script for causal language modeling finetuning; update docstring/comments and possibly add functionality or example CLI for custom corpus. 3. run_clm_no_trainer.py: Alternate script for the same task; add corresponding example and/or clarify corpus loading for finetuning. 4. examples/README.md: To make new examples visible from the main examples index and guide users to the right language-modeling folder. 5. requirements.txt (language-modeling): Update if custom corpus workflow requires additional dependencies, ensuring setup instructions are clear.'}",
+  "error": null
+}

@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/402",
+  "repo_name": "localstack",
+  "title": "Dynamodbstreams Use Kinesis Shard Identifiers",
+  "base_commit": "65b807e4e95fe6da3e30f13e4271dc9dcfaa334e",
+  "ground_truth_files": [
+    "localstack/services/dynamodbstreams/dynamodbstreams_api.py"
+  ],
+  "predicted_files": [
+    "localstack/services/dynamodbstreams/dynamodbstreams_api.py",
+    "localstack/utils/aws/aws_stack.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/dynamodbstreams/dynamodbstreams_api.py\",\n        \"localstack/utils/aws/aws_stack.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/dynamodbstreams/dynamodbstreams_api.py is the primary source of the bug: it constructs the DynamoDB Streams DescribeStream response and directly proxies Kinesis Shard IDs (which are too short for DynamoDB; see lines 70 and nearby logic). This file must be updated to generate or translate to valid DynamoDB Streams shard IDs and map correctly between DynamoDB Streams and Kinesis.\\n\\n2. localstack/utils/aws/aws_stack.py is used for key helper functions such as ARNs and stream naming. Depending on the solution, you may need to modify or add functions here to support the correct formatting and translation for DynamoDB Streams ShardIds, or for sharding metadata generation.\\n\\nThe remaining parts of the flow (such as kinesis_listener.py or test files) do not handle id generation or stream description\u2014they operate on lower-level events or just pass through requests\u2014so they are not required for direct modification for this bug. If cross-service integration needs improvements (e.g., to ensure proper key schemas are returned), the refactor could extend here, but the issue as described is solved in the two files above.\"\n}",
+  "error": null
+}

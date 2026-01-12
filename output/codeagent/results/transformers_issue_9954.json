@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/9954",
+  "repo_name": "transformers",
+  "title": "[Good first issue] LXMERT TensorFlow Integration tests",
+  "base_commit": "626a0a01471accc32ded29ccca3ed93c4995fcd6",
+  "ground_truth_files": [
+    "tests/test_modeling_tf_lxmert.py"
+  ],
+  "predicted_files": [
+    "tests/test_modeling_tf_bert.py",
+    "tests/test_modeling_tf_lxmert.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['tests/test_modeling_tf_lxmert.py'], 'reasoning': 'Integration tests for the TensorFlow LXMERT model are missing and should be added to tests/test_modeling_tf_lxmert.py, following the example from tests/test_modeling_tf_bert.py. No other files are required for this issue.'}",
+  "error": null
+}

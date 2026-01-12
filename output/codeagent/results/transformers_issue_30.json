@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/30",
+  "repo_name": "transformers",
+  "title": "[Feature request] Add example of finetuning the pretrained models on custom corpus",
+  "base_commit": "d2871b29754abd0f72cf42c299bb1c041519f7bc",
+  "ground_truth_files": [
+    "src/transformers/modeling_utils.py",
+    "src/transformers/trainer.py",
+    "src/transformers/training_args.py"
+  ],
+  "predicted_files": [
+    "examples/pytorch/language-modeling/README.md",
+    "examples/pytorch/language-modeling/run_plm.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"examples/pytorch/language-modeling/README.md\",\n        \"examples/pytorch/language-modeling/run_plm.py\"\n    ],\n    \"reasoning\": \"The README.md already has examples for fine-tuning pretrained models on a custom corpus for causal (CLM, e.g. GPT2) and masked language modeling (MLM, e.g. BERT/RoBERTa), but does not provide an equivalent example for permutation language modeling (PLM, e.g. XLNet). It should be updated with a clear example and instructions for using custom training/validation files with XLNet. The run_plm.py script should be reviewed and potentially extended to ensure it supports loading custom corpus files via arguments like --train_file and --validation_file, as done in other scripts. Without this, users cannot easily fine-tune XLNet models on their own data, so changes may be needed both in its argument parsing logic and the documentation.\"\n}",
+  "error": null
+}

@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/29294",
+  "repo_name": "scikit-learn",
+  "title": "ConvergenceWarnings cannot be turned off",
+  "base_commit": "2707099b23a0a8580731553629566c1182d26f48",
+  "ground_truth_files": [
+    "sklearn/utils/parallel.py",
+    "sklearn/utils/tests/test_parallel.py"
+  ],
+  "predicted_files": [
+    "sklearn/covariance/_graph_lasso.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/covariance/_graph_lasso.py'], 'reasoning': 'This file contains the implementation of GraphicalLassoCV and internally suppresses ConvergenceWarnings using \\'warnings.simplefilter(\"ignore\", ConvergenceWarning)\\', preventing users from turning off warnings globally or capturing them. The suppression should be made optional or controlled to respect user warning filters.'}",
+  "error": null
+}

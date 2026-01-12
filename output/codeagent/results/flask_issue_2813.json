@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2813",
+  "repo_name": "flask",
+  "title": "Allow flexible routing with SERVER_NAME config",
+  "base_commit": "07c7d5730a2685ef2281cc635e289685e5c3d478",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "docs/config.rst",
+    "src/flask/app.py",
+    "tests/test_basic.py",
+    "tests/test_blueprints.py"
+  ],
+  "predicted_files": [
+    "src/flask/app.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/app.py'], 'reasoning': 'The SERVER_NAME restriction is enforced only during URL adapter creation in Flask.create_url_adapter() inside src/flask/app.py. Modifying this method allows flexible routing as described in the issue, enabling the application to process requests even if Host differs from SERVER_NAME. No other file contains logic relevant to this specific routing/server name check.'}",
+  "error": null
+}

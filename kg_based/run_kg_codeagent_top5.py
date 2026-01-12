@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
 """
-Run CodeAgent for file localization on MULocBench issues.
+Run CodeAgent for file localization on MULocBench issues (Top-5 Mode + Knowledge Graph).
+
+This script extends the top-5 mode by adding Knowledge Graph exploration capabilities.
+The agent can query the pre-built KG to understand code dependencies and relationships.
 
 This script:
 1. Loads issues from MULocBench dataset
-2. For each issue, checkouts the base_commit
-3. Runs CodeAgent with file exploration tools
-4. Saves localization results to results.json
+2. Loads the pre-built Knowledge Graph for the repository
+3. For each issue, checkouts the base_commit
+4. Runs CodeAgent with file exploration tools + KG exploration tool
+5. Saves localization results (top-5) to results.json
 """
 
 import os
 import sys
 import json
+import pickle
 import subprocess
 from pathlib import Path
 from typing import List, Dict, Any, Optional
@@ -20,12 +25,19 @@ from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 # Add directories to path for imports
-sys.path.insert(0, str(Path(__file__).parent))  # codeagent directory (for models)
+sys.path.insert(0, str(Path(__file__).parent))  # kg_based directory
+sys.path.insert(0, str(Path(__file__).parent.parent))  # locagent root
+sys.path.insert(0, str(Path(__file__).parent.parent / "codeagent"))  # for models
 sys.path.insert(0, str(Path(__file__).parent.parent / "index_based"))
 
 from models import get_smolagent_model
+from dependency_graph.traverse_graph import RepoEntitySearcher
 
 from smolagents import CodeAgent, tool
+
+# Global KG state (set per-repo before running agent)
+CURRENT_KG = None
+CURRENT_KG_SEARCHER = None
 
 
 # ============================================================================
@@ -205,6 +217,170 @@ def get_file_structure(max_depth: int = 3) -> str:
     return "\n".join(tree[:200])  # Limit output
 
 
+@tool
+def explore_kg(query: str, query_type: str = "search") -> str:
+    """
+    Explore the Knowledge Graph to find code entities and their dependencies.
+
+    The Knowledge Graph contains information about files, classes, functions,
+    and their relationships (imports, invokes, inherits, contains).
+
+    Args:
+        query: The search query - can be a function name, class name, or file path
+        query_type: Type of query:
+            - "search": Search for entities by name (default)
+            - "dependencies": Get dependencies (imports, calls) for an entity
+            - "dependents": Get entities that depend on (import, call) the given entity
+
+    Returns:
+        Matching entities and their relationships from the Knowledge Graph
+    """
+    global CURRENT_KG, CURRENT_KG_SEARCHER
+
+    if CURRENT_KG is None or CURRENT_KG_SEARCHER is None:
+        return "Knowledge Graph not loaded for this repository"
+
+    try:
+        results = []
+
+        if query_type == "search":
+            # Search for entities by name
+            name_dict = CURRENT_KG_SEARCHER.global_name_dict
+            name_dict_lower = CURRENT_KG_SEARCHER.global_name_dict_lowercase
+
+            # Try exact match first
+            matches = name_dict.get(query, [])
+            if not matches:
+                # Try case-insensitive
+                matches = name_dict_lower.get(query.lower(), [])
+
+            if matches:
+                results.append(f"Found {len(matches)} entities matching '{query}':")
+                for nid in matches[:20]:  # Limit to 20 results
+                    node_data = CURRENT_KG.nodes.get(nid, {})
+                    node_type = node_data.get('type', 'unknown')
+                    results.append(f"  [{node_type}] {nid}")
+            else:
+                # Partial match
+                partial_matches = []
+                for name, nids in name_dict.items():
+                    if query.lower() in name.lower():
+                        partial_matches.extend(nids)
+
+                if partial_matches:
+                    results.append(f"No exact match. Found {len(partial_matches)} partial matches for '{query}':")
+                    for nid in partial_matches[:20]:
+                        node_data = CURRENT_KG.nodes.get(nid, {})
+                        node_type = node_data.get('type', 'unknown')
+                        results.append(f"  [{node_type}] {nid}")
+                else:
+                    results.append(f"No entities found matching '{query}'")
+
+        elif query_type == "dependencies":
+            # Get what this entity depends on (outgoing edges)
+            # First find the entity
+            name_dict = CURRENT_KG_SEARCHER.global_name_dict
+            matches = name_dict.get(query, [])
+            if not matches:
+                matches = CURRENT_KG_SEARCHER.global_name_dict_lowercase.get(query.lower(), [])
+
+            if not matches:
+                # Try as direct node ID
+                if query in CURRENT_KG.nodes:
+                    matches = [query]
+
+            if matches:
+                nid = matches[0]  # Use first match
+                results.append(f"Dependencies for '{nid}':")
+
+                # Get outgoing edges
+                out_edges = CURRENT_KG.out_edges(nid, data=True)
+                deps_by_type = defaultdict(list)
+                for _, target, data in out_edges:
+                    edge_type = data.get('type', 'unknown')
+                    if edge_type != 'contains':  # Skip containment edges
+                        deps_by_type[edge_type].append(target)
+
+                for edge_type, targets in deps_by_type.items():
+                    results.append(f"  [{edge_type}]:")
+                    for t in targets[:10]:
+                        results.append(f"    - {t}")
+                    if len(targets) > 10:
+                        results.append(f"    ... and {len(targets) - 10} more")
+
+                if not deps_by_type:
+                    results.append("  (no dependencies found)")
+            else:
+                results.append(f"Entity '{query}' not found in Knowledge Graph")
+
+        elif query_type == "dependents":
+            # Get what depends on this entity (incoming edges)
+            name_dict = CURRENT_KG_SEARCHER.global_name_dict
+            matches = name_dict.get(query, [])
+            if not matches:
+                matches = CURRENT_KG_SEARCHER.global_name_dict_lowercase.get(query.lower(), [])
+
+            if not matches:
+                if query in CURRENT_KG.nodes:
+                    matches = [query]
+
+            if matches:
+                nid = matches[0]
+                results.append(f"Entities that depend on '{nid}':")
+
+                # Get incoming edges
+                in_edges = CURRENT_KG.in_edges(nid, data=True)
+                deps_by_type = defaultdict(list)
+                for source, _, data in in_edges:
+                    edge_type = data.get('type', 'unknown')
+                    if edge_type != 'contains':
+                        deps_by_type[edge_type].append(source)
+
+                for edge_type, sources in deps_by_type.items():
+                    results.append(f"  [{edge_type}]:")
+                    for s in sources[:10]:
+                        results.append(f"    - {s}")
+                    if len(sources) > 10:
+                        results.append(f"    ... and {len(sources) - 10} more")
+
+                if not deps_by_type:
+                    results.append("  (no dependents found)")
+            else:
+                results.append(f"Entity '{query}' not found in Knowledge Graph")
+
+        else:
+            results.append(f"Unknown query_type: {query_type}. Use 'search', 'dependencies', or 'dependents'")
+
+        return "\n".join(results)
+
+    except Exception as e:
+        return f"Error exploring Knowledge Graph: {e}"
+
+
+def load_kg(repo_name: str, kgs_dir: Path) -> bool:
+    """Load the Knowledge Graph for a repository."""
+    global CURRENT_KG, CURRENT_KG_SEARCHER
+
+    kg_path = kgs_dir / f"{repo_name}.pkl"
+    if not kg_path.exists():
+        print(f"[KG] Warning: KG not found at {kg_path}")
+        CURRENT_KG = None
+        CURRENT_KG_SEARCHER = None
+        return False
+
+    try:
+        with open(kg_path, 'rb') as f:
+            CURRENT_KG = pickle.load(f)
+        CURRENT_KG_SEARCHER = RepoEntitySearcher(CURRENT_KG)
+        print(f"[KG] Loaded KG: {CURRENT_KG.number_of_nodes()} nodes, {CURRENT_KG.number_of_edges()} edges")
+        return True
+    except Exception as e:
+        print(f"[KG] Error loading KG: {e}")
+        CURRENT_KG = None
+        CURRENT_KG_SEARCHER = None
+        return False
+
+
 # ============================================================================
 # Main Logic
 # ============================================================================
@@ -255,7 +431,7 @@ def run_localization(
     title = issue.get("title", "")
     body = issue.get("body", "")[:3000]  # Limit body length
 
-    prompt = f"""You are a code localization expert. Your task is to identify which files in this repository need to be modified to fix the following issue.
+    prompt = f"""You are a code localization expert. Given the following GitHub problem description, your objective is to localize the specific files that need modification to resolve the issue.
 
 ## Issue Title
 {title}
@@ -265,18 +441,22 @@ def run_localization(
 
 ## Instructions
 1. First, explore the repository structure using get_file_structure()
-2. Search for relevant code using search_in_files()
-3. Read specific files using read_file() to understand the code
-4. Based on your analysis, identify the files that need to be modified
+2. Use explore_kg() to search the Knowledge Graph for relevant entities and understand code dependencies (imports, function calls, inheritance)
+3. Search for relevant code using search_in_files() to find modules mentioned in the issue
+4. Read specific files using read_file() to understand the code and trace execution flow
+5. Analyze dependencies using explore_kg(query, "dependencies") or explore_kg(query, "dependents") to find related files
 
-## Required Output
-After your analysis, provide your final answer as a JSON object with this format:
+## Output Format
+Your final output should list the locations requiring modification, ordered by importance.
+Your answer should include about 5 files (can be fewer if the issue is simple, or more if truly necessary).
+
+Provide your final answer as a JSON object with this format:
 {{
-    "files_to_modify": ["path/to/file1.py", "path/to/file2.py"],
-    "reasoning": "Brief explanation of why these files need changes"
+    "files_to_modify": ["path/to/file1.py", "path/to/file2.py", "path/to/file3.py", "path/to/file4.py", "path/to/file5.py"],
+    "reasoning": "Brief explanation of why these files need changes, in order of importance"
 }}
 
-Only include files that actually need to be modified to fix the issue.
+List files in order of importance (most important first). Focus on files that actually need modification.
 """
 
     # Set repo path in environment for tools
@@ -501,11 +681,24 @@ def process_repo_issues(
         print(f"[{repo_name}] All issues already cached, skipping repo")
         return results
 
+    # Load Knowledge Graph for this repository
+    kgs_dir = repos_dir.parent / "kgs"
+    kg_loaded = load_kg(repo_name, kgs_dir)
+
     # Create agent for this worker
     print(f"[{repo_name}] Initializing CodeAgent with {model_id}...")
     model = get_smolagent_model(model_id)
+
+    # Include explore_kg tool only if KG was loaded
+    tools = [list_directory, read_file, search_in_files, get_file_structure]
+    if kg_loaded:
+        tools.append(explore_kg)
+        print(f"[{repo_name}] KG exploration enabled")
+    else:
+        print(f"[{repo_name}] KG not available, running without KG tool")
+
     agent = CodeAgent(
-        tools=[list_directory, read_file, search_in_files, get_file_structure],
+        tools=tools,
         model=model,
         max_steps=10,
         verbosity_level=1
@@ -627,17 +820,21 @@ def main():
     if args.output:
         output_dir = Path(args.output)
     else:
-        output_dir = project_root / "output" / "codeagent" / "results"
+        output_dir = project_root / "output" / "kg_codeagent_top5" / "results"
+
+    # KG directory
+    kgs_dir = project_root / "dataset" / "kgs"
 
     # Create output directory if needed
     output_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"=" * 60)
-    print(f"CodeAgent File Localization")
+    print(f"CodeAgent File Localization (Top-5 Mode + Knowledge Graph)")
     print(f"=" * 60)
     print(f"Model: {args.model_id}")
     print(f"Repository filter: {args.repo if args.repo else DEFAULT_REPOS}")
     print(f"Repos directory: {repos_dir}")
+    print(f"KGs directory: {kgs_dir}")
     print(f"Output directory: {output_dir}")
     print(f"=" * 60)
 
@@ -749,6 +946,7 @@ def main():
     print(f"\nResults saved to:")
     print(f"  - Per-issue: {output_dir}/<repo>_issue_<id>.json")
     print(f"  - Summary:   {output_dir}/results.json")
+    print(f"  (Top-5 mode + KG: files ordered by importance with KG-enhanced exploration)")
 
 
 if __name__ == "__main__":

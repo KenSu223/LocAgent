@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/15640",
+  "repo_name": "transformers",
+  "title": "Add support for ONNX-TensorRT conversion for GPT-J6B (and possible bug in rotary embedding)",
+  "base_commit": "147c8166852db64de12b851b8307f44c9e8fe0dd",
+  "ground_truth_files": [
+    "src/transformers/models/gptj/modeling_gptj.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/gptj/modeling_gptj.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/gptj/modeling_gptj.py'], 'reasoning': \"The file 'src/transformers/models/gptj/modeling_gptj.py' contains the rotary positional embedding logic and the problematic usage of torch.repeat_interleave that causes ONNX Sequence ops to be exported. Modifying this file will fix the ONNX-TensorRT compatibility issue for GPT-J6B, and allow for clarification/correction of the rotary embedding implementation. No other files involve rotary embedding or GPT-J ONNX export issues.\"}",
+  "error": null
+}

@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/11696",
+  "repo_name": "localstack",
+  "title": "bug: API Gateway does not persist correctly when you restart the localstack docker container",
+  "base_commit": "8c9d9b0475247f667a0f184f2fbc6d66b955749f",
+  "ground_truth_files": [
+    "localstack-core/localstack/services/apigateway/next_gen/execute_api/router.py",
+    "localstack-core/localstack/services/apigateway/next_gen/provider.py"
+  ],
+  "predicted_files": [
+    "localstack-core/localstack/services/apigateway/helpers.py",
+    "localstack-core/localstack/services/apigateway/models.py",
+    "localstack-core/localstack/services/apigateway/legacy/provider.py",
+    "localstack-core/localstack/services/apigateway/next_gen/provider.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack-core/localstack/services/apigateway/helpers.py\",\n        \"localstack-core/localstack/services/apigateway/models.py\",\n        \"localstack-core/localstack/services/apigateway/legacy/provider.py\",\n        \"localstack-core/localstack/services/apigateway/next_gen/provider.py\"\n    ],\n    \"reasoning\": \"The bug centers around LocalStack's API Gateway not persisting its deployed state across container restarts. The files above are core to the definition, storage, access, and creation of API Gateway resources (APIs, stages, deployments). The helpers.py handles store access and retrieval, models.py contains the underlying resource structures, while legacy/provider.py and next_gen/provider.py contain main logic for the respective API Gateway service handlers. Fixing persistence will require modifying these files to correctly save, restore, and reload API Gateway objects during container lifecycle events (shutdown/startup). While persistence implementation may need support in other generic LocalStack modules, these are the main service-specific files that must be addressed for correct API Gateway state restoration.\"\n}",
+  "error": null
+}

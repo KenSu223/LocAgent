@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/27682",
+  "repo_name": "scikit-learn",
+  "title": "MAINT Directly `cimport` interfaces from `std::algorithm`",
+  "base_commit": "3d19272be75fe32edd4cf01cb2eeac2281305e42",
+  "ground_truth_files": [
+    "sklearn/metrics/_pairwise_distances_reduction/_middle_term_computer.pyx.tp",
+    "sklearn/metrics/_pairwise_distances_reduction/_radius_neighbors.pyx.tp"
+  ],
+  "predicted_files": [
+    "sklearn/metrics/_pairwise_distances_reduction/_radius_neighbors.py",
+    "sklearn/metrics/_pairwise_distances_reduction/_middle_term_computer.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/metrics/_pairwise_distances_reduction/_radius_neighbors.pyx.tp', 'sklearn/metrics/_pairwise_distances_reduction/_middle_term_computer.pyx.tp'], 'reasoning': 'Both files manually bind C++ standard library functions `move` and `fill` using the old `cdef extern from <algorithm>` syntax. Cython 3 now supports direct cimporting from `libcpp.algorithm`, so these files should switch to the new idiom for better compatibility and maintainability as described in the issue.'}",
+  "error": null
+}

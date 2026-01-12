@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/34390",
+  "repo_name": "transformers",
+  "title": "[mask2former] torch.export error for Mask2Former",
+  "base_commit": "9bee9ff5db6e68fb31065898d7e924d07c1eb9c1",
+  "ground_truth_files": [
+    "src/transformers/models/mask2former/modeling_mask2former.py",
+    "tests/models/mask2former/test_modeling_mask2former.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/mask2former/modeling_mask2former.py",
+    "modeling_mask2former.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/mask2former/modeling_mask2former.py'], 'reasoning': 'The error originates from dynamic/tensor-dependent shape computations and masking logic located in the forward methods inside modeling_mask2former.py, causing symbolic tracing (torch.export) to fail. Modifications are needed here to ensure all shape and mask operations are compatible with torch.export.'}",
+  "error": null
+}

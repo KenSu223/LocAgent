@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/1971",
+  "repo_name": "flask",
+  "title": "Implement RFC 7233",
+  "base_commit": "01081dbe6cdfa3fc43d8e1fff708d4ed95e1be7e",
+  "ground_truth_files": [
+    "CHANGES",
+    "flask/helpers.py",
+    "tests/test_helpers.py"
+  ],
+  "predicted_files": [
+    "flask/helpers.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"flask/helpers.py\"\n    ],\n    \"reasoning\": \"The send_file method, which is responsible for sending files to clients and managing features such as conditional responses, is implemented in flask/helpers.py (starting at line 430). To support RFC 7233 Range Requests (partial file responses), this method must be modified to inspect and respond to 'Range' headers as per the HTTP specification. Other files are not directly involved in this functionality, as send_file encapsulates core file-serving behavior in Flask.\"\n}",
+  "error": null
+}

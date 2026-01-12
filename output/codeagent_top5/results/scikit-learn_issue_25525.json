@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/25525",
+  "repo_name": "scikit-learn",
+  "title": "Extend SequentialFeatureSelector example to demonstrate how to use negative tol",
+  "base_commit": "559609fe98ec2145788133687e64a6e87766bc77",
+  "ground_truth_files": [
+    "examples/feature_selection/plot_select_from_model_diabetes.py"
+  ],
+  "predicted_files": [
+    "sklearn/feature_selection/_sequential.py",
+    "sklearn/feature_selection/tests/test_sequential.py",
+    "examples/release_highlights/plot_release_highlights_0_24_0.py",
+    "examples/feature_selection/plot_select_from_model_diabetes.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/feature_selection/_sequential.py', 'sklearn/feature_selection/tests/test_sequential.py', 'examples/feature_selection/plot_select_from_model_diabetes.py', 'examples/release_highlights/plot_release_highlights_0_24_0.py', 'doc/modules/feature_selection.rst'], 'reasoning': \"1. 'sklearn/feature_selection/_sequential.py' contains the core implementation and docstring for SequentialFeatureSelector, and must document and correctly handle negative tol.\\n2. 'sklearn/feature_selection/tests/test_sequential.py' already has direct tests for negative tol; updating/calibrating these ensures robust coverage.\\n3. 'examples/feature_selection/plot_select_from_model_diabetes.py' is a canonical example for feature selection and should demonstrate negative tol usage, especially in backward SFS cases.\\n4. 'examples/release_highlights/plot_release_highlights_0_24_0.py' is for release notes and demos and should clearly show negative tol in the API highlight.\\n5. 'doc/modules/feature_selection.rst' is the user reference doc and should explicitly discuss and demonstrate usage of the tol parameter, including negative values.\"}",
+  "error": null
+}

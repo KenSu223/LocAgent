@@ -1,0 +1,27 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/8171",
+  "repo_name": "transformers",
+  "title": "Need suggestion on contributing TFDPR",
+  "base_commit": "eb3bd73ce35bfef56eeb722d697f2d39a06a8f8d",
+  "ground_truth_files": [
+    "docs/source/model_doc/dpr.rst",
+    "src/transformers/__init__.py",
+    "src/transformers/convert_pytorch_checkpoint_to_tf2.py",
+    "src/transformers/modeling_tf_auto.py",
+    "src/transformers/utils/dummy_pt_objects.py",
+    "src/transformers/utils/dummy_tf_objects.py",
+    "tests/test_modeling_dpr.py",
+    "utils/check_repo.py"
+  ],
+  "predicted_files": [
+    "modeling_tf_dpr.py",
+    "src/transformers/__init__.py",
+    "dummy_tf_objects.py",
+    "src/transformers/modeling_tf_dpr.py",
+    "src/transformers/utils/dummy_tf_objects.py",
+    "__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/modeling_tf_dpr.py', 'src/transformers/__init__.py', 'src/transformers/utils/dummy_tf_objects.py', 'docs/source/model_doc/dpr.rst'], 'reasoning': 'To support TFDPR, you need to create modeling_tf_dpr.py for the model implementation, edit __init__.py to register/import the model, update dummy_tf_objects.py to provide TF dummy stubs, and update docs/source/model_doc/dpr.rst for documentation. These changes cover the necessary code and doc integration for a first-class TFDPR addition.'}",
+  "error": null
+}

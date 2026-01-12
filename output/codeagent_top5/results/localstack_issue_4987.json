@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/4987",
+  "repo_name": "localstack",
+  "title": "bug: The Content-MD5 you specified did not match what we received",
+  "base_commit": "2fe8440b619329891db150e45910e8aaad97b7ce",
+  "ground_truth_files": [
+    "localstack/services/s3/s3_listener.py",
+    "tests/integration/test_s3.py"
+  ],
+  "predicted_files": [
+    "tests/integration/test_s3.py",
+    "localstack/services/s3/s3_utils.py",
+    "s3_listener.py",
+    "edge.py",
+    "localstack/services/s3/s3_listener.py",
+    "localstack/services/edge.py",
+    "multipart_content.py",
+    "s3_utils.py",
+    "localstack/services/s3/multipart_content.py",
+    "test_s3.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/s3/s3_listener.py', 'localstack/services/s3/multipart_content.py', 'localstack/services/s3/s3_utils.py', 'localstack/services/edge.py', 'tests/integration/test_s3.py'], 'reasoning': '1. s3_listener.py: The main S3 request handler where uploads and headers are dispatched to the backend. 2. multipart_content.py: Handles multipart uploads, a common place for MD5/content validation logic. 3. s3_utils.py: Utility functions for S3, likely used in request parsing or header handling. 4. edge.py: Acts as the main proxy/router for service requests (including S3), and is referenced in debug logs during errors. 5. test_s3.py: S3 integration tests, to improve or add tests for Content-MD5 validation and BadDigest handling. Changes are likely needed in these files to intercept, delegate, or patch MD5 logic as the bug is surfaced in edge proxy with S3, and is likely related to how requests are forwarded to backends.'}",
+  "error": null
+}

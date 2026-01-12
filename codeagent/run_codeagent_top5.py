@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """
-Run CodeAgent for file localization on MULocBench issues.
+Run CodeAgent for file localization on MULocBench issues (Top-5 Mode).
+
+This script aligns with locagent's setting by asking the model to return
+about 5 files ordered by importance.
 
 This script:
 1. Loads issues from MULocBench dataset
 2. For each issue, checkouts the base_commit
 3. Runs CodeAgent with file exploration tools
-4. Saves localization results to results.json
+4. Saves localization results (top-5) to results.json
 """
 
 import os
@@ -255,7 +258,7 @@ def run_localization(
     title = issue.get("title", "")
     body = issue.get("body", "")[:3000]  # Limit body length
 
-    prompt = f"""You are a code localization expert. Your task is to identify which files in this repository need to be modified to fix the following issue.
+    prompt = f"""You are a code localization expert. Given the following GitHub problem description, your objective is to localize the specific files that need modification to resolve the issue.
 
 ## Issue Title
 {title}
@@ -265,18 +268,21 @@ def run_localization(
 
 ## Instructions
 1. First, explore the repository structure using get_file_structure()
-2. Search for relevant code using search_in_files()
-3. Read specific files using read_file() to understand the code
-4. Based on your analysis, identify the files that need to be modified
+2. Search for relevant code using search_in_files() to find modules mentioned in the issue
+3. Read specific files using read_file() to understand the code and trace execution flow
+4. Analyze dependencies and identify the files requiring changes
 
-## Required Output
-After your analysis, provide your final answer as a JSON object with this format:
+## Output Format
+Your final output should list the locations requiring modification, ordered by importance.
+Your answer should include about 5 files (can be fewer if the issue is simple, or more if truly necessary).
+
+Provide your final answer as a JSON object with this format:
 {{
-    "files_to_modify": ["path/to/file1.py", "path/to/file2.py"],
-    "reasoning": "Brief explanation of why these files need changes"
+    "files_to_modify": ["path/to/file1.py", "path/to/file2.py", "path/to/file3.py", "path/to/file4.py", "path/to/file5.py"],
+    "reasoning": "Brief explanation of why these files need changes, in order of importance"
 }}
 
-Only include files that actually need to be modified to fix the issue.
+List files in order of importance (most important first). Focus on files that actually need modification.
 """
 
     # Set repo path in environment for tools
@@ -627,13 +633,13 @@ def main():
     if args.output:
         output_dir = Path(args.output)
     else:
-        output_dir = project_root / "output" / "codeagent" / "results"
+        output_dir = project_root / "output" / "codeagent_top5" / "results"
 
     # Create output directory if needed
     output_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"=" * 60)
-    print(f"CodeAgent File Localization")
+    print(f"CodeAgent File Localization (Top-5 Mode)")
     print(f"=" * 60)
     print(f"Model: {args.model_id}")
     print(f"Repository filter: {args.repo if args.repo else DEFAULT_REPOS}")
@@ -749,6 +755,7 @@ def main():
     print(f"\nResults saved to:")
     print(f"  - Per-issue: {output_dir}/<repo>_issue_<id>.json")
     print(f"  - Summary:   {output_dir}/results.json")
+    print(f"  (Top-5 mode: files ordered by importance)")
 
 
 if __name__ == "__main__":

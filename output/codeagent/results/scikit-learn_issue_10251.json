@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/10251",
+  "repo_name": "scikit-learn",
+  "title": "Extending Criterion",
+  "base_commit": "61e722aa126207efcdbc1ddcd4453854ad44ea09",
+  "ground_truth_files": [
+    "sklearn/tree/_criterion.pxd",
+    "sklearn/tree/_criterion.pyx"
+  ],
+  "predicted_files": [
+    "sklearn/tree/_criterion.pxd",
+    "sklearn/tree/_criterion.pyx",
+    "sklearn/tree/tree.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/tree/_criterion.pxd\",\n        \"sklearn/tree/_criterion.pyx\",\n        \"sklearn/tree/tree.py\"\n    ],\n    \"reasoning\": \"To make Criterion easier to extend (in Cython and possibly Python) and to allow passing custom impurity functions to decision trees, changes are needed in these files: (1) _criterion.pxd: to export Criterion and potentially related classes/methods as cpdef (Cython-public), so they can be subclassed easily or from Python; (2) _criterion.pyx: to make key methods of the Criterion class overridable (change from cdef to cpdef for node_impurity, children_impurity, etc.) and clarify/document initialization; (3) tree.py: to relax or refactor the API argument checks for the criterion parameter, enabling users to pass custom Criterion objects or callables. These changes together address subclassing, usage, and extensibility as requested in the issue.\"\n}",
+  "error": null
+}

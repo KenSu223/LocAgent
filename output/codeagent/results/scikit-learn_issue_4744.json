@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/4744",
+  "repo_name": "scikit-learn",
+  "title": "Bug with using TreeClassifier with OOB score and sparse matrices",
+  "base_commit": "abb31d0a7ca769a1e6406553a58a7fb0bd3b259a",
+  "ground_truth_files": [
+    "doc/whats_new.rst",
+    "sklearn/ensemble/forest.py",
+    "sklearn/ensemble/tests/test_forest.py"
+  ],
+  "predicted_files": [
+    "sklearn/ensemble/tests/test_forest.py",
+    "sklearn/ensemble/forest.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/ensemble/forest.py', 'sklearn/ensemble/tests/test_forest.py'], 'reasoning': 'sklearn/ensemble/forest.py must be modified to change check_input to True during OOB score prediction with sparse matrices. sklearn/ensemble/tests/test_forest.py should be updated or extended to include a test for ExtraTreesClassifier with OOB score and sparse matrices to catch this bug in the future.'}",
+  "error": null
+}

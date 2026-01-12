@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2264",
+  "repo_name": "flask",
+  "title": "Handle app factory in FLASK_APP",
+  "base_commit": "cb94f4c5d3d4e1797207fd03d20d06c7bc0d05b4",
+  "ground_truth_files": [
+    "flask/cli.py",
+    "tests/test_cli.py"
+  ],
+  "predicted_files": [
+    "flask/cli.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/cli.py'], 'reasoning': \"The logic for detecting, parsing, and calling app factories (e.g., 'create_app') is handled in flask/cli.py via the find_best_app and call_factory functions. To support factory syntax with arbitrary argument lists, changes are required here to parse and pass those arguments (potentially with regex and literal_eval), as described in the issue. No equivalent logic was found elsewhere.\"}",
+  "error": null
+}

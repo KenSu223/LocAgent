@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/3628",
+  "repo_name": "flask",
+  "title": "Returning Response and headers causes duplicate headers",
+  "base_commit": "6f2fdc5ac4ad869a21c4c0281d7fa1eb8aa5a689",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "src/flask/app.py",
+    "tests/test_basic.py"
+  ],
+  "predicted_files": [
+    "src/flask/helpers.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\"src/flask/helpers.py\"],\n    \"reasoning\": \"The issue arises when jsonify (or direct dict responses) and custom headers (specifically 'Content-Type') are both used, resulting in duplicate 'Content-Type' headers. This is caused by jsonify (likely defined in helpers.py) adding a 'Content-Type: application/json' header and then the custom headers being merged without replacing the previous value. The logic for make_response and jsonify handling, including header merging, will need to be updated in helpers.py to ensure that if the 'Content-Type' is explicitly set in user headers, it replaces the one set by jsonify, avoiding duplicates. Therefore, modifications are required in src/flask/helpers.py, where these utilities and their header-merging logic are implemented.\"\n}",
+  "error": null
+}

@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/4220",
+  "repo_name": "flask",
+  "title": "`template_filter` decorator typing does not support custom filters with multiple arguments",
+  "base_commit": "8e589daaf2cec6a10262b8ff88801127f2fa14fd",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "src/flask/typing.py"
+  ],
+  "predicted_files": [
+    "src/flask/app.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\"src/flask/app.py\"],\n    \"reasoning\": \"The core type used for template filters\u2014TemplateFilterCallable\u2014is already defined correctly in src/flask/typing.py as Callable[..., Any], allowing for multiple arguments. However, the typing restriction causing the mypy error is likely enforced in src/flask/app.py, where the template_filter decorator is implemented or used. The decorator's type hint for the filter argument probably restricts it to a function accepting a single argument (Callable[[Any], str]) instead of the more flexible TemplateFilterCallable. Modifying the type hints in src/flask/app.py to use TemplateFilterCallable will resolve this issue, allowing custom filters that take multiple arguments.\"\n}",
+  "error": null
+}

@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/544",
+  "repo_name": "localstack",
+  "title": "S3 object metadata not saved when uploaded with presigned url",
+  "base_commit": "6c8f52d42563c1207a8cb3fbbfccb6d4af2a0670",
+  "ground_truth_files": [
+    "localstack/services/s3/s3_listener.py",
+    "tests/integration/test_s3.py"
+  ],
+  "predicted_files": [
+    "localstack/services/s3/s3_listener.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/s3/s3_listener.py\"\n    ],\n    \"reasoning\": \"The issue is that metadata passed as custom headers (x-amz-meta-*) during S3 presigned URL PUTs is not saved or returned by localstack. The core S3 request handling is implemented in s3_listener.py, which would be responsible for parsing PUT requests, extracting headers, storing metadata along with objects, and returning metadata in headObject responses. Missing or incorrect metadata handling needs to be fixed in this file so that it processes x-amz-meta-* headers from PUT requests and attaches them to objects appropriately.\"\n}",
+  "error": null
+}

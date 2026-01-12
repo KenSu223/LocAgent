@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/4987",
+  "repo_name": "localstack",
+  "title": "bug: The Content-MD5 you specified did not match what we received",
+  "base_commit": "2fe8440b619329891db150e45910e8aaad97b7ce",
+  "ground_truth_files": [
+    "localstack/services/s3/s3_listener.py",
+    "tests/integration/test_s3.py"
+  ],
+  "predicted_files": [
+    "localstack/services/edge.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/edge.py\"\n    ],\n    \"reasoning\": \"The edge.py file acts as the main ingress proxy and request router for all AWS API service calls in LocalStack, including S3. It handles incoming requests, modifies headers, and proxies requests to service backends such as Moto for S3. The debug logs from the issue show that the S3 requests are routed through edge.py. Content-MD5 mismatches often result from issues with request body encoding, header modification, or proxying errors\u2014exactly the type of logic that edge.py would contain. Since none of the S3 service files contain MD5 or related validation code and the error only happens with new LocalStack versions (likely after a change in edge proxy logic), edge.py is the file to modify to inspect, correct, or rewrite Content-MD5 header handling and ensure compatibility with S3 expectations.\"\n}",
+  "error": null
+}

@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/3689",
+  "repo_name": "scikit-learn",
+  "title": "using sparse matrix in fit_params",
+  "base_commit": "439c19596a248a31cd1aa8220f54a622a0322160",
+  "ground_truth_files": [
+    "sklearn/cross_validation.py",
+    "sklearn/tests/test_cross_validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/cross_validation.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\"sklearn/cross_validation.py\"],\n    \"reasoning\": \"The issue arises from code in sklearn/cross_validation.py where fit_params values (such as a sparse matrix) are assumed to support len(), which raises a TypeError for sparse matrices from scipy. The problem is local to this file in how fit_params are processed before fitting, specifically in the block where it checks 'hasattr(v, __len__) and len(v) == n_samples'. To fix this, one must update the logic to check for sparse matrices and use a different shape or property (e.g., v.shape[0]) instead of len(v), thus only sklearn/cross_validation.py requires modification.\"\n}",
+  "error": null
+}

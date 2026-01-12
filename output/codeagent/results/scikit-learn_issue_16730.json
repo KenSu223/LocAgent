@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/16730",
+  "repo_name": "scikit-learn",
+  "title": "BUG: MLE for PCA mis-estimates rank",
+  "base_commit": "eaf0a044fdc084ebeeb9bbfbcf42e6df2b1491bb",
+  "ground_truth_files": [
+    "doc/whats_new/v0.23.rst",
+    "sklearn/decomposition/_pca.py",
+    "sklearn/decomposition/tests/test_pca.py"
+  ],
+  "predicted_files": [
+    "sklearn/decomposition/_pca.py",
+    "sklearn/decomposition/tests/test_pca.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/decomposition/_pca.py', 'sklearn/decomposition/tests/test_pca.py'], 'reasoning': \"The bug arises in the logic handling MLE rank estimation within PCA, implemented in sklearn/decomposition/_pca.py (likely around the use of _infer_dimension). Tests for PCA's n_components_ (including 'mle' mode) are in sklearn/decomposition/tests/test_pca.py, which should also be updated to verify the fix and correct behavior.\"}",
+  "error": null
+}

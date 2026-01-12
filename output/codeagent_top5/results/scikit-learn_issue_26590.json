@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/26590",
+  "repo_name": "scikit-learn",
+  "title": "KNNImputer add_indicator fails to persist where missing data had been present in training",
+  "base_commit": "e04b8e70e60df88751af5cd667cafb66dc32b397",
+  "ground_truth_files": [
+    "doc/whats_new/v1.3.rst",
+    "sklearn/impute/_knn.py",
+    "sklearn/impute/tests/test_common.py"
+  ],
+  "predicted_files": [
+    "sklearn/impute/tests/test_common.py",
+    "sklearn/impute/_knn.py",
+    "sklearn/impute/tests/test_impute.py",
+    "sklearn/impute/_base.py",
+    "sklearn/impute/tests/test_knn.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/impute/_knn.py', 'sklearn/impute/_base.py', 'sklearn/impute/tests/test_knn.py', 'sklearn/impute/tests/test_common.py', 'sklearn/impute/tests/test_impute.py'], 'reasoning': 'The main issue is in the KNNImputer logic for add_indicator persisting indicator columns when transforming data with no missing values. 1. sklearn/impute/_knn.py is the key class where .fit()/.transform() and indicator logic for KNNImputer is implemented, requiring correction to persist indicator columns. 2. sklearn/impute/_base.py likely holds shared imputer/indicator utilities; fixes to feature name handling and transform logic will also be here. 3. sklearn/impute/tests/test_knn.py contains direct tests of KNNImputer functionality and should check the bugfix and expected vs actual output. 4. sklearn/impute/tests/test_common.py parametrizes add_indicator logic for all imputers, so should expand/fix tests for this scenario and regression. 5. sklearn/impute/tests/test_impute.py covers imputation, indicator, and pandas interactions, so any additional tests for indicator correctness across imputer variants should go here.'}",
+  "error": null
+}

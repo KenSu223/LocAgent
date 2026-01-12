@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/25525",
+  "repo_name": "scikit-learn",
+  "title": "Extend SequentialFeatureSelector example to demonstrate how to use negative tol",
+  "base_commit": "559609fe98ec2145788133687e64a6e87766bc77",
+  "ground_truth_files": [
+    "examples/feature_selection/plot_select_from_model_diabetes.py"
+  ],
+  "predicted_files": [
+    "examples/feature_selection/plot_select_from_model_diabetes.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['examples/feature_selection/plot_select_from_model_diabetes.py'], 'reasoning': 'The diabetes example script demonstrates SequentialFeatureSelector with forward and backward selection, but does not include usage of the `tol` parameter, especially a negative value as described in the issue. To resolve the issue, this example should be expanded to show how to use a negative tolerance. The corresponding test is already present in the test suite, so no change is needed there.'}",
+  "error": null
+}

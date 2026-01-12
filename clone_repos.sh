@@ -15,8 +15,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # File containing repository URLs (one per line)
 REPO_FILE="${SCRIPT_DIR}/repos.txt"
 
-# Directory to store the repositories (relative to locagent root)
-TARGET_DIR="${SCRIPT_DIR}/../dataset/repos"
+# Directory to store the repositories (inside locagent)
+TARGET_DIR="${SCRIPT_DIR}/dataset/repos"
 
 # Parse arguments
 SHALLOW=false
@@ -82,9 +82,9 @@ while read -r repo_url; do
     [[ -z "$repo_url" || "$repo_url" =~ ^# ]] && continue
 
     if clone_repo "$repo_url" "$TARGET_DIR" "$SHALLOW"; then
-        ((SUCCESS_COUNT++))
+        ((++SUCCESS_COUNT))
     else
-        ((FAIL_COUNT++))
+        ((++FAIL_COUNT))
     fi
 done < "$REPO_FILE"
 

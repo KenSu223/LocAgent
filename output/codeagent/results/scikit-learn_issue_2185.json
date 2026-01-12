@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/2185",
+  "repo_name": "scikit-learn",
+  "title": "MinibatchKMeans bad center reallocation causes duplicate centers",
+  "base_commit": "14d03f60ed366df942be09ee4bc394a69958e09c",
+  "ground_truth_files": [
+    "sklearn/cluster/k_means_.py",
+    "sklearn/cluster/tests/test_k_means.py",
+    "sklearn/utils/setup.py",
+    "sklearn/utils/tests/test_extmath.py"
+  ],
+  "predicted_files": [
+    "k_means_.py",
+    "sklearn/cluster/k_means_.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cluster/k_means_.py'], 'reasoning': 'This file contains the implementation of the MiniBatchKMeans algorithm and handles cluster center reallocation. The current heuristic allows duplicate cluster centers to be assigned during bad center reallocation, so modifying this logic in k_means_.py will fix the bug.'}",
+  "error": null
+}

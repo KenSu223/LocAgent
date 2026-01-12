@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/26590",
+  "repo_name": "scikit-learn",
+  "title": "KNNImputer add_indicator fails to persist where missing data had been present in training",
+  "base_commit": "e04b8e70e60df88751af5cd667cafb66dc32b397",
+  "ground_truth_files": [
+    "doc/whats_new/v1.3.rst",
+    "sklearn/impute/_knn.py",
+    "sklearn/impute/tests/test_common.py"
+  ],
+  "predicted_files": [
+    "sklearn/impute/_knn.py",
+    "sklearn/impute/_base.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/impute/_knn.py\",\n        \"sklearn/impute/_base.py\"\n    ],\n    \"reasoning\": \"The main implementation of KNNImputer is in sklearn/impute/_knn.py, where the logic for adding missing value indicator columns during transform is handled (as KNNImputer inherits from _BaseImputer). However, the code for managing the indicator columns and their persistence across fit/transform (especially 'add_indicator') is abstracted in _BaseImputer, which resides in sklearn/impute/_base.py. Both files need changes: _knn.py to ensure KNNImputer's transform method always includes persistent indicator columns if missing values were present on fit, and _base.py to ensure the correct handling of the indicator logic and column management across fit/transform cycles.\"\n}",
+  "error": null
+}

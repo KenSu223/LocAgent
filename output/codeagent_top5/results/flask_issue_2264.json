@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2264",
+  "repo_name": "flask",
+  "title": "Handle app factory in FLASK_APP",
+  "base_commit": "cb94f4c5d3d4e1797207fd03d20d06c7bc0d05b4",
+  "ground_truth_files": [
+    "flask/cli.py",
+    "tests/test_cli.py"
+  ],
+  "predicted_files": [
+    "flask/cli.py",
+    "cli.py",
+    "flask/helpers.py",
+    "flask/app.py",
+    "tests/test_cli.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/cli.py', 'flask/helpers.py', 'flask/app.py', 'tests/test_cli.py', 'docs/patterns/appfactories.rst'], 'reasoning': '1. flask/cli.py \u2013 contains logic for discovering, parsing, and invoking app factories from FLASK_APP; main target for regex and argument handling improvements.\\n2. flask/helpers.py \u2013 may house reusable regex or literal evaluation routines imported by cli.py for parsing callable strings/arguments.\\n3. flask/app.py \u2013 core application logic; may need minor changes if loading/signature handling refactoring is required for factories.\\n4. tests/test_cli.py \u2013 must be updated/created to test support for new FLASK_APP factory string features, e.g., positional/keyword arguments.\\n5. docs/patterns/appfactories.rst \u2013 documentation needs to be updated to reflect new usage pattern for app factories in FLASK_APP.'}",
+  "error": null
+}

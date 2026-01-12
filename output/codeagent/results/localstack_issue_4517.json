@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/4517",
+  "repo_name": "localstack",
+  "title": "bug: AWS::NoValue produces error when used in IAM policy template",
+  "base_commit": "9f1b9dbf60f406e8d6205402b8ac078195cd0c01",
+  "ground_truth_files": [
+    "localstack/services/cloudformation/models/cloudwatch.py",
+    "localstack/services/cloudformation/models/iam.py",
+    "tests/integration/cloudformation/test_cloudformation_iam.py",
+    "tests/integration/cloudformation/test_cloudformation_iam.snapshot.json",
+    "tests/integration/templates/iam_policy_attachments.yaml",
+    "tests/integration/templates/iam_role_policy.yaml"
+  ],
+  "predicted_files": [
+    "deployment_utils.py",
+    "localstack/services/cloudformation/deployment_utils.py",
+    "models/iam.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/cloudformation/deployment_utils.py'], 'reasoning': 'The recursive removal function remove_none_values in deployment_utils.py currently only removes AWS::NoValue placeholders from lists and dictionaries at one nesting level. To properly handle templates using AWS::NoValue in deeply nested arrays (like IAM PolicyDocument Resources), this function must be improved to recursively remove all occurrences. Policy creation in models/iam.py already uses this function, so fixing it here resolves the bug.'}",
+  "error": null
+}

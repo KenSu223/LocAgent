@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/4602",
+  "repo_name": "flask",
+  "title": "Flask.auto_find_instance_path() can return wrong path for namespace packages installed in development mode",
+  "base_commit": "fb89745408cc02515815c792355c7e883b2d08a4",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "src/flask/scaffold.py",
+    "tests/test_instance_config.py",
+    "tox.ini"
+  ],
+  "predicted_files": [
+    "src/flask/scaffold.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/scaffold.py'], 'reasoning': 'The problematic logic for resolving the package path for namespace packages, and the function that calls it, are both found in src/flask/scaffold.py. Fixing the issue requires passing the full import name to _find_package_path and using it to correctly select the intended submodule location. No other files implement or call this logic.'}",
+  "error": null
+}

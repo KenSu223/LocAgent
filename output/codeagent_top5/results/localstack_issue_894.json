@@ -1,0 +1,27 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/894",
+  "repo_name": "localstack",
+  "title": "ERROR:localstack.services.generic_proxy: Error forwarding request:",
+  "base_commit": "737ca72b7bce6e377dd6876eacee63338fa8c30c",
+  "ground_truth_files": [
+    "README.md",
+    "localstack/config.py",
+    "localstack/services/kinesis/kinesis_starter.py"
+  ],
+  "predicted_files": [
+    "install.py",
+    "config.py",
+    "localstack/services/infra.py",
+    "localstack/config.py",
+    "utils/common.py",
+    "infra.py",
+    "localstack/services/generic_proxy.py",
+    "localstack/services/install.py",
+    "/config.py",
+    "localstack/utils/common.py",
+    "generic_proxy.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/generic_proxy.py', 'localstack/services/infra.py', 'localstack/config.py', 'localstack/services/install.py', 'localstack/utils/common.py'], 'reasoning': \"1. generic_proxy.py: Contains the implementation of the proxy and request forwarding logic; the traceback in the issue directly references this file, making it the highest-priority target for fixes.2. infra.py: Manages service orchestration, port setup, and connection checking; misconfiguration or incomplete initialization here can cause connection errors to backends.3. config.py: Defines port mappings for services; if port 4564 is unassigned or misconfigured, requests would fail to connect, resulting in a connection refused error.4. install.py: Although mostly for bootstrapping, any issues in service startup/install scripts can lead to missing backends for forwarding.5. utils/common.py: Used by infra and install for starting processes and checking port availabilities\u2014bugs here can produce service startup or connection issues.Service modules like apigateway, s3, etc., do not directly use generic_proxy or handle port 4564, based on search and repo structure. If a service for 4564 is expected, verify configuration in infra.py/config.py to ensure it's assigned and launched.\"}",
+  "error": null
+}

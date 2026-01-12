@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/3785",
+  "repo_name": "transformers",
+  "title": "How to fine tune EncoderDecoder model for training a new corpus of data ?",
+  "base_commit": "41750a6cff55e401364568868d619747de3db037",
+  "ground_truth_files": [
+    "docs/source/index.rst",
+    "src/transformers/__init__.py",
+    "src/transformers/configuration_auto.py",
+    "src/transformers/modeling_auto.py",
+    "src/transformers/modeling_bert.py",
+    "src/transformers/modeling_encoder_decoder.py",
+    "src/transformers/modeling_utils.py",
+    "src/transformers/utils_encoder_decoder.py"
+  ],
+  "predicted_files": [],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['docs/source/examples.md', 'docs/source/usage.rst'], 'reasoning': 'EncoderDecoder model fine-tuning is currently undocumented in both the examples and usage documentation files. Modifying these files to include fine-tuning instructions will provide the needed documentation for users.'}",
+  "error": null
+}

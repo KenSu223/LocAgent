@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/894",
+  "repo_name": "localstack",
+  "title": "ERROR:localstack.services.generic_proxy: Error forwarding request:",
+  "base_commit": "737ca72b7bce6e377dd6876eacee63338fa8c30c",
+  "ground_truth_files": [
+    "README.md",
+    "localstack/config.py",
+    "localstack/services/kinesis/kinesis_starter.py"
+  ],
+  "predicted_files": [
+    "localstack/services/generic_proxy.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/generic_proxy.py'], 'reasoning': \"This file contains the core logic for forwarding proxy requests to backend services using HTTP, which is where connection errors occur and are handled. The exact error reported occurs due to failed connections when proxying requests, as shown in this file's code and the stack trace. Improvements in error handling, diagnostics, or retry logic should be made here to resolve the reported issue.\"}",
+  "error": null
+}

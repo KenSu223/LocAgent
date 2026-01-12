@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/26948",
+  "repo_name": "scikit-learn",
+  "title": "The copy button on install copies an extensive comman including env activation",
+  "base_commit": "96b5814de70ad2435b6db5f49b607b136921f701",
+  "ground_truth_files": [
+    "doc/install.rst",
+    "doc/themes/scikit-learn-modern/static/css/theme.css"
+  ],
+  "predicted_files": [
+    "doc/conf.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['doc/install.rst', 'doc/themes/', 'doc/templates/', 'doc/sphinxext/', 'doc/conf.py'], 'reasoning': '1. doc/install.rst: This is the source of the installation instructions and likely contains the code block that is being copied incorrectly. 2. doc/themes/: Custom Sphinx theme code (HTML/JS) may affect how copy buttons work; this directory likely includes code that influences the behavior of code block copy. 3. doc/templates/: The templates used for rendering the documentation may affect which code is included and how, possibly influencing copy block behavior. 4. doc/sphinxext/: Custom Sphinx extensions may implement or alter code block/copy button behavior. 5. doc/conf.py: Errors in Sphinx configuration could result in unexpected code block formatting or copy button placement.'}",
+  "error": null
+}

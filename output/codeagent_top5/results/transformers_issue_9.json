@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/9",
+  "repo_name": "transformers",
+  "title": "Crash at the end of training",
+  "base_commit": "9fef668338b15e508bac99598dd139546fece00b",
+  "ground_truth_files": [
+    "tests/big_bird/test_modeling_big_bird.py"
+  ],
+  "predicted_files": [
+    "trainer_qa.py",
+    "run_qa.py",
+    "answering/trainer_qa.py",
+    "answering/utils_qa.py",
+    "answering/run_qa.py",
+    "utils_qa.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['examples/pytorch/question-answering/run_qa.py', 'examples/pytorch/question-answering/trainer_qa.py', 'examples/pytorch/question-answering/utils_qa.py'], 'reasoning': '1. run_qa.py is the main entrypoint for Squad training and evaluation, handling start/stop logic and errors; 2. trainer_qa.py contains the QuestionAnsweringTrainer class, which manages evaluation/prediction and interacts with Trainer, where post-training crashes could originate; 3. utils_qa.py performs postprocessing of predictions, and may contribute to crashes by altering prediction outputs or metrics handling at the end of training. These are the most important files for troubleshooting and resolving end-of-training crashes for Squad QA tasks in this repository.'}",
+  "error": null
+}

@@ -1,0 +1,34 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/26809",
+  "repo_name": "transformers",
+  "title": "Add Mistral Models to Flax",
+  "base_commit": "da1d0d404f05523d37b37207a4c1ff419cc1f47f",
+  "ground_truth_files": [
+    "docs/source/en/index.md",
+    "docs/source/en/model_doc/llama.md",
+    "src/transformers/__init__.py",
+    "src/transformers/modeling_flax_utils.py",
+    "src/transformers/models/auto/modeling_flax_auto.py",
+    "src/transformers/models/bloom/modeling_bloom.py",
+    "src/transformers/models/fuyu/image_processing_fuyu.py",
+    "src/transformers/models/llama/__init__.py",
+    "src/transformers/models/mpt/modeling_mpt.py",
+    "src/transformers/utils/dummy_flax_objects.py",
+    "tests/models/llama/test_modeling_llama.py",
+    "tests/models/mistral/test_modeling_mistral.py",
+    "tests/models/persimmon/test_modeling_persimmon.py",
+    "tests/models/phi/test_modeling_phi.py",
+    "utils/check_docstrings.py"
+  ],
+  "predicted_files": [
+    "modeling_flax_mistral.py",
+    "src/transformers/__init__.py",
+    "src/transformers/models/__init__.py",
+    "src/transformers/models/mistral/modeling_flax_mistral.py",
+    "src/transformers/models/mistral/__init__.py",
+    "__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/mistral/modeling_flax_mistral.py', 'src/transformers/models/mistral/__init__.py', 'src/transformers/__init__.py', 'src/transformers/models/__init__.py'], 'reasoning': \"To add Mistral support in Flax, you need to implement the model logic in 'modeling_flax_mistral.py', update the models/mistral __init__.py to expose the Flax model, and update global __init__.py files to register the Flax Mistral model for import and usage following the conventions used for other models.\"}",
+  "error": null
+}

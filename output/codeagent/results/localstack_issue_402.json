@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/402",
+  "repo_name": "localstack",
+  "title": "Dynamodbstreams Use Kinesis Shard Identifiers",
+  "base_commit": "65b807e4e95fe6da3e30f13e4271dc9dcfaa334e",
+  "ground_truth_files": [
+    "localstack/services/dynamodbstreams/dynamodbstreams_api.py"
+  ],
+  "predicted_files": [
+    "localstack/services/dynamodbstreams/dynamodbstreams_api.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/dynamodbstreams/dynamodbstreams_api.py'], 'reasoning': 'This file contains the logic where DynamoDB Streams calls Kinesis methods and returns Kinesis shard identifiers directly as DynamoDB Streams shard IDs. This is incorrect, as DynamoDB Streams has different format and length constraints for ShardIds compared to Kinesis. The bug occurs in the DescribeStream and GetShardIterator logic where the Shards field is set based on Kinesis response. Only this file needs modification to generate correct DynamoDB Streams-style ShardIds.'}",
+  "error": null
+}

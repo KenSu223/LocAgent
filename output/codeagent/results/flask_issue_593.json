@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/593",
+  "repo_name": "flask",
+  "title": "Nestable blueprints",
+  "base_commit": "85dce2c836fe03aefc07b7f4e0aec575e170f1cd",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "docs/blueprints.rst",
+    "src/flask/app.py",
+    "src/flask/blueprints.py",
+    "tests/test_blueprints.py"
+  ],
+  "predicted_files": [
+    "src/flask/app.py",
+    "src/flask/blueprints.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/blueprints.py', 'src/flask/app.py'], 'reasoning': 'The Blueprint class implementation is in src/flask/blueprints.py, where the new register_blueprint method should be added. The blueprint registration logic lives in src/flask/app.py, which may need changes to handle nested blueprints during registration. These are the files where code changes are necessary to support nestable blueprints.'}",
+  "error": null
+}
