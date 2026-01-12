@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/12401",
+  "repo_name": "pandas",
+  "title": "DEPR: filter & select",
+  "base_commit": "48d0460ab9acbee223bae1be699344f8fd232224",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v0.21.0.txt",
+    "pandas/core/common.py",
+    "pandas/core/generic.py",
+    "pandas/core/indexing.py",
+    "pandas/tests/frame/test_alter_axes.py",
+    "pandas/tests/frame/test_axis_select_reindex.py",
+    "pandas/tests/frame/test_mutate_columns.py",
+    "pandas/tests/groupby/test_groupby.py",
+    "pandas/tests/series/test_indexing.py",
+    "pandas/tests/test_multilevel.py"
+  ],
+  "predicted_files": [],
+  "success": false,
+  "raw_output": null,
+  "error": "Error in generating model output:\nError code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to gpt-4.1 for gpt-4.1 in West US have exceeded the token rate limit for your current OpenAI S0 pricing tier. This request was for ChatCompletions_Create under OpenAI Language Model Instance API. Please retry after 35 seconds. To increase your default rate limit, visit: https://aka.ms/oai/quotaincrease.'}}"
+}

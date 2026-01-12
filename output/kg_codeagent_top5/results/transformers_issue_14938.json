@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/14938",
+  "repo_name": "transformers",
+  "title": "Question: Object of type EncoderDecoderConfig is not JSON serializable",
+  "base_commit": "705ca7f21b2b557e0cfd5d0853b297fa53489d20",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "configuration_utils.py",
+    "trainer.py",
+    "src/transformers/configuration_utils.py",
+    "src/transformers/trainer.py",
+    "modeling_utils.py",
+    "src/transformers/modeling_utils.py",
+    "src/transformers/models/encoder_decoder/configuration_encoder_decoder.py",
+    "modeling_encoder_decoder.py",
+    "configuration_encoder_decoder.py",
+    "src/transformers/models/encoder_decoder/modeling_encoder_decoder.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/encoder_decoder/configuration_encoder_decoder.py', 'src/transformers/configuration_utils.py', 'src/transformers/modeling_utils.py', 'src/transformers/models/encoder_decoder/modeling_encoder_decoder.py', 'src/transformers/trainer.py'], 'reasoning': '1. configuration_encoder_decoder.py: Defines EncoderDecoderConfig, which embeds encoder and decoder configs. Its serialization needs to recursively convert these sub-configs to dicts for JSON compatibility. 2. configuration_utils.py: Contains the PretrainedConfig base logic and its serialization methods; needs patching for recursive dictification/JSON-compatibility with nested PretrainedConfig objects. 3. modeling_utils.py: This module triggers config.save_pretrained/output; must ensure the serialization logic handles special config types like EncoderDecoderConfig, possibly via customized or defensive serialization. 4. modeling_encoder_decoder.py: Implements EncoderDecoderModel, which owns the config; any save, serialization, or dictification operations need to support JSON output of EncoderDecoderConfig. 5. trainer.py: Manages overall model saving and invokes model.save_pretrained; could use better error handling or serialization configuration to avoid triggering serialization issues.'}",
+  "error": null
+}

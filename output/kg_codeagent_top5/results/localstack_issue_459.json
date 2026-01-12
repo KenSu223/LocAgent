@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/459",
+  "repo_name": "localstack",
+  "title": "Underscore converted to hyphen while put it as metadata using amazon-sdk",
+  "base_commit": "177fc797678664a0c06b8c6c434330cef44541a1",
+  "ground_truth_files": [
+    "bin/Dockerfile.base",
+    "localstack/ext/java/src/test/java/cloud/localstack/S3HttpsConnectionTest.java",
+    "localstack/ext/java/src/test/java/cloud/localstack/S3LifecycleTest.java",
+    "localstack/services/generic_proxy.py",
+    "tests/integration/test_dynamodb.py"
+  ],
+  "predicted_files": [
+    "localstack/services/s3/s3_listener.py",
+    "localstack/services/s3/__init__.py",
+    "localstack/services/s3/models.py",
+    "localstack/utils/common.py",
+    "tests/integration/test_s3.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/s3/s3_listener.py\",\n        \"localstack/services/s3/__init__.py\",\n        \"localstack/services/s3/models.py\",\n        \"localstack/utils/common.py\",\n        \"tests/integration/test_s3.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/s3/s3_listener.py: This file contains the main logic for intercepting and processing S3 requests in LocalStack, including uploading objects and handling headers. Any underscore-to-hyphen conversion for metadata keys is most likely implemented or should be fixed here.\\n\\n2. localstack/services/s3/__init__.py: This module typically wires up the S3 service logic and may contain logic for request/response formatting or further delegate to listener logic. Ensuring consistency or fixing metadata handling at this layer may be necessary if s3_listener delegates here.\\n\\n3. localstack/services/s3/models.py: If S3 object models are represented as classes, this file may parse, validate, or serialize/deserialize metadata, and could contribute to or fix key normalization bugs.\\n\\n4. localstack/utils/common.py: Utility functions for manipulating HTTP headers or key/value pairs (such as any function that replaces '_' with '-') may reside here; if such a function is used in S3 metadata handling, it must be corrected to preserve underscores in user metadata keys.\\n\\n5. tests/integration/test_s3.py: After fixing the code, tests should be updated or added to cover S3 metadata keys with underscores, to confirm that the LocalStack S3 implementation now matches AWS behavior for such metadata.\"\n}",
+  "error": null
+}

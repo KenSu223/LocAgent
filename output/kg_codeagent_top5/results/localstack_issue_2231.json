@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/2231",
+  "repo_name": "localstack",
+  "title": "[IAM] AmazonIdentityManagement with null message is thrown instead of EntityAlreadyExistsException",
+  "base_commit": "28d3b76087979229f586911423307e6fd8995f19",
+  "ground_truth_files": [
+    ".dockerignore",
+    "localstack/services/iam/iam_listener.py",
+    "tests/integration/test_iam.py"
+  ],
+  "predicted_files": [
+    "aws_stack.py",
+    "test_iam.py",
+    "iam_starter.py",
+    "localstack/services/iam/iam_starter.py",
+    "tests/integration/test_iam.py",
+    "localstack/utils/aws/aws_stack.py",
+    "iam_listener.py",
+    "generic_proxy.py",
+    "localstack/services/iam/iam_listener.py",
+    "localstack/services/generic_proxy.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/iam/iam_starter.py', 'localstack/services/iam/iam_listener.py', 'localstack/services/generic_proxy.py', 'localstack/utils/aws/aws_stack.py', 'tests/integration/test_iam.py'], 'reasoning': \"1. iam_starter.py: Needs modification to patch/override Moto's role creation logic to throw EntityAlreadyExistsException with a populated message when a role already exists.\\n2. iam_listener.py: May require changes to map/handle IAM error responses correctly, ensuring the right exception type and message reaches the client.\\n3. generic_proxy.py: If generic error response/exception mapping for AWS APIs is centralized here, adjustments may be needed for IAM exceptions.\\n4. aws_stack.py: Utility functions for AWS error/exception mapping may need tweaks to support correct response types for IAM operations.\\n5. test_iam.py: The integration test must assert that EntityAlreadyExistsException is thrown with a non-null message and not the generic one.\"}",
+  "error": null
+}

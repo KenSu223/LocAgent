@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/11294",
+  "repo_name": "transformers",
+  "title": "serious bug with trainer.py when restarting the training from a checkpoint",
+  "base_commit": "95ffbe168690d34e385cdd16c69e9a3f8d877abf",
+  "ground_truth_files": [
+    "src/transformers/configuration_utils.py",
+    "src/transformers/trainer.py",
+    "tests/test_trainer.py"
+  ],
+  "predicted_files": [
+    "src/transformers/trainer.py",
+    "src/transformers/modeling_utils.py",
+    "examples/seq2seq/run_translation.py",
+    "src/transformers/trainer_utils.py",
+    "src/transformers/file_utils.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/transformers/trainer.py\",\n        \"src/transformers/modeling_utils.py\",\n        \"examples/seq2seq/run_translation.py\",\n        \"src/transformers/trainer_utils.py\",\n        \"src/transformers/file_utils.py\"\n    ],\n    \"reasoning\": \"1. src/transformers/trainer.py is the most critical file as the Trainer class handles both training restarts and checkpoint restoration, and is directly responsible for the bug where user modifications to the model (freezing layers or wrapping) are not preserved when resuming from checkpoint. Modification is needed to ensure Trainer respects and re-applies any user changes after loading from checkpoint. 2. src/transformers/modeling_utils.py contains PreTrainedModel and unwrap_model; model (un)wrapping, state restoration, and parameter freezing logic may need updates so Trainer can correctly manage the user's modifications during checkpoint restore. 3. examples/seq2seq/run_translation.py is the main example script referenced in the issue; it creates/modifies models before Trainer instantiation and kicks off checkpointing logic, so it may need changes to synchronize model state and properly propagate wrapper/freeze changes when resuming. 4. src/transformers/trainer_utils.py is closely tied to Trainer and may contain auxiliary functions for checkpoint handling and parameter state that need to correctly preserve model modifications. 5. src/transformers/file_utils.py is imported and likely manages checkpoint/file interactions that could be updated to better represent custom user changes to the model; changes here would ensure serialized/deserialized state is consistent with user modifications.\"\n}",
+  "error": null
+}

@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/26948",
+  "repo_name": "scikit-learn",
+  "title": "The copy button on install copies an extensive comman including env activation",
+  "base_commit": "96b5814de70ad2435b6db5f49b607b136921f701",
+  "ground_truth_files": [
+    "doc/install.rst",
+    "doc/themes/scikit-learn-modern/static/css/theme.css"
+  ],
+  "predicted_files": [
+    "doc/install.rst",
+    "doc/themes/scikit-learn-modern/layout.html",
+    "doc/themes/scikit-learn-modern/javascript.html",
+    "doc/conf.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"doc/install.rst\",\n        \"doc/themes/scikit-learn-modern/layout.html\",\n        \"doc/themes/scikit-learn-modern/javascript.html\",\n        \"doc/conf.py\"\n    ],\n    \"reasoning\": \"1. doc/install.rst is most important because it contains the actual installation command snippets shown on the documentation page; modifying what is rendered here will directly affect what the copy button grabs. 2. doc/themes/scikit-learn-modern/layout.html is relevant because it controls how content and code blocks are rendered and may involve the copy button HTML itself. 3. doc/themes/scikit-learn-modern/javascript.html could contain custom or linked JS that implements or controls the copy-to-clipboard interactivity for code blocks; any logic error here could lead to incorrect copying. 4. doc/conf.py is important for Sphinx theme configuration and for including JS extensions or features which may globally alter code block rendering and copy button behavior. These four files are the primary points where the faulty behavior can be fixed by clarifying what commands are displayed and how the copy-to-clipboard function operates in the docs.\"\n}",
+  "error": null
+}

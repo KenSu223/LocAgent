@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/18408",
+  "repo_name": "scikit-learn",
+  "title": "Data type mismatch problem when calling HistGradientBoostingClassifier.predict()",
+  "base_commit": "2b79665b90bd54fa59701090d5f608a1fc4dd33a",
+  "ground_truth_files": [
+    "doc/whats_new/v0.24.rst",
+    "sklearn/ensemble/_hist_gradient_boosting/gradient_boosting.py",
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_gradient_boosting.py"
+  ],
+  "predicted_files": [
+    "base.py",
+    "sklearn/ensemble/_hist_gradient_boosting/gradient_boosting.py",
+    "sklearn/base.py",
+    "sklearn/utils/validation.py",
+    "_predictor.py",
+    "utils/validation.py",
+    "predictor.py",
+    "gradient_boosting.py",
+    "sklearn/ensemble/_hist_gradient_boosting/predictor.py",
+    "sklearn/ensemble/_hist_gradient_boosting/_predictor.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/ensemble/_hist_gradient_boosting/gradient_boosting.py', 'sklearn/ensemble/_hist_gradient_boosting/predictor.py', 'sklearn/ensemble/_hist_gradient_boosting/_predictor.pyx', 'sklearn/utils/validation.py', 'sklearn/base.py'], 'reasoning': \"1. gradient_boosting.py directly implements HistGradientBoostingClassifier, where predict() and fit() logic reside\u2014this is the main place to add robust dtype conversion.\\n2. predictor.py (and _predictor.pyx) provide low-level prediction interface, often acting on input arrays\u2014errors can occur here if types aren't handled consistently.\\n3. _predictor.pyx is the cython backend for predictor.py and may require fixes for C-level array iteration/type safety.\\n4. utils/validation.py is likely used for input validation (check_array, safe_asarray, etc.) and may need to be updated/reused to ensure dtype handling everywhere.\\n5. base.py defines ClassifierMixin, which handles predict signatures and may provide default validation routes, although changes here are much less likely.\"}",
+  "error": null
+}

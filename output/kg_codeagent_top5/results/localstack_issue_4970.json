@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/4970",
+  "repo_name": "localstack",
+  "title": "Lambda invocation exception",
+  "base_commit": "5d11af78ae1d19560f696a9e1abb707bd115c390",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "localstack/services/awslambda/lambda_executors.py",
+    "localstack/services/awslambda/lambda_api.py",
+    "tests/integration/docker_utils/test_docker.py",
+    "localstack/utils/cloudwatch/cloudwatch_util.py",
+    "localstack/utils/docker_utils.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/utils/docker_utils.py', 'localstack/services/awslambda/lambda_executors.py', 'localstack/services/awslambda/lambda_api.py', 'localstack/utils/cloudwatch/cloudwatch_util.py', 'tests/integration/docker_utils/test_docker.py'], 'reasoning': \"1. localstack/utils/docker_utils.py: This file is responsible for Docker container management and exception handling (start_container, ContainerException), where the 'exec format error' arises. Modifications are needed to detect/report this specific issue and provide better diagnostics.\\n2. localstack/services/awslambda/lambda_executors.py: Orchestrates Lambda Docker execution, captures exceptions from docker_utils, and could be improved to handle exec format errors more gracefully or with clearer messaging.\\n3. localstack/services/awslambda/lambda_api.py: The main API for Lambda invocations; may need changes to propagate container start errors and ensure visibility to users.\\n4. localstack/utils/cloudwatch/cloudwatch_util.py: Publishes/logs Lambda errors, potentially including container compatibility problems; modification may be needed to ensure accurate metrics and error reporting.\\n5. tests/integration/docker_utils/test_docker.py: Integration tests should simulate/expose exec format errors, ensuring future regressions are detected with incompatible container images.\"}",
+  "error": null
+}

@@ -1,0 +1,32 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/15005",
+  "repo_name": "scikit-learn",
+  "title": "Implement SLEP009: keyword-only arguments",
+  "base_commit": "839b356f45fac7724eab739dcc129a0c8f650a23",
+  "ground_truth_files": [
+    "sklearn/datasets/_base.py",
+    "sklearn/datasets/_california_housing.py",
+    "sklearn/datasets/_covtype.py",
+    "sklearn/datasets/_kddcup99.py",
+    "sklearn/datasets/_lfw.py",
+    "sklearn/datasets/_olivetti_faces.py",
+    "sklearn/datasets/_openml.py",
+    "sklearn/datasets/_rcv1.py",
+    "sklearn/datasets/_samples_generator.py",
+    "sklearn/datasets/_species_distributions.py",
+    "sklearn/datasets/_svmlight_format_io.py",
+    "sklearn/datasets/_twenty_newsgroups.py",
+    "sklearn/datasets/tests/test_base.py",
+    "sklearn/linear_model/tests/test_omp.py"
+  ],
+  "predicted_files": [
+    "examples/compose/plot_feature_union.py",
+    "sklearn/tests/test_docstring_parameters.py",
+    "sklearn/pipeline.py",
+    "examples/impute/plot_missing_values.py",
+    "sklearn/tests/test_pipeline.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/pipeline.py', 'sklearn/tests/test_pipeline.py', 'sklearn/tests/test_docstring_parameters.py', 'examples/compose/plot_feature_union.py', 'examples/impute/plot_missing_values.py'], 'reasoning': '1. sklearn/pipeline.py implements the Pipeline, FeatureUnion classes and make_pipeline/make_union functions; all public APIs must be updated to deprecate positional argument usage and enforce keyword-only per SLEP009. 2. sklearn/tests/test_pipeline.py contains extensive usage of Pipeline, FeatureUnion, make_pipeline, and make_union and must be updated to follow new keyword-only rules. 3. sklearn/tests/test_docstring_parameters.py verifies API docstrings and must reflect changes to keyword-only parameters. 4. examples/compose/plot_feature_union.py demonstrates FeatureUnion; it should show keyword-only usage. 5. examples/impute/plot_missing_values.py demonstrates make_pipeline and make_union; it should show keyword-only usage.'}",
+  "error": null
+}

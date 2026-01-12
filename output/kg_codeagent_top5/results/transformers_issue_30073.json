@@ -1,0 +1,34 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/30073",
+  "repo_name": "transformers",
+  "title": "SPDA/FA2 Attention for the Wav2Vec2 Family of Models",
+  "base_commit": "836e88caee95eb37a860a6c82bbd2becc6b9dc7b",
+  "ground_truth_files": [
+    "docs/source/en/model_doc/hubert.md",
+    "docs/source/en/model_doc/wav2vec2.md",
+    "docs/source/en/perf_infer_gpu_one.md",
+    "src/transformers/models/data2vec/modeling_data2vec_audio.py",
+    "src/transformers/models/hubert/modeling_hubert.py",
+    "src/transformers/models/sew/modeling_sew.py",
+    "src/transformers/models/unispeech/modeling_unispeech.py",
+    "src/transformers/models/unispeech_sat/modeling_unispeech_sat.py",
+    "src/transformers/models/wav2vec2/modeling_wav2vec2.py",
+    "src/transformers/models/wav2vec2_conformer/modeling_wav2vec2_conformer.py",
+    "tests/models/wav2vec2/test_modeling_wav2vec2.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/wav2vec2/configuration_wav2vec2.py",
+    "tests/models/wav2vec2/test_feature_extraction_wav2vec2.py",
+    "src/transformers/models/wav2vec2/__init__.py",
+    "test_feature_extraction_wav2vec2.py",
+    "__init__.py",
+    "modeling_wav2vec2.py",
+    "test_modeling_wav2vec2.py",
+    "configuration_wav2vec2.py",
+    "src/transformers/models/wav2vec2/modeling_wav2vec2.py",
+    "tests/models/wav2vec2/test_modeling_wav2vec2.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/wav2vec2/modeling_wav2vec2.py', 'src/transformers/models/wav2vec2/configuration_wav2vec2.py', 'tests/models/wav2vec2/test_modeling_wav2vec2.py', 'src/transformers/models/wav2vec2/__init__.py', 'tests/models/wav2vec2/test_feature_extraction_wav2vec2.py'], 'reasoning': \"1. modeling_wav2vec2.py: Main modeling file where current attention logic exists. SDPA and FA2 implementations should be added here. 2. configuration_wav2vec2.py: Needed if additional configuration flags/options for new attention modes must be exposed to users. 3. test_modeling_wav2vec2.py: Location for fast unit tests as requested (SDPA/FA2 coverage). 4. __init__.py: May need to register any newly exposed components/classes for import. 5. test_feature_extraction_wav2vec2.py: Less likely, but integration with extraction tests may be needed if Wav2Vec2's features depend on attention logic in production or for slow tests.\"}",
+  "error": null
+}

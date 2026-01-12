@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/11194",
+  "repo_name": "scikit-learn",
+  "title": "NumPy dev causes test errors due to use of np.matrix",
+  "base_commit": "bb385394b87e382a34db829bc7ed60d347af73c9",
+  "ground_truth_files": [
+    "sklearn/ensemble/tests/test_iforest.py"
+  ],
+  "predicted_files": [
+    "sklearn/feature_extraction/image.py",
+    "sklearn/utils/validation.py",
+    "sklearn/utils/testing.py",
+    "sklearn/utils/tests/test_validation.py",
+    "sklearn/externals/joblib/numpy_pickle.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/utils/validation.py', 'sklearn/utils/testing.py', 'sklearn/utils/tests/test_validation.py', 'sklearn/feature_extraction/image.py', 'sklearn/externals/joblib/numpy_pickle.py'], 'reasoning': '1. sklearn/utils/validation.py: Handles np.matrix and np.ndarray, and can trigger core warnings; needs update to remove/rewrite np.matrix usage to avoid warnings and deprecation failures.\\n2. sklearn/utils/testing.py: Contains assert_no_warnings implementation; modify to ignore PendingDeprecationWarning if desired, or switch to upstream numpy/scipy version.\\n3. sklearn/utils/tests/test_validation.py: Has tests validating np.matrix behavior, which may produce warnings and failures; update or remove np.matrix-based tests and adjust assertion to modern behavior.\\n4. sklearn/feature_extraction/image.py: Historically returned np.matrix and still documents it; update documentation and ensure all code paths use np.ndarray only.\\n5. sklearn/externals/joblib/numpy_pickle.py: Serializes numpy objects including np.matrix; update if this handling triggers any unwanted warnings or deprecated usage.'}",
+  "error": null
+}

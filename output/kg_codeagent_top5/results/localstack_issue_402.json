@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/402",
+  "repo_name": "localstack",
+  "title": "Dynamodbstreams Use Kinesis Shard Identifiers",
+  "base_commit": "65b807e4e95fe6da3e30f13e4271dc9dcfaa334e",
+  "ground_truth_files": [
+    "localstack/services/dynamodbstreams/dynamodbstreams_api.py"
+  ],
+  "predicted_files": [
+    "localstack/services/dynamodbstreams/dynamodbstreams_api.py",
+    "localstack/utils/aws/aws_stack.py",
+    "localstack/services/kinesis/",
+    "localstack/services/dynamodb/",
+    "localstack/services/infra.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/dynamodbstreams/dynamodbstreams_api.py\",\n        \"localstack/utils/aws/aws_stack.py\",\n        \"localstack/services/kinesis/\",\n        \"localstack/services/dynamodb/\",\n        \"localstack/services/infra.py\"\n    ],\n    \"reasoning\": \"1. The core of the problem is in 'localstack/services/dynamodbstreams/dynamodbstreams_api.py'. Here, the DescribeStream response for DynamoDB Streams returns 'Shards' by directly copying them from the Kinesis backend (line 70). Kinesis shards use a short form like 'shardId-000000000000', but DynamoDB Streams expects a 28+ character ShardId that encodes more data about the stream. You must update this file to properly re-map or generate compliant DynamoDB Streams ShardIds before returning them in the API response.\\n\\n2. 'localstack/utils/aws/aws_stack.py' is imported and used for stream and table ARN/name utilities. If any shard id generation logic, or helper for mapping Kinesis-to-DDB Streams IDs, is needed, it should be placed or updated here to avoid duplication and ensure correctness.\\n\\n3. 'localstack/services/kinesis/' contains the Kinesis implementation. If you find the need to adjust how Kinesis exposes or allows customization of ShardId fields, or to alter backend shard mechanics, modifications here would assist.\\n\\n4. 'localstack/services/dynamodb/' could be involved if stream information, metadata, or table details need to be coordinated with custom ShardId generation or if any related logic crosses boundaries.\\n\\n5. 'localstack/services/infra.py' is sometimes used for service initialization or generic request routing. If any change is needed to how requests are dispatched or decorated (unlikely for this specific bug, but possibly for integrating new utility code), look here.\\n\\nIn practice, nearly all of the bug fix will be in (1) and optionally (2), with the others relevant only if utility functions, integration, or modularization is extended.\"\n}",
+  "error": null
+}

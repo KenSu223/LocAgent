@@ -1,0 +1,14 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/7603",
+  "repo_name": "scikit-learn",
+  "title": "When min_samples_split and min_samples_leaf are greater than or equal to 1.0 and 0.5, no error is thrown.",
+  "base_commit": "9b2aac9e5c8749243c73f2377519d2f2c407b095",
+  "ground_truth_files": [
+    "sklearn/tree/tests/test_tree.py",
+    "sklearn/tree/tree.py"
+  ],
+  "predicted_files": [],
+  "success": false,
+  "raw_output": null,
+  "error": "Error in generating model output:\nError code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to gpt-4.1 for gpt-4.1 in West US have exceeded the token rate limit for your current OpenAI S0 pricing tier. This request was for ChatCompletions_Create under OpenAI Language Model Instance API. Please retry after 16 seconds. To increase your default rate limit, visit: https://aka.ms/oai/quotaincrease.'}}"
+}

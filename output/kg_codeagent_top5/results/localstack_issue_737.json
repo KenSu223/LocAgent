@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/737",
+  "repo_name": "localstack",
+  "title": "Kinesis events to Lambda do not conform to spec",
+  "base_commit": "a23e2fc70542af481fb3a0bd7042627ff50f0802",
+  "ground_truth_files": [
+    "localstack/services/awslambda/lambda_api.py"
+  ],
+  "predicted_files": [
+    "localstack-core/localstack/services/lambda_/event_source_mapping/kinesis.py",
+    "localstack-core/localstack/services/kinesis/provider.py",
+    "localstack-core/localstack/services/lambda_/invocation/lambda_invoke.py",
+    "localstack-core/localstack/utils/kinesis/kinesis_connector.py",
+    "localstack-core/localstack/services/lambda_/lambda_utils.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack-core/localstack/services/lambda_/event_source_mapping/kinesis.py\",\n        \"localstack-core/localstack/services/kinesis/provider.py\",\n        \"localstack-core/localstack/services/lambda_/invocation/lambda_invoke.py\",\n        \"localstack-core/localstack/utils/kinesis/kinesis_connector.py\",\n        \"localstack-core/localstack/services/lambda_/lambda_utils.py\"\n    ],\n    \"reasoning\": \"1. The primary file responsible for mapping Kinesis streams to Lambda events is likely `event_source_mapping/kinesis.py`, as this is where LocalStack creates the event object(s) passed to Lambda from incoming Kinesis records. Updating this file will allow proper injection of required metadata fields (eventSource, eventSourceARN, eventID, awsRegion, etc.).\\n\\n2. `kinesis/provider.py` is the core implementation for the Kinesis service in LocalStack\u2014it may influence the event record shape or provide helpers used in the mapping layer.\\n\\n3. The Lambda invocation path (`invocation/lambda_invoke.py`) may need adjustments if the event object is altered, or if additional context is required for the downstream Lambda call.\\n\\n4. `utils/kinesis/kinesis_connector.py` likely includes utilities for connecting or transforming Kinesis data for testing or simulation; often these helpers are used for test/utility construction of record payloads.\\n\\n5. `lambda_utils.py` in `lambda_` may contain functions to help format event data as required by AWS Lambda specs, or may need changes to pass through new/context fields.\\n\\nThis ordering reflects (1) where the event is shaped, (2) the Kinesis data source, and (3)-(5) supporting files where context or helpers are likely managed.\"\n}",
+  "error": null
+}

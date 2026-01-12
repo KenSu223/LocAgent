@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2866",
+  "repo_name": "flask",
+  "title": "DispatcherMiddleware with different loggers per app in flask 1.0",
+  "base_commit": "465da9f610a04d379bb39a0ff03fb6c0b0ea1c45",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "docs/config.rst",
+    "docs/errorhandling.rst",
+    "docs/logging.rst",
+    "src/flask/app.py",
+    "src/flask/logging.py",
+    "tests/test_logging.py",
+    "tests/test_templating.py"
+  ],
+  "predicted_files": [
+    "tests/test_logging.py",
+    "src/flask/globals.py",
+    "src/flask/app.py",
+    "src/flask/blueprints.py",
+    "src/flask/logging.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/logging.py', 'src/flask/app.py', 'src/flask/blueprints.py', 'src/flask/globals.py', 'tests/test_logging.py'], 'reasoning': \"1. src/flask/logging.py: Central location where Flask loggers are instantiated. The logger name is currently 'flask.app', causing shared handlers across all Flask app instances. Change logger naming to use per-app identity (e.g. app.import_name). 2. src/flask/app.py: The Flask class accesses logger via create_logger, so ensure it passes a unique name/attribute for logger setup. 3. src/flask/blueprints.py: Blueprints may reference the app logger, and could need update if behavior changes. 4. src/flask/globals.py: Provides proxies such as current_app.logger\u2014may need minor adjustment if logger setup changes. 5. tests/test_logging.py: Modify or add tests to verify correct logger isolation and handler association per app.\"}",
+  "error": null
+}

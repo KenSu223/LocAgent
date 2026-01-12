@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/7943",
+  "repo_name": "pandas",
+  "title": "tz_localize should support is_dst input array",
+  "base_commit": "abd5333e7a3332921707888de9621c52dd3408e6",
+  "ground_truth_files": [
+    "doc/source/timeseries.rst",
+    "doc/source/v0.15.0.txt",
+    "pandas/core/generic.py",
+    "pandas/tseries/index.py",
+    "pandas/tseries/tests/test_timezones.py",
+    "pandas/tseries/tests/test_tslib.py",
+    "pandas/tslib.pyx"
+  ],
+  "predicted_files": [
+    "pandas/core/indexes/datetimes.py",
+    "pandas/core/indexes/base.py",
+    "pandas/core/arrays/datetimelike.py",
+    "pandas/core/dtypes/dtypes.py",
+    "pandas/core/arrays/datetimes.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/indexes/datetimes.py', 'pandas/core/arrays/datetimes.py', 'pandas/core/arrays/datetimelike.py', 'pandas/core/indexes/base.py', 'pandas/core/dtypes/dtypes.py'], 'reasoning': '1. pandas/core/indexes/datetimes.py: Main implementation of DatetimeIndex.tz_localize. API extension needed to accept an array for is_dst and propagate it. 2. pandas/core/arrays/datetimes.py: Implements DatetimeArray.tz_localize, where underlying logic must be changed to handle is_dst as an array and apply correct offsets. 3. pandas/core/arrays/datetimelike.py: Provides mixin logic supporting array-like datetime ops, may require update for new is_dst propagation or handling. 4. pandas/core/indexes/base.py: Index._simple_new is invoked to build output index, metadata might need update if attributes like is_dst must persist. 5. pandas/core/dtypes/dtypes.py: ArrowDtype.type interacts via dependency, docs or compatibility may need update if behavior is changed.'}",
+  "error": null
+}

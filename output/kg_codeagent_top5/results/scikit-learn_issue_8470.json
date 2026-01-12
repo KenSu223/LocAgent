@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/8470",
+  "repo_name": "scikit-learn",
+  "title": "How to let gbdt = GradientBoostingRegressor(), gbdt.fit(X_feature, X_label) know whether the feature of input X is categorical or numerical?",
+  "base_commit": "0ab5c678bba02888b62b777b4c757e367b3458d5",
+  "ground_truth_files": [
+    "sklearn/preprocessing/_encoders.py"
+  ],
+  "predicted_files": [
+    "sklearn/ensemble/forest.py",
+    "sklearn/ensemble/_gradient_boosting.py",
+    "sklearn/ensemble/base.py",
+    "sklearn/ensemble/_gb.py",
+    "sklearn/ensemble/gradient_boosting.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/ensemble/_gb.py', 'sklearn/ensemble/gradient_boosting.py', 'sklearn/ensemble/_gradient_boosting.pyx', 'sklearn/ensemble/base.py', 'sklearn/ensemble/forest.py'], 'reasoning': '1. sklearn/ensemble/_gb.py is the primary location of GradientBoostingRegressor, so changes to class definition, input parameter handling, and method dispatch for categorical features should go here. 2. sklearn/ensemble/gradient_boosting.py contains main boosting logic and fitting routines, crucial for controlling how features are interpreted. 3. sklearn/ensemble/_gradient_boosting.pyx implements tree building and splitting \u2013 categorical splits must be coded here. 4. sklearn/ensemble/base.py provides interfaces and input validation which may need updates to handle feature type distinctions. 5. sklearn/ensemble/forest.py may have shared or tree-specific logic required to fully support categorical variables in boosting algorithms.'}",
+  "error": null
+}

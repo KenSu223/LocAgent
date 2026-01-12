@@ -1,0 +1,43 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/20058",
+  "repo_name": "transformers",
+  "title": "Push to Hub fails with `model_name`",
+  "base_commit": "6dda14dc47d82f0e32df05fea8ba6444ba52b90a",
+  "ground_truth_files": [
+    "src/transformers/models/clip/processing_clip.py",
+    "src/transformers/models/flava/processing_flava.py",
+    "src/transformers/models/layoutlmv2/processing_layoutlmv2.py",
+    "src/transformers/models/layoutlmv3/processing_layoutlmv3.py",
+    "src/transformers/models/layoutxlm/processing_layoutxlm.py",
+    "src/transformers/models/markuplm/processing_markuplm.py",
+    "src/transformers/models/owlvit/processing_owlvit.py",
+    "src/transformers/models/vilt/processing_vilt.py",
+    "src/transformers/models/vision_text_dual_encoder/processing_vision_text_dual_encoder.py",
+    "src/transformers/models/x_clip/processing_x_clip.py",
+    "src/transformers/processing_utils.py",
+    "tests/models/clip/test_processor_clip.py",
+    "tests/models/flava/test_processor_flava.py",
+    "tests/models/layoutlmv2/test_processor_layoutlmv2.py",
+    "tests/models/layoutlmv3/test_processor_layoutlmv3.py",
+    "tests/models/layoutxlm/test_processor_layoutxlm.py",
+    "tests/models/markuplm/test_processor_markuplm.py",
+    "tests/models/mctct/test_processor_mctct.py",
+    "tests/models/owlvit/test_processor_owlvit.py",
+    "tests/models/speech_to_text/test_processor_speech_to_text.py",
+    "tests/models/vision_text_dual_encoder/test_processor_vision_text_dual_encoder.py",
+    "tests/models/wav2vec2/test_processor_wav2vec2.py",
+    "tests/models/wav2vec2_with_lm/test_processor_wav2vec2_with_lm.py",
+    "tests/models/whisper/test_processor_whisper.py"
+  ],
+  "predicted_files": [
+    "src/transformers/file_utils.py",
+    "src/transformers/trainer.py",
+    "src/transformers/feature_extraction_utils.py",
+    "file_utils.py",
+    "src/transformers/modeling_utils.py",
+    "src/transformers/tokenization_utils_base.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/file_utils.py', 'src/transformers/trainer.py', 'src/transformers/modeling_utils.py', 'src/transformers/tokenization_utils_base.py', 'src/transformers/feature_extraction_utils.py'], 'reasoning': \"1. src/transformers/file_utils.py: Contains PushToHubMixin and its methods, which orchestrate pushing models to the Huggingface Hub, handling naming, repo logic, and actual upload flows. 2. src/transformers/trainer.py: The Trainer class may call push_to_hub, delegating to file_utils.py; changes here affect push logic for common usage. 3. src/transformers/modeling_utils.py: PreTrainedModel.save_pretrained logic here interacts with hub upload logic, and may need adjustment for proper model naming when saving/pushing. 4. src/transformers/tokenization_utils_base.py: Tokenizer saving logic may propagate model naming errors if naming conventions or serialization are incorrect. 5. src/transformers/feature_extraction_utils.py: Feature extractors' save_pretrained, as observed in the issue code, may also require naming fix for hub upload flows.\"}",
+  "error": null
+}

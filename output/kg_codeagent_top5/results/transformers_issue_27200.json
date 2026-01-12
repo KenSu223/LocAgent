@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/27200",
+  "repo_name": "transformers",
+  "title": "dataset download error in speech recognition examples",
+  "base_commit": "82c7e879876822864b5ceaf2c99eb01159266bcd",
+  "ground_truth_files": [
+    "examples/pytorch/speech-recognition/README.md"
+  ],
+  "predicted_files": [
+    "examples/pytorch/speech-recognition/run_speech_recognition_ctc.py",
+    "examples/pytorch/speech-recognition/requirements.txt",
+    "transformers/utils/versions.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"examples/pytorch/speech-recognition/run_speech_recognition_ctc.py\",\n        \"examples/pytorch/speech-recognition/requirements.txt\",\n        \"transformers/utils/versions.py\"\n    ],\n    \"reasoning\": [\n        \"1. examples/pytorch/speech-recognition/run_speech_recognition_ctc.py: This is the main script handling argument parsing and dataset loading. The issue centers on using a deprecated 'common_voice' dataset. Modifications here are needed to: (a) allow or enforce use of the new dataset identifier (e.g., 'mozilla-foundation/common_voice_11_0'), (b) validate 'dataset_name' and warn or auto-switch, (c) document/fix expected arguments for the new dataset, and (d) catch and handle extraction/download errors.\",\n        \"2. examples/pytorch/speech-recognition/requirements.txt: Ensure that the requirements specify minimum versions of the datasets library compatible with the new Common Voice format ('mozilla-foundation/common_voice_11_0'), avoiding issues arising from older or incompatible library versions.\",\n        \"3. transformers/utils/versions.py: This file enforces version compatibility at runtime (via require_version). It may need updating to guarantee that only supported datasets library versions (those that can access the new Common Voice datasets) are used. Otherwise, users could inadvertently use outdated libraries causing errors described in the issue.\"\n    ]\n}",
+  "error": null
+}

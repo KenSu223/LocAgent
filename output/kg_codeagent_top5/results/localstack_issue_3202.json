@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/3202",
+  "repo_name": "localstack",
+  "title": "Illegal path is passed into the HEAD request during the object download",
+  "base_commit": "dec1ba1b94153a4380cc94a0c8bd805f8922b6e3",
+  "ground_truth_files": [
+    "localstack/services/s3/s3_listener.py",
+    "tests/integration/test_s3.py"
+  ],
+  "predicted_files": [
+    "localstack/services/generic_proxy.py",
+    "localstack/services/edge.py",
+    "localstack/services/s3/s3_listener.py",
+    "localstack/utils/bootstrap.py",
+    "localstack/utils/async_utils.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/generic_proxy.py\",\n        \"localstack/services/edge.py\",\n        \"localstack/services/s3/s3_listener.py\",\n        \"localstack/utils/bootstrap.py\",\n        \"localstack/utils/async_utils.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/generic_proxy.py: This file contains the central request modification and forwarding logic (see lines ~320-350). The bug likely lies in how the 'path' parameter is constructed and passed on for HEAD requests, resulting in the doubled bucket name (e.g., '/test-bucket/test-bucket'). Fixes should ensure correct path parsing and forwarding, especially for S3 object downloads and HEAD requests.\\n2. localstack/services/edge.py: This file is directly involved in forwarding requests (see function around line 81), handling service ports, headers, and calling the proxy function; incorrect path handling here could also contribute to the bug, and improvements may be needed in how S3 routes are interpreted here for HEAD operations.\\n3. localstack/services/s3/s3_listener.py: This file handles S3 request parsing and routing. Given that the HEAD request ends up with an invalid path, object/key extraction or bucket parsing within this file may be faulty post-upgrade. Ensuring correct path components for object operations is essential here.\\n4. localstack/utils/bootstrap.py: This file runs threaded requests as part of the service startup and inner LocalStack execution (traceback: line 534); any logic here for spawning request handlers or passing parameters between threads could indirectly affect the observed HEAD bug.\\n5. localstack/utils/async_utils.py: Used for executing threaded or async jobs (traceback: line 28). If there is any request transformation or parameter passing logic, it could contribute to the issue and should be checked for correct propagation of request paths.\"\n}",
+  "error": null
+}

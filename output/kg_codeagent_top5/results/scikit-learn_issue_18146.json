@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/18146",
+  "repo_name": "scikit-learn",
+  "title": "Something goes wrong with KernelPCA with 32 bits input data",
+  "base_commit": "e217b68fd00bb7c54b81a492ee6f9db6498517fa",
+  "ground_truth_files": [
+    "doc/whats_new/v0.24.rst",
+    "sklearn/decomposition/tests/test_kernel_pca.py",
+    "sklearn/utils/validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/decomposition/_kernel_pca.py",
+    "sklearn/metrics/pairwise.py",
+    "sklearn/utils/validation.py",
+    "sklearn/base.py",
+    "sklearn/decomposition/tests/test_kernel_pca.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/decomposition/_kernel_pca.py\",\n        \"sklearn/metrics/pairwise.py\",\n        \"sklearn/utils/validation.py\",\n        \"sklearn/base.py\",\n        \"sklearn/decomposition/tests/test_kernel_pca.py\"\n    ],\n    \"reasoning\": \"1. sklearn/decomposition/_kernel_pca.py is the main implementation of KernelPCA, where input data types, feature transformation logic, and core algorithms reside. Modifications here ensure correct handling and consistency of float32 inputs, fixing the mismatch in output dimensions.\\n2. sklearn/metrics/pairwise.py is typically where kernel computations are performed. Errors in how dtype or precision (float32/float64) are managed during pairwise kernel calculation can propagate incorrect results to KernelPCA. Ensuring proper data preparation and numerical stability here may solve the issue globally.\\n3. sklearn/utils/validation.py provides input validation utilities (dtype casting/conversions, shape checks) used across scikit-learn. If float32 inputs cause unexpected behavior due to validation, altering checks or forced conversions here can prevent future bugs.\\n4. sklearn/base.py contains base classes for estimators and transformers, inherited by KernelPCA. Any change to fit/transform interface or dtype handling conventions should respect or adjust these base classes to maintain consistent expectations across scikit-learn.\\n5. sklearn/decomposition/tests/test_kernel_pca.py (or similar test file) is important to update or add explicit tests for float32 input cases. Revisions here ensure the fix is verified and the bug is properly tracked by the test suite, guarding against regression.\"\n}",
+  "error": null
+}

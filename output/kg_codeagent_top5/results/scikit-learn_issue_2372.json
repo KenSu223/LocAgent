@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/2372",
+  "repo_name": "scikit-learn",
+  "title": "StratifiedKFold should do its best to preserve the dataset dependency structure",
+  "base_commit": "130601e076ec5ca8298b95c3d02122ac5d8cf8eb",
+  "ground_truth_files": [
+    "doc/modules/cross_validation.rst",
+    "doc/tutorial/statistical_inference/model_selection.rst",
+    "doc/whats_new.rst",
+    "sklearn/cross_validation.py",
+    "sklearn/feature_selection/tests/test_rfe.py",
+    "sklearn/tests/test_cross_validation.py",
+    "sklearn/tests/test_naive_bayes.py"
+  ],
+  "predicted_files": [
+    "sklearn/cross_validation.py",
+    "sklearn/tests/test_grid_search.py",
+    "sklearn/tests/test_cross_validation.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cross_validation.py', 'sklearn/tests/test_cross_validation.py', 'doc/modules/cross_validation.rst', 'sklearn/tests/test_grid_search.py', 'doc/modules/classes.rst'], 'reasoning': '1. sklearn/cross_validation.py contains the implementation of StratifiedKFold and its base class, so all logic changes and feature additions should go here. 2. sklearn/tests/test_cross_validation.py should be updated to test the new behavior, including dependency preservation and shuffle support. 3. doc/modules/cross_validation.rst is the main user-facing documentation for cross-validation strategies and must reflect changes and new options. 4. sklearn/tests/test_grid_search.py covers cases where StratifiedKFold is used as part of model selection routines like GridSearchCV and ensures integration remains correct. 5. doc/modules/classes.rst provides reference documentation to link StratifiedKFold as part of the public API.'}",
+  "error": null
+}

@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/18068",
+  "repo_name": "transformers",
+  "title": "StoppingCriteria \"scores\" is always None",
+  "base_commit": "4b423e607455a7aca1edc4beaa713da58e78ef0b",
+  "ground_truth_files": [
+    "src/transformers/generation/stopping_criteria.py",
+    "src/transformers/generation/utils.py"
+  ],
+  "predicted_files": [
+    "src/transformers/generation/utils.py",
+    "src/transformers/generation/stopping_criteria.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/transformers/generation/utils.py\",\n        \"src/transformers/generation/stopping_criteria.py\"\n    ],\n    \"reasoning\": \"1. src/transformers/generation/utils.py is the core file where the actual generation loop resides. It's responsible for calling StoppingCriteriaList and passing arguments to its __call__ method. Currently, it appears the 'scores' argument is not being constructed or passed (hence scores=None), so this is the main place to patch the code to ensure that scores (prediction logits) are provided at every criteria check. 2. src/transformers/generation/stopping_criteria.py houses the StoppingCriteria and its subclasses. While it currently expects 'scores' as an argument in its API, it's helpful to document, validate, and possibly adjust __call__ signatures or class docstrings to clarify the expectation and correct usage, especially after patching the upstream code. No example scripts or model-specific files require modification unless they override the stopping logic; fixes must occur at the generation core logic and, optionally, in the stopping criteria infrastructure for clarity.\"\n}",
+  "error": null
+}

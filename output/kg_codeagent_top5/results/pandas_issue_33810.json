@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/33810",
+  "repo_name": "pandas",
+  "title": "TST: add Feather V2 round-trip test",
+  "base_commit": "889c2ff67af14213e8ed065df2957b07e34ac95b",
+  "ground_truth_files": [
+    "doc/source/conf.py",
+    "doc/source/user_guide/io.rst",
+    "doc/source/whatsnew/v1.1.0.rst",
+    "pandas/core/frame.py",
+    "pandas/io/feather_format.py",
+    "pandas/tests/io/test_feather.py"
+  ],
+  "predicted_files": [
+    "pandas/io/parquet.py",
+    "pandas/io/feather_format.py",
+    "pandas/tests/io/test_feather.py",
+    "pandas/core/frame.py",
+    "pandas/tests/io/test_parquet.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/tests/io/test_feather.py', 'pandas/io/feather_format.py', 'pandas/core/frame.py', 'pandas/tests/io/test_parquet.py', 'pandas/io/parquet.py'], 'reasoning': '1. pandas/tests/io/test_feather.py: This is the primary Feather test file, where the new round-trip Feather V2 test for dtype preservation should be implemented.\\n2. pandas/io/feather_format.py: Contains the Feather I/O logic; may require updates to support V2 or handle dtypes correctly.\\n3. pandas/core/frame.py: The DataFrame.to_feather() method calls Feather logic\u2014changes may be needed for proper V2 test support, parameter passing, or doc updates.\\n4. pandas/tests/io/test_parquet.py: Provides reusable test frames and dtype scenarios, as referenced in the issue; used to expand Feather tests.\\n5. pandas/io/parquet.py: Useful for referencing how dtype preservation is handled for Parquet; only necessary if implementation changes are also required for comparison or consistency.'}",
+  "error": null
+}

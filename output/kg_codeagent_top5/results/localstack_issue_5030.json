@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/5030",
+  "repo_name": "localstack",
+  "title": "bug: State machines in non-default regions can't be deleted and fail to create proper ARN",
+  "base_commit": "60d2c3dc68d9fae0f1e0acb7d0c705df408bd8c5",
+  "ground_truth_files": [
+    "localstack/services/install.py",
+    "localstack/services/stepfunctions/stepfunctions_listener.py",
+    "localstack/services/stepfunctions/stepfunctions_starter.py",
+    "tests/integration/test_stepfunctions.py"
+  ],
+  "predicted_files": [
+    "localstack/services/stepfunctions/stepfunctions_listener.py",
+    "localstack/services/cloudformation/service_models.py",
+    "localstack/services/cloudformation/cloudformation_api.py",
+    "localstack/services/cloudformation/deployment_utils.py",
+    "localstack/services/stepfunctions/stepfunctions_utils.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/stepfunctions/stepfunctions_listener.py\",\n        \"localstack/services/cloudformation/service_models.py\",\n        \"localstack/services/cloudformation/cloudformation_api.py\",\n        \"localstack/services/cloudformation/deployment_utils.py\",\n        \"localstack/services/stepfunctions/stepfunctions_utils.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/stepfunctions/stepfunctions_listener.py is the key place where region is patched into state machine names and ARNs. Problems with double region injection or incorrect ARN formatting for Step Functions originate here, and fixes to ARN and name construction logic belong here. 2. localstack/services/cloudformation/service_models.py implements resource lifecycle logic for CloudFormation-managed resources, including deletion. Ensuring proper deletion of state machines in all regions, especially for nested or child resources, likely needs adjustments here. 3. localstack/services/cloudformation/cloudformation_api.py orchestrates stack and resource operations and may require handling for cross-region/nested state machine deletion and correct resource reference management. 4. localstack/services/cloudformation/deployment_utils.py supports helper utilities for deployment and parameter handling in CloudFormation, and incorrect resource name management (facilitating ARN patching or referencing) may need fixes here. 5. localstack/services/stepfunctions/stepfunctions_utils.py, while currently focused on execution polling, is a candidate for shared logic if any state machine creation/deletion/ARN helpers need to be abstracted beyond listener code. These files, in this order, capture the creation/patching/deletion lifecycle for Step Functions state machines under both normal and CloudFormation-nested circumstances.\"\n}",
+  "error": null
+}

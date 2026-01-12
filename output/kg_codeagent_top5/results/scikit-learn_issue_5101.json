@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/5101",
+  "repo_name": "scikit-learn",
+  "title": "LatentDirichletAllocation has superfluous attributes",
+  "base_commit": "4ac6a90a82e4a8d7b5338c18ae8a16559c98ba10",
+  "ground_truth_files": [
+    "sklearn/decomposition/online_lda.py"
+  ],
+  "predicted_files": [
+    "sklearn/decomposition/online_lda.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/decomposition/online_lda.py'], 'reasoning': \"Only sklearn/decomposition/online_lda.py defines and uses 'dirichlet_component_' and 'exp_dirichlet_component_'. No other Python, documentation, or extension files make use of these attributes. Removing them will only require changes in this implementation file.\"}",
+  "error": null
+}

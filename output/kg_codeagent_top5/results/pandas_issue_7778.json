@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/7778",
+  "repo_name": "pandas",
+  "title": "BUG: df.apply handles np.timedelta64 as timestamp, should be timedelta",
+  "base_commit": "a797b28c87d90a439dfa2c12b4a11e62bf0d6db2",
+  "ground_truth_files": [
+    "doc/source/v0.15.0.txt",
+    "pandas/core/frame.py",
+    "pandas/core/internals.py",
+    "pandas/core/series.py",
+    "pandas/tests/test_frame.py",
+    "pandas/tests/test_internals.py"
+  ],
+  "predicted_files": [
+    "pandas/core/algorithms.py",
+    "pandas/core/series.py",
+    "frame.py",
+    "common.py",
+    "pandas/core/frame.py",
+    "pandas/core/internals.py",
+    "pandas/core/common.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/common.py', 'pandas/core/frame.py', 'pandas/core/internals.py', 'pandas/core/algorithms.py', 'pandas/core/series.py'], 'reasoning': '1. pandas/core/common.py: Central dtype detection and upcasting logic, likely mis-identifies numpy.timedelta64 as timestamps in row-wise apply; changes here will correct dtype inference.\\n2. pandas/core/frame.py: Implements DataFrame and its apply operations, integrating type inference and dispatch; fixes here ensure DataFrame.apply handles numpy.timedelta64 correctly.\\n3. pandas/core/internals.py: Handles BlockManager and block-wise dtype casting/utilities; modifications may be needed if blocks incorrectly treat timedelta64 as timestamp.\\n4. pandas/core/algorithms.py: Contains dispatch logic and type-handling functions that may interact with apply/map; useful for complex type logic and array ops.\\n5. pandas/core/series.py: Implements Series and its apply logic, in case similar incorrect handling occurs for series of np.timedelta64.\\nFiles are ordered by likely importance to this bug: common.py (type logic) and frame.py (apply logic) are most important, followed by internals (block-level type), then algorithms and series for completeness.'}",
+  "error": null
+}

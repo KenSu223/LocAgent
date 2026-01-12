@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/16556",
+  "repo_name": "scikit-learn",
+  "title": "Add Pre-fit Model to Stacking Model",
+  "base_commit": "5ad3421a5b5759ecfaaab93406592d988f5d487f",
+  "ground_truth_files": [
+    "doc/whats_new/v1.1.rst",
+    "sklearn/ensemble/_stacking.py",
+    "sklearn/ensemble/tests/test_stacking.py"
+  ],
+  "predicted_files": [
+    "sklearn/utils/validation.py",
+    "sklearn/base.py",
+    "sklearn/ensemble/tests/test_stacking.py",
+    "sklearn/ensemble/_base.py",
+    "sklearn/ensemble/_stacking.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/ensemble/_stacking.py', 'sklearn/utils/validation.py', 'sklearn/base.py', 'sklearn/ensemble/_base.py', 'sklearn/ensemble/tests/test_stacking.py'], 'reasoning': \"1. sklearn/ensemble/_stacking.py: Contains the StackingClassifier and StackingRegressor code where pre-fit logic must be integrated.\\n2. sklearn/utils/validation.py: Contains validation utilities like 'check_is_fitted'; may require changes to handle checking fitted status more robustly across stacking base estimators.\\n3. sklearn/base.py: Provides base classes (ClassifierMixin, RegressorMixin, TransformerMixin) and estimator cloning, ensuring fit status is handled properly in the API.\\n4. sklearn/ensemble/_base.py: May contain shared fit/predict logic for ensemble models, useful for code consistency and inheritance.\\n5. sklearn/ensemble/tests/test_stacking.py: The related test file to add/modify tests to validate handling of pre-fit models within stacking estimators.\\nThese files together cover the main stacking implementation, helper utilities for fit status, core estimator interfaces, shared ensemble mechanisms, and corresponding tests.\"}",
+  "error": null
+}

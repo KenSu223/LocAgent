@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/16991",
+  "repo_name": "pandas",
+  "title": "ValueError on df.columns.isin(pd.Series())",
+  "base_commit": "fcb0263762a31724ba6db39bf1564569dda068a0",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v0.21.0.txt",
+    "pandas/core/algorithms.py",
+    "pandas/tests/frame/test_analytics.py",
+    "pandas/tests/indexes/test_base.py",
+    "pandas/tests/series/test_analytics.py",
+    "pandas/tests/test_algos.py"
+  ],
+  "predicted_files": [
+    "pandas/core/series.py",
+    "pandas/core/algorithms.py",
+    "pandas/_libs/hashtable.py",
+    "pandas/core/indexes/base.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/algorithms.py', 'pandas/core/indexes/base.py', 'pandas/_libs/hashtable.pyx', 'pandas/_libs/hashtable_func_helper.pxi.in', 'pandas/core/series.py'], 'reasoning': \"The primary bug occurs because pandas.core.algorithms.isin passes arrays of dtype 'double' (float64) to Cython hashtable functions expecting 'object' dtype, especially for empty Series/Index. Modification is required in: 1) pandas/core/algorithms.py to ensure dtypes are properly coerce to object before passing to hashtable, 2) pandas/core/indexes/base.py to guarantee Index construction and .isin method always provide correct dtype arrays, 3) pandas/_libs/hashtable.pyx and 4) pandas/_libs/hashtable_func_helper.pxi.in for correct error handling, type checking and possibly extending Cython logic, 5) pandas/core/series.py if Series.isin also propagates such issues when passing empty or wrongly typed data.\"}",
+  "error": null
+}

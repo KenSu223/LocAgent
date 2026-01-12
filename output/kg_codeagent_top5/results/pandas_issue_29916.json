@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/29916",
+  "repo_name": "pandas",
+  "title": "HDF5: empty groups and keys",
+  "base_commit": "c482b5727e3bd98b6f9780e51615791e413d542d",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v1.1.0.rst",
+    "pandas/io/pytables.py",
+    "pandas/tests/io/pytables/test_store.py"
+  ],
+  "predicted_files": [],
+  "success": true,
+  "raw_output": "[{'type': 'text', 'text': \"Error in generating final LLM output: Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to gpt-4.1 for gpt-4.1 in West US have exceeded the token rate limit for your current OpenAI S0 pricing tier. This request was for ChatCompletions_Create under OpenAI Language Model Instance API. Please retry after 34 seconds. To increase your default rate limit, visit: https://aka.ms/oai/quotaincrease.'}}\"}]",
+  "error": null
+}

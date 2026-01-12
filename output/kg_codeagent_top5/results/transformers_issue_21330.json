@@ -1,0 +1,34 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/21330",
+  "repo_name": "transformers",
+  "title": "Add XLM-V",
+  "base_commit": "b9af152efb748b1bff8f6fe0130e62ebb8e11a53",
+  "ground_truth_files": [
+    "README.md",
+    "README_es.md",
+    "README_hd.md",
+    "README_ja.md",
+    "README_ko.md",
+    "README_zh-hans.md",
+    "README_zh-hant.md",
+    "docs/source/de/index.mdx",
+    "docs/source/en/_toctree.yml",
+    "docs/source/en/index.mdx",
+    "src/transformers/models/auto/configuration_auto.py"
+  ],
+  "predicted_files": [
+    "__init__.py",
+    "src/transformers/models/xlm_v/tokenization_xlm_v.py",
+    "src/transformers/models/xlm_v/__init__.py",
+    "src/transformers/__init__.py",
+    "modeling_auto.py",
+    "src/transformers/models/xlm_v/configuration_xlm_v.py",
+    "modeling_xlm_v.py",
+    "src/transformers/models/xlm_v/modeling_xlm_v.py",
+    "tokenization_xlm_v.py",
+    "configuration_xlm_v.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/xlm_v/configuration_xlm_v.py', 'src/transformers/models/xlm_v/modeling_xlm_v.py', 'src/transformers/models/xlm_v/tokenization_xlm_v.py', 'src/transformers/models/xlm_v/__init__.py', 'src/transformers/__init__.py'], 'reasoning': \"1. configuration_xlm_v.py holds the configuration logic and model hyperparameters for XLM-V.\\n2. modeling_xlm_v.py implements the XLM-V model architecture (PyTorch code), required for loading and running the model.\\n3. tokenization_xlm_v.py contains the tokenizer implementation, especially important due to XLM-V's novel vocabulary mechanics.\\n4. __init__.py within xlm_v/ ensures the module exposes its API and ties together model, config, and tokenizer for local imports.\\n5. src/transformers/__init__.py is needed to globally register and expose XLM-V so the rest of the library and end-users can access the new model class. Auto-mapping files (e.g., modeling_auto.py) may need updates if AutoModel support for XLM-V is desired, for seamless integration.\"}",
+  "error": null
+}

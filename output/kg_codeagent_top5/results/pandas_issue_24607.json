@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/24607",
+  "repo_name": "pandas",
+  "title": "DES: Should util.is_nan check for complex('nan')?",
+  "base_commit": "19f715c51d16995fc6cd0c102fdba2f213a83a0f",
+  "ground_truth_files": [
+    "pandas/_libs/missing.pyx",
+    "pandas/_libs/tslibs/nattype.pxd",
+    "pandas/_libs/tslibs/nattype.pyx",
+    "pandas/_libs/tslibs/util.pxd",
+    "pandas/tests/dtypes/test_missing.py"
+  ],
+  "predicted_files": [
+    "pandas/core/dtypes/missing.py",
+    "pandas/core/missing.py",
+    "pandas/core/dtypes/common.py",
+    "pandas/core/ops/missing.py",
+    "pandas/tests/dtypes/test_missing.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/dtypes/missing.py\",\n        \"pandas/core/missing.py\",\n        \"pandas/core/dtypes/common.py\",\n        \"pandas/core/ops/missing.py\",\n        \"pandas/tests/dtypes/test_missing.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/dtypes/missing.py: This is where the main 'isna' (nan-checking) logic is implemented. To ensure all nan checks (including for complex('nan')) are correctly handled universally, this function should be updated. This is the core file to change.\\n\\n2. pandas/core/missing.py: This file contains higher-level missing data logic and directly imports and uses 'isna'. Its routines can be simplified and de-duplicated once central logic in dtypes/missing.py supports complex nan; references here should be updated to rely on the refactored 'isna'.\\n\\n3. pandas/core/dtypes/common.py: As a widely imported file for dtype and utility functions, check if any nan-check helpers exist or if additional helpers delegate to the refactored core logic. This ensures all dtype-centered nan detection routes through the improved logic.\\n\\n4. pandas/core/ops/missing.py: This file (from repo structure and dependencies) likely implements missing value operations (possibly ops involving nan logic), and may need updating to use the improved check or simplify logic.\\n\\n5. pandas/tests/dtypes/test_missing.py: Any change to central missing/nan logic needs to be validated with updated or additional test coverage, especially to confirm complex('nan') cases are now handled. This file should be updated to add or extend tests for complex nan detection.\\n\\nOverall, these files are interconnected through their dependency and handling of missing values and will comprehensively address the issue as described.\"\n}",
+  "error": null
+}

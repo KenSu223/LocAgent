@@ -1,0 +1,36 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/12762",
+  "repo_name": "transformers",
+  "title": "t5 fast tokenizer save_vocabulary fails without sentencepiece file",
+  "base_commit": "ba1b3db70907b975b5ca52b9957c5ed7a186a0fa",
+  "ground_truth_files": [
+    "src/transformers/models/albert/tokenization_albert_fast.py",
+    "src/transformers/models/barthez/tokenization_barthez_fast.py",
+    "src/transformers/models/big_bird/tokenization_big_bird_fast.py",
+    "src/transformers/models/camembert/tokenization_camembert_fast.py",
+    "src/transformers/models/herbert/tokenization_herbert_fast.py",
+    "src/transformers/models/mbart50/tokenization_mbart50_fast.py",
+    "src/transformers/models/pegasus/tokenization_pegasus_fast.py",
+    "src/transformers/models/reformer/tokenization_reformer_fast.py",
+    "src/transformers/models/t5/tokenization_t5_fast.py",
+    "src/transformers/models/xlm_roberta/tokenization_xlm_roberta_fast.py",
+    "src/transformers/models/xlnet/tokenization_xlnet_fast.py",
+    "src/transformers/tokenization_utils_fast.py",
+    "tests/test_tokenization_common.py"
+  ],
+  "predicted_files": [
+    "tokenization_utils_base.py",
+    "src/transformers/tokenization_utils_fast.py",
+    "tokenization_t5_fast.py",
+    "tokenization_utils_fast.py",
+    "test_tokenization_t5.py",
+    "tokenization_t5.py",
+    "src/transformers/models/t5/tokenization_t5_fast.py",
+    "src/transformers/tests/test_tokenization_t5.py",
+    "src/transformers/tokenization_utils_base.py",
+    "src/transformers/models/t5/tokenization_t5.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/t5/tokenization_t5_fast.py', 'src/transformers/tokenization_utils_fast.py', 'src/transformers/tokenization_utils_base.py', 'src/transformers/models/t5/tokenization_t5.py', 'src/transformers/tests/test_tokenization_t5.py'], 'reasoning': '1. tokenization_t5_fast.py: This is the core T5 fast tokenizer implementation which must gracefully handle missing vocab/sentencepiece files\u2014likely needs a method override or fix.\\n2. tokenization_utils_fast.py: Provides base logic for saving vocabulary in fast tokenizers\u2014may require patch to better handle None vocab_file cases.\\n3. tokenization_utils_base.py: The save/load logic is routed here for most tokenizers; stack trace shows this as part of save_pretrained workflow.\\n4. tokenization_t5.py: Reference implementation for slow tokenizer; should be checked for parity and potentially updated if similar bug exists.\\n5. test_tokenization_t5.py: Test suite for T5 tokenizer\u2014should be updated to verify robust behavior when sentencepiece file/vocab is absent.'}",
+  "error": null
+}

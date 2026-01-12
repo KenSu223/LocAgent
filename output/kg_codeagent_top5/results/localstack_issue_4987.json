@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/4987",
+  "repo_name": "localstack",
+  "title": "bug: The Content-MD5 you specified did not match what we received",
+  "base_commit": "2fe8440b619329891db150e45910e8aaad97b7ce",
+  "ground_truth_files": [
+    "localstack/services/s3/s3_listener.py",
+    "tests/integration/test_s3.py"
+  ],
+  "predicted_files": [
+    "localstack/services/edge.py",
+    "multipart_content.py",
+    "localstack/services/s3/multipart_content.py",
+    "localstack/services/s3/s3_utils.py",
+    "edge.py",
+    "s3_listener.py",
+    "localstack/services/s3/s3_listener.py",
+    "generic_proxy.py",
+    "s3_utils.py",
+    "localstack/services/generic_proxy.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/s3/s3_listener.py', 'localstack/services/s3/multipart_content.py', 'localstack/services/s3/s3_utils.py', 'localstack/services/edge.py', 'localstack/services/generic_proxy.py'], 'reasoning': '1. s3_listener.py: Main S3 service request handler, responsible for upload logic and any checksum/digest validation logic (most important).\\n2. multipart_content.py: Handles multipart uploads, where Content-MD5 validation is critical; may require fixes for correct processing.\\n3. s3_utils.py: Utility functions for S3 request normalization and header/key extraction, potential role in header parsing.\\n4. edge.py: Entry point for AWS service requests including S3, handles request parsing and routing logic.\\n5. generic_proxy.py: Generic request handling, including header normalization, CORS, and may impact how Content-MD5 is passed/validated.'}",
+  "error": null
+}

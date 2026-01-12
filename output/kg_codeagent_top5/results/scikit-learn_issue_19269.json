@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/19269",
+  "repo_name": "scikit-learn",
+  "title": "sklearn.datasets.load_files select file extension",
+  "base_commit": "e11c4d21a4579f0d49f414a4b76e386f80f0f074",
+  "ground_truth_files": [
+    "doc/whats_new/v1.1.rst",
+    "sklearn/datasets/_base.py",
+    "sklearn/datasets/tests/test_base.py"
+  ],
+  "predicted_files": [
+    "sklearn/datasets/_base.py",
+    "sklearn/utils/_bunch.py",
+    "doc/datasets/loading_other_datasets.rst",
+    "sklearn/datasets/tests/test_base.py",
+    "sklearn/datasets/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/datasets/_base.py\",\n        \"sklearn/utils/_bunch.py\",\n        \"doc/datasets/loading_other_datasets.rst\",\n        \"sklearn/datasets/tests/test_base.py\",\n        \"sklearn/datasets/__init__.py\"\n    ],\n    \"reasoning\": \"1. sklearn/datasets/_base.py is where the Knowledge Graph indicates load_files is implemented, and thus is the primary location to add the file extension filtering logic and argument to the function. 2. sklearn/utils/_bunch.py is often used for the return structure (Bunch object); it may need minor changes to carry new metadata if relevant (such as the list of extensions loaded, but this is optional). 3. doc/datasets/loading_other_datasets.rst documents dataset loading; updating it ensures users see the new argument and its use. 4. sklearn/datasets/tests/test_base.py holds tests for dataset loading utilities and should be updated (or similar test file) to verify the new feature and ensure .DStore and other unwanted files are ignored. 5. sklearn/datasets/__init__.py is where public API exposure for load_files occurs; changes here may be needed if the signature or documentation require updates, and to ensure the function is correctly imported with the new argument.\"\n}",
+  "error": null
+}

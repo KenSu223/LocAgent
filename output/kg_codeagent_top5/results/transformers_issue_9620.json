@@ -1,0 +1,28 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/9620",
+  "repo_name": "transformers",
+  "title": "SQuAD 2.0 metric not supported",
+  "base_commit": "fa876aee2adf525b597495c10ad9c96896953dbd",
+  "ground_truth_files": [
+    "examples/question-answering/requirements.txt",
+    "examples/question-answering/run_qa.py",
+    "examples/question-answering/run_qa_beam_search.py",
+    "examples/question-answering/squad_v2_local/evaluate.py",
+    "examples/question-answering/squad_v2_local/squad_v2_local.py"
+  ],
+  "predicted_files": [
+    "answering/trainer_qa.py",
+    "squad_v2_local/squad_v2_local.py",
+    "trainer_qa.py",
+    "run_qa.py",
+    "utils_qa.py",
+    "answering/squad_v2_local/squad_v2_local.py",
+    "squad_v2_local/evaluate.py",
+    "answering/run_qa.py",
+    "answering/squad_v2_local/evaluate.py",
+    "answering/utils_qa.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['examples/question-answering/run_qa.py', 'examples/question-answering/squad_v2_local/squad_v2_local.py', 'examples/question-answering/squad_v2_local/evaluate.py', 'examples/question-answering/trainer_qa.py', 'examples/question-answering/utils_qa.py'], 'reasoning': \"1. run_qa.py: The bug originates here with metric loading and formatting (lines 434-438), as well as the open TODO for SQuAD 2.0 metric. 2. squad_v2_local/squad_v2_local.py: Implements the metric used for SQuAD 2.0, invoked by the caller in run_qa.py; may need input adaptation. 3. squad_v2_local/evaluate.py: Contains the main logic for score computation, which raises TypeError on mismatched inputs. 4. trainer_qa.py: Called in the stacktrace during evaluation and likely interacts with compute_metrics; check for required formatting there. 5. utils_qa.py: Likely provides utilities for data conversion or answer formatting, and may need adjustment to match metric's expected format.\"}",
+  "error": null
+}

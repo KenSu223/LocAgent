@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/24115",
+  "repo_name": "pandas",
+  "title": "DTA/TDA/PA inplace methods should actually be inplace",
+  "base_commit": "710df2140555030e4d86e669d6df2deb852bcaf5",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v1.0.0.rst",
+    "pandas/core/arrays/datetimelike.py",
+    "pandas/tests/arrays/test_datetimelike.py"
+  ],
+  "predicted_files": [
+    "pandas/core/arrays/datetimes.py",
+    "pandas/core/arrays/timedeltas.py",
+    "pandas/core/arrays/period.py",
+    "pandas/core/arrays/datetimelike.py",
+    "pandas/core/arrays/base.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/arrays/datetimes.py\",\n        \"pandas/core/arrays/timedeltas.py\",\n        \"pandas/core/arrays/period.py\",\n        \"pandas/core/arrays/datetimelike.py\",\n        \"pandas/core/arrays/base.py\"\n    ],\n    \"reasoning\": \"1. The files datetimes.py, timedeltas.py, and period.py contain the key DatetimeArray, TimedeltaArray, and PeriodArray classes, respectively, whose methods are not currently acting inplace and require specific attention to correct their method behaviors. These files are where actual method changes are needed for proper inplace operation.\\n2. The arrays/datetimelike.py file defines the TimelikeOps and DatelikeOps classes, which are inherited by all three arrays and may contain key shared logic for datetime-like operation. Fixing inplace behavior may require changes or extensions in their shared logic.\\n3. The arrays/base.py file is likely to hold the shared ExtensionArray or similar mixins and base classes. If any mutation-related APIs or core mechanisms need updating for all ExtensionArrays, including DTA/TDA/PA, this is where those updates should be made.  \\n\\nThis set covers the concrete (array-specific) and abstract/base/shared (mixin and base) layers that define, inherit, and implement inplace or replacement logic for DTA/TDA/PA methods.\"\n}",
+  "error": null
+}

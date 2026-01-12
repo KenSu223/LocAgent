@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/164",
+  "repo_name": "localstack",
+  "title": "Data persistence for all services",
+  "base_commit": "0cf839ae1237e9b5aa9479d80e8f3f1eb3b79b5d",
+  "ground_truth_files": [
+    "README.md",
+    "localstack/constants.py",
+    "localstack/plugins.py",
+    "localstack/services/infra.py",
+    "localstack/services/s3/s3_listener.py",
+    "localstack/services/secretsmanager/secretsmanager_starter.py",
+    "localstack/services/ssm/ssm_listener.py",
+    "localstack/utils/persistence.py"
+  ],
+  "predicted_files": [
+    "localstack/services/dynamodb/__init__.py",
+    "localstack/services/s3/__init__.py",
+    "localstack/services/infra.py",
+    "localstack/utils/persistence.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/utils/persistence.py', 'doc/roadmap/README.md', 'localstack/services/infra.py', 'localstack/services/s3/__init__.py', 'localstack/services/dynamodb/__init__.py'], 'reasoning': '1. localstack/utils/persistence.py: Central persistence logic, requires refactoring to support all services. 2. doc/roadmap/README.md: Roadmap documentation for persistent state, must be updated with plans and status. 3. localstack/services/infra.py: Likely orchestrates service lifecycles, necessary to integrate global persistence support. 4. localstack/services/s3/__init__.py: S3 service entrypoint, key target for extending persistent state as a prototype. 5. localstack/services/dynamodb/__init__.py: DynamoDB service entrypoint, another important module for persistence extension.'}",
+  "error": null
+}

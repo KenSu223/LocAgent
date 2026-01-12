@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/7109",
+  "repo_name": "localstack",
+  "title": "bug: InvalidParameterException when sending to SNS topic since version 1.2",
+  "base_commit": "0bdfa27ab6cce6f82243470d1e48d283e01aa84c",
+  "ground_truth_files": [
+    "localstack/services/sns/provider.py",
+    "tests/integration/test_sns.py",
+    "tests/integration/test_sns.snapshot.json"
+  ],
+  "predicted_files": [
+    "localstack/services/sns/provider.py",
+    "localstack/services/sns/models.py",
+    "localstack/aws/api/sns/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/sns/provider.py\",\n        \"localstack/services/sns/models.py\",\n        \"localstack/aws/api/sns/__init__.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/sns/provider.py: This is the main logic file for SNS service operations, including all request handling, parsing, and business logic. It likely processes the SNS Publish API, marshals message attributes, and would enforce or relax validation of attribute types. To address the bug with InvalidParameterException on attribute types, the validation logic (or its absence/strictness) for message attribute types must be adapted here. 2. localstack/services/sns/models.py: Depending on how message schemas or validation helpers are shared, this module may declare types, constants, or helper functions for SNS message attributes, including whitelisted attribute type prefixes ('Binary', 'Number', 'String'). If any system-wide allowed types or schemas are located here, they need to be updated alongside provider.py. 3. localstack/aws/api/sns/__init__.py: Contains the API exception classes and message attribute definitions imported by provider.py. If the error type or attribute validation logic is updated to better match AWS, changes here may be needed, such as refining InvalidParameterValueException or type maps. These three files form the full stack involved in parsing, validating, and raising errors for SNS attribute types. No evidence was found that message attribute validation occurs elsewhere (other utils, generic proxy, or stack helpers), so changes outside these files are unlikely to be necessary.\"\n}",
+  "error": null
+}

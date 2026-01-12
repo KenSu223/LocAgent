@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/653",
+  "repo_name": "transformers",
+  "title": "Different Results from version 0.4.0 to version 0.5.0",
+  "base_commit": "45d21502f0b67eb8a5ad244d469dcc0dfb7517a7",
+  "ground_truth_files": [
+    "pytorch_pretrained_bert/modeling.py"
+  ],
+  "predicted_files": [
+    "pytorch_pretrained_bert/modeling_openai.py",
+    "pytorch_pretrained_bert/file_utils.py",
+    "modeling.py",
+    "file_utils.py",
+    "pytorch_pretrained_bert/modeling.py",
+    "pytorch_pretrained_bert/modeling_gpt2.py",
+    "pytorch_pretrained_bert/modeling_transfo_xl.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pytorch_pretrained_bert/modeling.py', 'pytorch_pretrained_bert/modeling_gpt2.py', 'pytorch_pretrained_bert/modeling_openai.py', 'pytorch_pretrained_bert/modeling_transfo_xl.py', 'pytorch_pretrained_bert/file_utils.py'], 'reasoning': '1. modeling.py and variant model files define the architectures and may include changes affecting weight initialization and final training results. 2. file_utils.py manages file loading/caching of weights and configs, and any changes to where/how weights are loaded can impact reproducibility. 3. These files are most critical because changes in model structure or initialization logic directly alter training outcomes. Order represents the importance to reproducibility: model definition files are most crucial, followed by the weight/config file utility.'}",
+  "error": null
+}

@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/3573",
+  "repo_name": "pandas",
+  "title": "Unintuitive default behavior with wide DataFrames in the IPython notebook",
+  "base_commit": "92093457ca13ba037257d0b8d41735268535c84f",
+  "ground_truth_files": [
+    "RELEASE.rst",
+    "doc/source/faq.rst",
+    "pandas/core/common.py",
+    "pandas/core/config_init.py",
+    "pandas/core/format.py",
+    "pandas/core/frame.py",
+    "pandas/tests/test_format.py"
+  ],
+  "predicted_files": [
+    "pandas/core/generic.py",
+    "pandas/io/formats/format.py",
+    "pandas/core/frame.py",
+    "pandas/core/config.py",
+    "pandas/io/formats/html.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/io/formats/format.py', 'pandas/io/formats/html.py', 'pandas/core/frame.py', 'pandas/core/generic.py', 'pandas/core/config.py'], 'reasoning': '1. pandas/io/formats/format.py: Contains DataFrameFormatter and core formatting logic, including summary/truncation based on width; main target to change summary logic for HTML output. 2. pandas/io/formats/html.py: Directly produces HTML output; key for modifying HTML-specific behavior. 3. pandas/core/frame.py: The DataFrame class; calls formatting/representation logic, may need interface adjustment. 4. pandas/core/generic.py: Base NDFrame logic; shared formatting and display logic across pandas objects. 5. pandas/core/config.py: Controls configuration options such as line width and summary display; allows changing defaults.'}",
+  "error": null
+}

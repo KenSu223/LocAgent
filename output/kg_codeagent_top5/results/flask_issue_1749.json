@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/1749",
+  "repo_name": "flask",
+  "title": "JSONEncoder and aware datetimes",
+  "base_commit": "1a7fd980f8579bd7d7d53c812a77c1dc64be52ba",
+  "ground_truth_files": [
+    "flask/json.py"
+  ],
+  "predicted_files": [
+    "flask/json.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/json.py'], 'reasoning': 'The issue with ignoring timezone information in datetime serialization for JSON encoding is handled exclusively by the JSONEncoder class in flask/json.py. Specifically, the default() method uses http_date(o.timetuple()), which does not preserve timezone info. Modifying flask/json.py to correctly handle timezone-aware datetime objects addresses the root cause. No other files in the direct flask codebase process datetime objects for JSON, as confirmed by exhaustive searches.'}",
+  "error": null
+}

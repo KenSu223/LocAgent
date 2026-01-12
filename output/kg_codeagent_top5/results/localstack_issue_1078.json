@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1078",
+  "repo_name": "localstack",
+  "title": "Connect to localhost:4568 [localhost/127.0.0.1] failed: Connection refused (Connection refused)",
+  "base_commit": "1c5f2e9650155a839cc842a9cd07faf3e76ed5d2",
+  "ground_truth_files": [
+    "docker-compose.yml"
+  ],
+  "predicted_files": [
+    "localstack/config.py",
+    "localstack/constants.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['docker-compose.yml', 'localstack/config.py', 'localstack/constants.py', 'Dockerfile', 'localstack/services/kinesis/'], 'reasoning': \"1. docker-compose.yml: Update environment variables (e.g., HOSTNAME, HOSTNAME_EXTERNAL) for the localstack service to '0.0.0.0' or suitable network alias to allow connections from Jenkins or other containers. Adjust port/network config if inter-container comms are needed.\\n2. localstack/config.py: Ensure environment variable handling and service exposure logic allow for Docker network binding (using BIND_HOST or docker network alias instead of 'localhost').\\n3. localstack/constants.py: Ensure config (BIND_HOST or LOCALHOST usage) allows external connections by default in Docker/CI, not just 'localhost'.\\n4. Dockerfile: Verify that no networking or local-only settings prevent Docker service exposure and check for correct installation/entrypoint setup.\\n5. localstack/services/kinesis/: Inspect code for service setup to ensure it does not hardcode host/port improperly and uses the correct environment or config settings for service interface binding.\"}",
+  "error": null
+}

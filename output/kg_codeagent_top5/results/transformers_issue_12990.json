@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/12990",
+  "repo_name": "transformers",
+  "title": "kindly adding some documentations on t5-v1_1-base\"\"",
+  "base_commit": "ba1b3db70907b975b5ca52b9957c5ed7a186a0fa",
+  "ground_truth_files": [
+    "README.md",
+    "docs/source/index.rst",
+    "docs/source/model_doc/byt5.rst",
+    "docs/source/model_doc/mt5.rst",
+    "docs/source/model_doc/t5.rst",
+    "src/transformers/models/t5/modeling_flax_t5.py",
+    "src/transformers/models/t5/modeling_t5.py",
+    "src/transformers/models/t5/modeling_tf_t5.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/t5/configuration_t5.py",
+    "src/transformers/models/t5/tokenization_t5_fast.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['docs/source/model_doc/t5.rst', 'docs/source/fast_tokenizers.rst', 'docs/source/pretrained_models.rst', 'src/transformers/models/t5/tokenization_t5_fast.py', 'src/transformers/models/t5/configuration_t5.py'], 'reasoning': '1. docs/source/model_doc/t5.rst: This is the main T5 documentation page and should contain detailed notes on differences between t5-base and t5-v1_1-base, memory usage, and tokenizer support.\\n2. docs/source/fast_tokenizers.rst: Specific documentation about fast tokenizers compatibility; should note issues or lack of support for certain T5 variants.\\n3. docs/source/pretrained_models.rst: Summarizes all publicly available pretrained models and should describe t5-v1_1-base, including its size and differences.\\n4. src/transformers/models/t5/tokenization_t5_fast.py: Fast tokenizer code for T5, likely relevant given reported issues; may need added error messages or docstrings.\\n5. src/transformers/models/t5/configuration_t5.py: Configuration file for all T5 variants, often contains comment-level documentation and descriptions that are displayed in model summaries.'}",
+  "error": null
+}

@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/20452",
+  "repo_name": "pandas",
+  "title": "BUG: New feature allowing merging on combination of columns and index levels drops levels of index",
+  "base_commit": "940104efc9e708bc93744dfaa36c9492b03b1ca4",
+  "ground_truth_files": [
+    "doc/source/merging.rst",
+    "doc/source/whatsnew/v0.24.0.rst",
+    "pandas/core/reshape/merge.py",
+    "pandas/tests/reshape/merge/test_join.py",
+    "pandas/tests/reshape/merge/test_merge.py"
+  ],
+  "predicted_files": [
+    "pandas/core/generic.py",
+    "pandas/core/indexes/multi.py",
+    "pandas/core/reshape/merge.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/reshape/merge.py', 'pandas/core/frame.py', 'doc/source/merging.rst', 'pandas/core/indexes/multi.py', 'pandas/core/generic.py'], 'reasoning': '1. pandas/core/reshape/merge.py: This file contains the main merge function and associated logic\u2014the bug is most likely here, where merging of MultiIndexed DataFrames loses levels when merging on columns and indexes.\\n2. pandas/core/frame.py: This file implements the DataFrame.merge API; changes may be needed if argument parsing or API contracts change, or in order to properly support index-preserving merges.\\n3. doc/source/merging.rst: The issue involves both a documentation bug (incorrect version reference and explanation of current merge behavior). This file should document the correct semantics when merging on index levels and columns.\\n4. pandas/core/indexes/multi.py: Handling index level preservation after merge, specifically when working on MultiIndex objects, may require updates here.\\n5. pandas/core/generic.py: If generic DataFrame/index logic is involved in merging or index restoration, this file might need updates, although actual changes are less likely unless index handling is more generic in pandas internals.'}",
+  "error": null
+}

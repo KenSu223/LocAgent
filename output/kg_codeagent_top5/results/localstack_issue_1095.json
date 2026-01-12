@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1095",
+  "repo_name": "localstack",
+  "title": "Healthcheck when running in docker",
+  "base_commit": "1c5f2e9650155a839cc842a9cd07faf3e76ed5d2",
+  "ground_truth_files": [
+    "docker-compose.yml"
+  ],
+  "predicted_files": [
+    "localstack/services/infra.py",
+    "localstack/services/generic_proxy.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/generic_proxy.py', 'Dockerfile', 'localstack/services/infra.py', 'README.md', 'bin/localstack'], 'reasoning': '1. localstack/services/generic_proxy.py: This is the HTTP server implementation; a healthcheck endpoint should be added here. 2. Dockerfile: Needs a HEALTHCHECK instruction querying the new health endpoint, informing Docker Compose of LocalStack health. 3. localstack/services/infra.py: Ties health status to readiness logic, so the endpoint reflects true service state. 4. README.md: Update documentation to inform users about the healthcheck feature and Docker Compose setup. 5. bin/localstack: May need minor updates if startup or CLI should expose health diagnostics or if control over health signaling is required.'}",
+  "error": null
+}

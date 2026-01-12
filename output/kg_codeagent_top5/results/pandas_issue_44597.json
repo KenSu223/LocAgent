@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/44597",
+  "repo_name": "pandas",
+  "title": "API/DEPR: int downcasting in DataFrame.where",
+  "base_commit": "a3c0e7bcfb8bbe9ca45df7e571a305d403e0f066",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v1.4.0.rst",
+    "pandas/core/internals/blocks.py",
+    "pandas/tests/frame/indexing/test_where.py",
+    "pandas/tests/frame/methods/test_clip.py"
+  ],
+  "predicted_files": [
+    "pandas/core/internals/blocks.py",
+    "pandas/core/generic.py",
+    "pandas/core/computation/expressions.py",
+    "pandas/core/internals/managers.py",
+    "pandas/core/dtypes/cast.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/internals/blocks.py\",\n        \"pandas/core/generic.py\",\n        \"pandas/core/computation/expressions.py\",\n        \"pandas/core/internals/managers.py\",\n        \"pandas/core/dtypes/cast.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/internals/blocks.py is the primary file containing the Block.where method, which implements the special integer downcasting logic that the issue describes and seeks to deprecate/remove. The relevant logic (with maybe_downcast_numeric and result_blocks splitting) is here, and this is where the main code modification should occur to remove/deprecate this behavior.\\n\\n2. pandas/core/generic.py contains NDFrame.where (DataFrame/Series inherit this), which ultimately routes to Block.where. Adjustments or deprecation warnings around the usage and/or API-level adjustments should be made here to align public behavior with core changes.\\n\\n3. pandas/core/computation/expressions.py contains expressions.where, which is used within Block.where and also mentioned as being affected by the current bespoke downcasting. Edge-case logic resulting from the removal of the custom downcasting may need updates here to ensure consistent and correct broadcasting/upcasting.\\n\\n4. pandas/core/internals/managers.py contains BaseBlockManager.where and the logic for managing how where is dispatched to the blocks. Changes in how columns/blocks are split or upcast will potentially have effects here, particularly if bespoke logic in blocks is removed.\\n\\n5. pandas/core/dtypes/cast.py contains utility functions (e.g., maybe_downcast_numeric, can_hold_element) directly involved in determining when/if downcasting should occur. These functions are imported and used in blocks.py, and may need updating or warning annotations if the overall downcasting behavior is deprecated or refactored. \\n\\nThese files are listed in priority order: blocks.py is where the core logic and most of the complexity lies; generic.py and expressions.py inte",
+  "error": null
+}

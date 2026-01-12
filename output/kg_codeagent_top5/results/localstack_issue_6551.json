@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/6551",
+  "repo_name": "localstack",
+  "title": "bug: Can't get SSM secret parameter using localstack.",
+  "base_commit": "a258338f5c88f49b517f7ecf66be113e481a0afe",
+  "ground_truth_files": [
+    "localstack/services/ssm/provider.py",
+    "tests/integration/test_ssm.py"
+  ],
+  "predicted_files": [
+    "localstack/services/providers.py",
+    "localstack/aws/gateway.py",
+    "localstack/services/stores.py",
+    "localstack/services/ssm/__init__.py",
+    "localstack/services/secretsmanager/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/ssm/__init__.py', 'localstack/services/secretsmanager/__init__.py', 'localstack/services/stores.py', 'localstack/services/providers.py', 'localstack/aws/gateway.py'], 'reasoning': \"1. localstack/services/ssm/__init__.py: This is expected to define the SSM service logic, including parameter fetch behavior and error handling, and would be the entrypoint for resolving requests like 'get-parameter' where the bug manifests.\\n2. localstack/services/secretsmanager/__init__.py: Core implementation for SecretsManager features, needed to ensure secrets can be indexed or referenced from SSM if such cross-access is required.\\n3. localstack/services/stores.py: Holds or interfaces for persistent storage of parameters and secrets. If SSM and SecretsManager use separate stores, integration/fix may be required here for unified lookup.\\n4. localstack/services/providers.py: Likely wires up the service implementations and may need changes for cross-service lookup or error handling improvements relevant to the bug.\\n5. localstack/aws/gateway.py: Routes API requests to service handlers. It may require patching if the bug is related to improper dispatch or translation of get-parameter calls across services.\"}",
+  "error": null
+}

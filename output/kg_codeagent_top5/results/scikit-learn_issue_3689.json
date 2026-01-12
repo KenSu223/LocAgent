@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/3689",
+  "repo_name": "scikit-learn",
+  "title": "using sparse matrix in fit_params",
+  "base_commit": "439c19596a248a31cd1aa8220f54a622a0322160",
+  "ground_truth_files": [
+    "sklearn/cross_validation.py",
+    "sklearn/tests/test_cross_validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/cross_validation.py",
+    "sklearn/utils/validation.py",
+    "sklearn/utils/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/cross_validation.py\",\n        \"sklearn/utils/validation.py\",\n        \"sklearn/utils/__init__.py\"\n    ],\n    \"reasoning\": \"1. sklearn/cross_validation.py contains the direct offending code: in _fit_and_score, fit_params values are indexed with len(v) and slicing which fails for scipy sparse matrices, as their __len__ raises TypeError. This must be updated to check for sparse matrices and use v.shape[0] or v.getnnz() or sp.issparse(v), and to slice only row-wise. 2. sklearn/utils/validation.py is likely to contain array/sparse matrix check helpers (such as _is_arraylike, _num_samples), and may require modification to provide utilities that robustly determine if an object is a sparse matrix and supports proper slicing for fit_params. 3. sklearn/utils/__init__.py frequently collects public utilities from validation or other helper functions, and should be updated only if new helper functions need to be exposed at package level. Other files, including those in pipeline or grid_search, do not perform the problematic operation and need not be modified unless they duplicate this fit_params handling logic. The fix can be localized by making cross_validation and utils sparse-aware\u2014fewer than 5 files.\"\n}",
+  "error": null
+}

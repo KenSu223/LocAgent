@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/32661",
+  "repo_name": "transformers",
+  "title": "RoBERTa config defaults are inconsistent with fairseq implementation",
+  "base_commit": "5bcbdff15922b1d0eeb035879630ca61c292122a",
+  "ground_truth_files": [
+    "src/transformers/models/roberta/configuration_roberta.py"
+  ],
+  "predicted_files": [
+    "modeling_roberta.py",
+    "modeling_flax_roberta.py",
+    "src/transformers/models/bert/configuration_bert.py",
+    "src/transformers/models/roberta/modeling_flax_roberta.py",
+    "src/transformers/models/roberta/modeling_roberta.py",
+    "configuration_bert.py",
+    "configuration_roberta.py",
+    "modeling_tf_roberta.py",
+    "src/transformers/models/roberta/modeling_tf_roberta.py",
+    "src/transformers/models/roberta/configuration_roberta.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/roberta/configuration_roberta.py', 'src/transformers/models/roberta/modeling_roberta.py', 'src/transformers/models/bert/configuration_bert.py', 'src/transformers/models/roberta/modeling_tf_roberta.py', 'src/transformers/models/roberta/modeling_flax_roberta.py'], 'reasoning': '1. configuration_roberta.py: The primary location for setting RoBERTa config defaults, including max_position_embeddings and pad_token_id, which are central to the issue of alignment with the original (fairseq) implementation and pretrained configs.\\n2. modeling_roberta.py: Handles model initialization and position_ids; changes to config defaults must be reflected or handled here to avoid indexing issues as described in the bug.\\n3. configuration_bert.py: As the parent config, changes here may propagate or need adjustment if shared defaults are involved in inheritance.\\n4. modeling_tf_roberta.py: TensorFlow backend, uses RobertaConfig and interprets defaults for model construction; needs review to ensure handling is consistent across backends.\\n5. modeling_flax_roberta.py: Flax backend, for full correctness, must also process config defaults and position embedding calculations identically.'}",
+  "error": null
+}

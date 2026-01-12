@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/4409",
+  "repo_name": "localstack",
+  "title": "feature request: ConfigService",
+  "base_commit": "581980f89037694181765dfa400ce9f75c6a01ed",
+  "ground_truth_files": [
+    "localstack/plugins.py",
+    "localstack/services/support/support_starter.py",
+    "requirements.txt"
+  ],
+  "predicted_files": [
+    "localstack/services/plugins.py",
+    "localstack/services/generic_proxy.py",
+    "localstack/services/infra.py",
+    "tests/integration/test_config_endpoint.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/config/', 'localstack/services/plugins.py', 'localstack/services/infra.py', 'localstack/services/generic_proxy.py', 'tests/integration/test_config_endpoint.py'], 'reasoning': \"1. 'localstack/services/config/': The primary location for implementing AWS ConfigService API behavior. 2. 'localstack/services/plugins.py': To register the new service so it's recognized and started by LocalStack. 3. 'localstack/services/infra.py': For service infrastructure lifecycle management and possibly wiring dependencies. 4. 'localstack/services/generic_proxy.py': To enable and route requests for the new service APIs if applicable. 5. 'tests/integration/test_config_endpoint.py': For integration and functional testing of the new ConfigService implementation.\"}",
+  "error": null
+}

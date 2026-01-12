@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1225",
+  "repo_name": "localstack",
+  "title": "Presigned S3 url doesnt notify sqs ",
+  "base_commit": "e65705a6ebf93ed7fbb05b690ebeb2c9c4aa88ae",
+  "ground_truth_files": [
+    "localstack/services/generic_proxy.py",
+    "localstack/services/s3/s3_listener.py",
+    "tests/integration/test_s3.py"
+  ],
+  "predicted_files": [
+    "localstack/services/s3/s3_listener.py",
+    "localstack/services/s3/multipart_content.py",
+    "localstack/services/sqs/__init__.py",
+    "localstack/services/generic_proxy.py",
+    "localstack/utils/aws/aws_stack.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/s3/s3_listener.py\",\n        \"localstack/services/s3/multipart_content.py\",\n        \"localstack/services/sqs/__init__.py\",\n        \"localstack/services/generic_proxy.py\",\n        \"localstack/utils/aws/aws_stack.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/s3/s3_listener.py: This file is responsible for handling all S3 events, including object creation and bucket notifications. The root issue is that presigned uploads do not trigger event notifications (like SQS), so the handler logic for object creation upon presigned URL access must be fixed or extended here.\\n\\n2. localstack/services/s3/multipart_content.py: Presigned URLs commonly utilize multipart uploads; if event notification logic for multipart uploads is missing or incomplete, fixes here are critical for comprehensive coverage of S3 upload event triggering.\\n\\n3. localstack/services/sqs/__init__.py: SQS integration code may require modifications to properly receive and process bucket notifications. If certain event formats only trigger in CLI workflows but not presigned uploads, adjustments may be needed here.\\n\\n4. localstack/services/generic_proxy.py: Handles ProxyListener and S3 request dispatching. Since direct handler/function searches were unsuccessful in s3_listener.py, the proxy logic may need to ensure presigned requests and all object creation result in notifications.\\n\\n5. localstack/utils/aws/aws_stack.py: Utility code that implements AWS interactions for services, including notification dispatch (e.g., sending SQS messages). Modifications may be needed if SQS notification triggering code for S3 events is defined in utilities.\\n\\nOrdered by where the core object creation notification logic likely resides (S3, then multipart S3, then SQS connection, then proxy/dispatch code, then AWS utilities). Resolving the issue requires ensuring every object creation\u2014whether via AWS CLI or raw presigned URL access\u2014triggers bucket notifications and S",
+  "error": null
+}

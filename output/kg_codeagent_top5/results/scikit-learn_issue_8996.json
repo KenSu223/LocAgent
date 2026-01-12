@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/8996",
+  "repo_name": "scikit-learn",
+  "title": "Deprecate LSHForest",
+  "base_commit": "0fb9a50033574e36a8bd635d8e5c0a793428877c",
+  "ground_truth_files": [
+    "benchmarks/bench_plot_approximate_neighbors.py",
+    "doc/modules/classes.rst",
+    "doc/modules/neighbors.rst",
+    "doc/whats_new.rst",
+    "examples/neighbors/plot_approximate_nearest_neighbors_hyperparameters.py",
+    "examples/neighbors/plot_approximate_nearest_neighbors_scalability.py",
+    "sklearn/neighbors/approximate.py",
+    "sklearn/neighbors/tests/test_approximate.py"
+  ],
+  "predicted_files": [
+    "examples/neighbors/plot_approximate_nearest_neighbors_scalability.py",
+    "sklearn/neighbors/tests/test_approximate.py",
+    "sklearn/neighbors/approximate.py",
+    "sklearn/neighbors/__init__.py",
+    "examples/neighbors/plot_approximate_nearest_neighbors_hyperparameters.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/neighbors/approximate.py', 'sklearn/neighbors/__init__.py', 'sklearn/neighbors/tests/test_approximate.py', 'examples/neighbors/plot_approximate_nearest_neighbors_scalability.py', 'examples/neighbors/plot_approximate_nearest_neighbors_hyperparameters.py'], 'reasoning': '1. sklearn/neighbors/approximate.py: Implements LSHForest \u2014 the deprecation and performance warnings must be introduced here in the class itself.\\n2. sklearn/neighbors/__init__.py: Imports and exposes LSHForest \u2014 update to reflect deprecation and pending removal from the public API.\\n3. sklearn/neighbors/tests/test_approximate.py: Contains LSHForest tests \u2014 ensure tests check for correct warning behavior (deprecation, performance).\\n4. examples/neighbors/plot_approximate_nearest_neighbors_scalability.py: Prominent example usage \u2014 update to inform users of the deprecation and possible issues.\\n5. examples/neighbors/plot_approximate_nearest_neighbors_hyperparameters.py: Another example for user reference \u2014 update commentary and potentially code to warn about deprecation/planned removal.'}",
+  "error": null
+}

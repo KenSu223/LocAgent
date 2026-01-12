@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/38495",
+  "repo_name": "pandas",
+  "title": "Major Performance regression of df.groupby(..).indices",
+  "base_commit": "89b3d6b201b5d429a202b5239054d5a70c8b5071",
+  "ground_truth_files": [
+    "asv_bench/benchmarks/groupby.py"
+  ],
+  "predicted_files": [
+    "pandas/_libs/hashtable.py",
+    "pandas/core/groupby/ops.py",
+    "pandas/_libs/groupby.py",
+    "pandas/core/groupby/groupby.py",
+    "pandas/core/groupby/grouper.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/groupby/ops.py', 'pandas/core/groupby/groupby.py', 'pandas/core/groupby/grouper.py', 'pandas/_libs/groupby.pyx', 'pandas/_libs/hashtable.pyx'], 'reasoning': '1. pandas/core/groupby/ops.py: Contains BaseGrouper and BinGrouper, handling the internal logic and algorithms for groupby including how indices are constructed; any slowdowns or regressions often originate here.\\n2. pandas/core/groupby/groupby.py: Main user-facing groupby routines, manages calls to BaseGroupBy.indices and interactions with Cython routines; changes here could alter performance characteristics of .indices.\\n3. pandas/core/groupby/grouper.py: Grouping helper logic, responsible for mapping group labels to indices, often delegating to lower-level routines; changes could impact indices construction speed.\\n4. pandas/_libs/groupby.pyx: Cython implementation of groupby mechanics, imported by Python wrappers above. Most critical for performance, especially for large groupings; likely culprit for regressions.\\n5. pandas/_libs/hashtable.pyx: Implements hash table mechanics for mapping group keys to indices; any changes here could drastically impact performance of .indices for large data sets.'}",
+  "error": null
+}

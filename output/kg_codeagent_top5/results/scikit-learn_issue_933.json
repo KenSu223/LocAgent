@@ -1,0 +1,27 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/933",
+  "repo_name": "scikit-learn",
+  "title": "Speed up tree construction",
+  "base_commit": "0e3cbbdcdfeec1c6b10aea11524add6350a8f4e0",
+  "ground_truth_files": [
+    "doc/whats_new.rst",
+    "sklearn/ensemble/_gradient_boosting.c",
+    "sklearn/ensemble/_gradient_boosting.pyx",
+    "sklearn/ensemble/forest.py",
+    "sklearn/ensemble/gradient_boosting.py",
+    "sklearn/ensemble/tests/test_forest.py",
+    "sklearn/ensemble/tests/test_gradient_boosting.py",
+    "sklearn/tree/_tree.pyx",
+    "sklearn/tree/tests/test_tree.py",
+    "sklearn/tree/tree.py"
+  ],
+  "predicted_files": [
+    "sklearn/setup.py",
+    "sklearn/tree/setup.py",
+    "sklearn/tree/_tree.py",
+    "sklearn/tree/tree.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/tree/tree.py', 'sklearn/tree/_tree.pyx', 'sklearn/tree/setup.py', 'sklearn/tree/tests/', 'sklearn/setup.py'], 'reasoning': '1. sklearn/tree/tree.py: The Tree class and tree construction logic are currently implemented here; they need to be moved to Cython and usages updated.\\n2. sklearn/tree/_tree.pyx: Cython file that will host the new Tree class implementation and associated fast routines for tree construction.\\n3. sklearn/tree/setup.py: Must be updated to ensure the new Cython code is built and exposed properly to Python.\\n4. sklearn/tree/tests/: Tests for the tree module need updating to validate correctness and performance after refactor.\\n5. sklearn/setup.py: Top-level package setup may need changes to include or handle the new Cython extension.'}",
+  "error": null
+}

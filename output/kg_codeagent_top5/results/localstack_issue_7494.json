@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/7494",
+  "repo_name": "localstack",
+  "title": "bug: KMS Alias Creation Fails to Return Error",
+  "base_commit": "b302f2939d4f39432ccd565ab44d040dc1be4eea",
+  "ground_truth_files": [
+    "localstack/services/kms/provider.py",
+    "tests/integration/test_kms.py",
+    "tests/integration/test_kms.snapshot.json"
+  ],
+  "predicted_files": [
+    "/models.py",
+    "local_kms_provider.py",
+    "localstack/services/kms/local_kms_server.py",
+    "provider.py",
+    "local_kms_server.py",
+    "models.py",
+    "localstack/services/kms/provider.py",
+    "localstack/services/kms/local_kms_provider.py",
+    "localstack/services/kms/models.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/kms/provider.py', 'localstack/services/kms/models.py', 'localstack/services/kms/local_kms_provider.py', 'localstack/services/kms/local_kms_server.py', 'localstack/aws/api/kms/'], 'reasoning': '1. provider.py: Likely contains the sign operation handler and logic to resolve key-ids versus aliases. 2. models.py: Responsible for KMS data models, ARNs, exceptions, and potentially alias/key lookup logic. 3. local_kms_provider.py: Mediates requests to local KMS, may affect alias to key-id mapping or request handling in local mode. 4. local_kms_server.py: Manages the backend service responsible for processing KMS requests; possible impact if request routing is centralized. 5. aws/api/kms/: The API definition files may need changes to ensure alias IDs are accepted for sign operation, or improve param validation. These files are listed in order of probable impact, starting from the business logic (provider.py/models.py) toward orchestration and API stubs.'}",
+  "error": null
+}

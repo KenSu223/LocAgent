@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/28286",
+  "repo_name": "transformers",
+  "title": "`contrastive-image-text/run_clip.py` example problems",
+  "base_commit": "edb314ae2ba4ac0e89d6a31d48037b8943978bff",
+  "ground_truth_files": [
+    "examples/pytorch/contrastive-image-text/run_clip.py"
+  ],
+  "predicted_files": [
+    "examples/pytorch/contrastive-image-text/run_clip.py",
+    "src/transformers/trainer.py",
+    "src/transformers/hub.py",
+    "src/transformers/integrations.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"examples/pytorch/contrastive-image-text/run_clip.py\",\n        \"src/transformers/trainer.py\",\n        \"src/transformers/hub.py\",\n        \"src/transformers/integrations.py\"\n    ],\n    \"reasoning\": \"1. examples/pytorch/contrastive-image-text/run_clip.py is the main script where all user issues arise: CSV caption column handling ('None', 'null', 'NA' problem), argument parsing (for train_file, image_column, caption_column), hub pushing logic, and (missing) experiment tracking integration all center here. This file should validate and clean caption values before tokenization, expose a parameter for hub repo, and add experiment tracking logic (e.g., wandb).\\n\\n2. src/transformers/trainer.py manages training and handles --push_to_hub workflow. If run_clip.py is not exposing hub repo and tracking hooks, modifying Trainer's integration and parameter pass-through may be needed.\\n\\n3. src/transformers/hub.py is responsible for pushing outputs to the HuggingFace Hub. If finer-grained control over the destination repo (e.g. through a CLI argument) is needed, code updates here may be required. \\n\\n4. src/transformers/integrations.py handles optional experiment tracking tools (wandb, comet, etc). If run_clip.py is missing Ways to start wandb logging, this file may also require changes to expose those features to the example script.\\n\\nIn summary, most issues will be resolved by robust input handling, argument parsing, hub repo string exposure, and optional experiment logging\u2014all beginning with changes in run_clip.py and extending to Trainer/hub/integrations only if necessary for full flexibility.\"\n}",
+  "error": null
+}

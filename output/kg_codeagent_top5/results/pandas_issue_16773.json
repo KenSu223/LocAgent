@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/16773",
+  "repo_name": "pandas",
+  "title": "SparseDataFrame constructor has horrible performance for df with many columns",
+  "base_commit": "a9421af1aac906cc38d025ed5db4a2b55cb8b9bc",
+  "ground_truth_files": [
+    "asv_bench/benchmarks/sparse.py",
+    "doc/source/whatsnew/v0.21.0.txt",
+    "pandas/core/sparse/frame.py",
+    "pandas/tests/reshape/test_reshape.py",
+    "pandas/tests/sparse/test_frame.py"
+  ],
+  "predicted_files": [
+    "pandas/core/sparse/series.py",
+    "pandas/core/sparse/frame.py",
+    "pandas/core/frame.py",
+    "pandas/core/sparse/scipy_sparse.py",
+    "pandas/core/sparse/array.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/sparse/frame.py', 'pandas/core/sparse/array.py', 'pandas/core/sparse/scipy_sparse.py', 'pandas/core/sparse/series.py', 'pandas/core/frame.py'], 'reasoning': '1. pandas/core/sparse/frame.py contains the historical SparseDataFrame logic referenced in the issue and is the primary target for fixing inefficient column-wise assignment.\\n2. pandas/core/sparse/array.py and 3. pandas/core/sparse/scipy_sparse.py are supportive modules likely involved in sparse array handling and conversions, which affect construction performance.\\n4. pandas/core/sparse/series.py provides sparse Series logic which may be required for efficient sparse dataframe construction and could need harmonization for performance.\\n5. pandas/core/frame.py is the main DataFrame implementation and may require updates for optimal dict-based or sparse construction as compared in the issue, especially if integration of sparse logic into main DataFrame methods is preferred.\\nThese files together encapsulate the locations where improvements for SparseDataFrame construction performance would be most effective.'}",
+  "error": null
+}

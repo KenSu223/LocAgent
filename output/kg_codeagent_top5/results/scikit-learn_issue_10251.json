@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/10251",
+  "repo_name": "scikit-learn",
+  "title": "Extending Criterion",
+  "base_commit": "61e722aa126207efcdbc1ddcd4453854ad44ea09",
+  "ground_truth_files": [
+    "sklearn/tree/_criterion.pxd",
+    "sklearn/tree/_criterion.pyx"
+  ],
+  "predicted_files": [
+    "sklearn/tree/_criterion.pxd",
+    "sklearn/tree/_criterion.pyx",
+    "sklearn/tree/tree.py",
+    "doc/modules/tree.rst",
+    "sklearn/tree/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/tree/_criterion.pxd\",\n        \"sklearn/tree/_criterion.pyx\",\n        \"sklearn/tree/tree.py\",\n        \"doc/modules/tree.rst\",\n        \"sklearn/tree/__init__.py\"\n    ],\n    \"reasoning\": \n    \"1. sklearn/tree/_criterion.pxd: This file controls which Cython classes (such as Criterion and any specific Criterion subclasses, e.g., ClassificationCriterion) are exported for use in other Cython modules or for extension. Modifying this file allows custom criterion classes to be subclassed externally, which is a direct requirement mentioned in the issue.\\n\\n2. sklearn/tree/_criterion.pyx: This file implements the Criterion base class and its methods (`node_impurity`, `children_impurity`, etc.). It may require changes to make certain methods cpdef instead of cdef (making them accessible to Python subclasses), improving the extension interface, and possibly clarifying or refactoring initialization methods for easier subclassing in both Cython and Python.\\n\\n3. sklearn/tree/tree.py: This is where the decision tree estimator checks its 'criterion' argument. To allow passing custom criterion objects or functions (similar to scorer APIs), the argument validation and object handling here need to be relaxed or generalized. This enables actual use of custom criteria without circumventing safety checks.\\n\\n4. doc/modules/tree.rst: Documentation changes should describe how to properly extend Criterion classes (both in Cython and Python), detail the method contracts (e.g., what node_impurity/children_impurity should do), and explain how to pass a custom criterion to a tree estimator.\\n\\n5. sklearn/tree/__init__.py: If any of the newly exported classes/functions must be made available at the Python level for easier imports or subclassing, this file may require updates to ensure correct exposure.\\n\\nThese five files cover the main aspects required to resolve the issue: exported symbols, Cython extension points, Python-side API, documentation, and t",
+  "error": null
+}

@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/983",
+  "repo_name": "localstack",
+  "title": "AWS lambda on localstack not seeing its dependencies ",
+  "base_commit": "95f91f68c16cedbcfbf0a51725f88c113224de27",
+  "ground_truth_files": [
+    "tests/integration/test_lambda.py"
+  ],
+  "predicted_files": [
+    "localstack/services/awslambda/__init__.py",
+    "localstack/services/awslambda/lambda_executors.py",
+    "localstack/services/awslambda/lambda_utils.py",
+    "localstack/utils/common.py",
+    "bin/localstack"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/awslambda/__init__.py\",\n        \"localstack/services/awslambda/lambda_executors.py\",\n        \"localstack/services/awslambda/lambda_utils.py\",\n        \"localstack/utils/common.py\",\n        \"bin/localstack\"\n    ],\n    \"reasoning\": \"1. localstack/services/awslambda/__init__.py: This is the main AWS Lambda service module in Localstack and likely contains the logic for dispatching lambda invocations and handling different runtimes, including Java. The root cause is how Localstack launches Java lambdas and sets up the classpath so that dependencies in /lib are discoverable. 2. localstack/services/awslambda/lambda_executors.py: If present, this file is likely to handle the specifics of lambda execution for different runtimes, including handling the extraction and classpath assembly for Java lambdas. You may need to inspect or modify how dependency jars (in /lib) are added to the classpath. 3. localstack/services/awslambda/lambda_utils.py: Lambda utility functions may handle zip extraction, temp directories, or packaging logic\u2014all of which affect whether dependencies from the user's zip get loaded for the Java process. 4. localstack/utils/common.py: General utilities for file extraction, zip handling, and process launching are often here, and broken dependency handling may originate from core helper functions. 5. bin/localstack: If Java is started from here or configured via a shell script, Dockerfile, or entrypoint, classpath setup issues for dependencies may require changes in this top-level script. \\n\\nIn summary, you need to ensure that when launching a Java lambda, the classpath includes both the lambda handler and all JARs from the /lib folder within the zip, mirroring AWS\u2019s behavior. The above files are the ones most likely involved in controlling this process based on the repo structure and issue symptoms.\"\n}",
+  "error": null
+}

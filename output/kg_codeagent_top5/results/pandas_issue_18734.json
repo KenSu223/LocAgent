@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/18734",
+  "repo_name": "pandas",
+  "title": "ddof for np.std in df.agg changes depending on how given & lambda expression does not work correctly in a list of functions ",
+  "base_commit": "bcc5160b3a5b0fc9c531da194c6bb83619045434",
+  "ground_truth_files": [
+    "pandas/tests/apply/test_frame_apply.py"
+  ],
+  "predicted_files": [
+    "pandas/core/nanops.py",
+    "pandas/core/apply.py",
+    "pandas/core/series.py",
+    "pandas/core/frame.py",
+    "pandas/core/groupby/groupby.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/apply.py', 'pandas/core/frame.py', 'pandas/core/series.py', 'pandas/core/nanops.py', 'pandas/core/groupby/groupby.py'], 'reasoning': '1. pandas/core/apply.py: Core implementation of aggregation methods (including FrameApply.agg and SeriesApply.agg); controls dispatch when a list of functions is provided.\\n2. pandas/core/frame.py: DataFrame interface logic, which routes agg calls and may affect how user functions and ddof are chosen/handled.\\n3. pandas/core/series.py: Series interface logic, potentially involved in dispatch and handling of np.std/aggregation.\\n4. pandas/core/nanops.py: Likely contains NaN-aware statistical methods and may house the custom std/variance implementations where ddof can be enforced consistently.\\n5. pandas/core/groupby/groupby.py: GroupBy aggregation logic may need adjustment for consistency in ddof when aggregating by groups, especially if the behavior diverges from core agg.'}",
+  "error": null
+}

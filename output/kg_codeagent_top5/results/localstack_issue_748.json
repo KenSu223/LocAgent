@@ -1,0 +1,13 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/748",
+  "repo_name": "localstack",
+  "title": "Contributors not loading up. Broken links for backers and Contributors.  ",
+  "base_commit": "fa1a64c954b89b88ac30e77fd12930efc04c04c5",
+  "ground_truth_files": [
+    "README.md"
+  ],
+  "predicted_files": [],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['README.md'], 'reasoning': 'All broken links for contributors, sponsors, and backers\u2014such as https://opencollective.com/localstack/sponsor/X/website\u2014are found in README.md around lines 454-477 and similar sections. No Python or dashboard/web files reference these links; thus, only README.md needs modification, replacing broken Open Collective links with valid ones.'}",
+  "error": null
+}

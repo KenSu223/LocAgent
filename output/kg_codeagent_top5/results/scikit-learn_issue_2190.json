@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/2190",
+  "repo_name": "scikit-learn",
+  "title": "crash in MeanShift tests after make cython (edited from k_means)",
+  "base_commit": "0bbd57b322aaa5aeca4f3af2dd7f802360d29673",
+  "ground_truth_files": [
+    "sklearn/neighbors/binary_tree.pxi"
+  ],
+  "predicted_files": [
+    "sklearn/cluster/_mean_shift.py",
+    "sklearn/cluster/k_means_.py",
+    "sklearn/cluster/tests/test_mean_shift.py",
+    "sklearn/cluster/mean_shift_.py",
+    "sklearn/cluster/_k_means.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cluster/mean_shift_.py', 'sklearn/cluster/_mean_shift.py', 'sklearn/cluster/tests/test_mean_shift.py', 'sklearn/cluster/k_means_.py', 'sklearn/cluster/_k_means.pyx'], 'reasoning': \"1. sklearn/cluster/mean_shift_.py: Main implementation of MeanShift; as the algorithm core, it's the first place for code and cythonization errors.\\n2. sklearn/cluster/_mean_shift.py: Contains the MeanShift class; issues or errors in class structure, dependencies, or invocation can cause crashes in tests.\\n3. sklearn/cluster/tests/test_mean_shift.py: The specific test suite for MeanShift where the crash is reported; modifications here can fix test errors or reveal infra-level issues.\\n4. sklearn/cluster/k_means_.py: The k-means algorithm implementation, from which test logic may have been copied/ported for MeanShift, and may contain shared bugs or missing refactoring.\\n5. sklearn/cluster/_k_means.pyx: Cython implementation of k-means, the cython compilation step could introduce incompatibilities or linkage problems affecting overall clustering package or its tests, especially where code or setup is reused.\"}",
+  "error": null
+}

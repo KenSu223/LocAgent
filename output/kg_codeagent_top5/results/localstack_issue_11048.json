@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/11048",
+  "repo_name": "localstack",
+  "title": "bug: get-parameter and get-parameters on SSM does not work with ARNs (Localstack 3.5.0)",
+  "base_commit": "6aafbcdebade24b26705913cbc413dc7d50dad7a",
+  "ground_truth_files": [
+    "localstack-core/localstack/services/ssm/provider.py",
+    "localstack-core/localstack/utils/aws/arns.py",
+    "tests/aws/services/ssm/test_ssm.py"
+  ],
+  "predicted_files": [
+    "localstack-core/localstack/services/ssm/provider.py",
+    "localstack-core/localstack/services/ssm/__init__.py",
+    "localstack-core/localstack/services/ssm/resource_providers/",
+    "localstack-core/localstack/services/stores.py",
+    "tests/aws/services/test_validate.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack-core/localstack/services/ssm/provider.py\",\n        \"localstack-core/localstack/services/ssm/__init__.py\",\n        \"localstack-core/localstack/services/ssm/resource_providers/\",\n        \"localstack-core/localstack/services/stores.py\",\n        \"tests/aws/services/test_validate.py\"\n    ],\n    \"reasoning\": \"1. provider.py is the main implementation file for the SSM service. It likely contains the logic for get-parameter and get-parameters, and needs to be fixed to accept ARNs as valid parameter names and bypass overly strict validation.\\n2. __init__.py may define service initialization or registration, and could import or initialize validation logic that also needs updating if provider.py changes require it.\\n3. resource_providers/ may have supporting logic for parameter retrieval, especially if ARNs are mapped to storage keys or need special handling \u2013 these files may need updates for full feature parity and/or to support ARN lookups.\\n4. stores.py is a generic utility for service data storage and may contain generic validation or error handling that interacts with SSM; validation logic may need changes here if it is centralized.\\n5. test_validate.py is in the tests directory for AWS services, where parameter name validation is tested. Updating or adding tests here will ensure the new ARN-supportive logic is verified and future regressions are prevented.\"\n}",
+  "error": null
+}

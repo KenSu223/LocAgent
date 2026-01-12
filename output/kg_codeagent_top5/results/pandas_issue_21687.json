@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/21687",
+  "repo_name": "pandas",
+  "title": "\"on\" argument of DataFrame.rolling only works for datetime columns",
+  "base_commit": "679dbd021eccc238e422057009365e2ee1c04b25",
+  "ground_truth_files": [
+    "pandas/core/window.py"
+  ],
+  "predicted_files": [
+    "pandas/core/generic.py",
+    "pandas/core/frame.py",
+    "pandas/_libs/window.pyx",
+    "doc/source/reference/api/pandas.DataFrame.rolling.rst",
+    "doc/source/user_guide/window.rst"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/generic.py\",\n        \"pandas/core/frame.py\",\n        \"pandas/_libs/window.pyx\",\n        \"doc/source/reference/api/pandas.DataFrame.rolling.rst\",\n        \"doc/source/user_guide/window.rst\"\n    ],\n    \"reasoning\": [\n        \"1. pandas/core/generic.py: This is the most likely location for the NDFrame (and thus DataFrame) rolling method. The 'on' parameter's handling\u2014specifically its restriction to datetime columns\u2014would either be enforced or proxied here. Modifying this file may be necessary to change or clarify the behavior for non-datetime 'on' columns.\",\n        \"2. pandas/core/frame.py: The DataFrame class methods often provide wrappers around NDFrame methods. Changes here may be needed if 'rolling' delegation or documentation is done at this level, or if additional checks regarding 'on' are implemented here.\",\n        \"3. pandas/_libs/window.pyx: This Cython file contains the underlying windowing and rolling logic for Pandas. If you want to extend support for the 'on' parameter to non-datetime types, core computational routines here may need modification.\",\n        \"4. doc/source/reference/api/pandas.DataFrame.rolling.rst: The API documentation should be updated to clearly state the limitation that 'on=' only works for datetime columns, or to reflect any expanded support if the code is changed.\",\n        \"5. doc/source/user_guide/window.rst: The user guide provides usage examples and explanations for rolling operations. If the current documentation is misleading, this file should be updated with correct information and/or examples reflecting the behavior of 'on='.\"\n    ]\n}",
+  "error": null
+}

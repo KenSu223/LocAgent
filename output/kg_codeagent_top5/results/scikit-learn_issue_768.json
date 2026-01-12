@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/768",
+  "repo_name": "scikit-learn",
+  "title": "Arpack wrappers fail with new scipy",
+  "base_commit": "0e8e38e3b2f4b79f03fe8a3e655b9f506ab0f2a6",
+  "ground_truth_files": [
+    "sklearn/utils/arpack.py"
+  ],
+  "predicted_files": [
+    "sklearn/cluster/spectral.py",
+    "sklearn/decomposition/kernel_pca.py",
+    "sklearn/decomposition/tests/test_kernel_pca.py",
+    "sklearn/utils/arpack.py",
+    "sklearn/manifold/locally_linear.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/utils/arpack.py', 'sklearn/decomposition/kernel_pca.py', 'sklearn/cluster/spectral.py', 'sklearn/manifold/locally_linear.py', 'sklearn/decomposition/tests/test_kernel_pca.py'], 'reasoning': '1. sklearn/utils/arpack.py: Direct wrapper for ARPACK, must be compatible with new SciPy ARPACK functions and error handling. 2. sklearn/decomposition/kernel_pca.py: Uses eigsh from arpack for kernel PCA, adapts to wrapper changes. 3. sklearn/cluster/spectral.py: Spectral clustering uses ARPACK for eigen decomposition. 4. sklearn/manifold/locally_linear.py: Locally linear embedding, etc., call ARPACK routines for eigensolvers. 5. sklearn/decomposition/tests/test_kernel_pca.py: Ensures ARPACK-based eigen solutions still work; update if behavior/interface changes. These are ordered by importance: the wrapper first, then principal module users, then key tests.'}",
+  "error": null
+}

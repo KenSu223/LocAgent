@@ -1,0 +1,35 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/11357",
+  "repo_name": "transformers",
+  "title": "possible mistake in documentation",
+  "base_commit": "88ac60f7b5f6d4b62245dc21653ea3d5db7d4935",
+  "ground_truth_files": [
+    "src/transformers/models/bart/modeling_bart.py",
+    "src/transformers/models/bart/modeling_tf_bart.py",
+    "src/transformers/models/blenderbot/modeling_blenderbot.py",
+    "src/transformers/models/blenderbot/modeling_tf_blenderbot.py",
+    "src/transformers/models/blenderbot_small/modeling_blenderbot_small.py",
+    "src/transformers/models/blenderbot_small/modeling_tf_blenderbot_small.py",
+    "src/transformers/models/fsmt/modeling_fsmt.py",
+    "src/transformers/models/m2m_100/modeling_m2m_100.py",
+    "src/transformers/models/marian/modeling_marian.py",
+    "src/transformers/models/marian/modeling_tf_marian.py",
+    "src/transformers/models/mbart/modeling_mbart.py",
+    "src/transformers/models/mbart/modeling_tf_mbart.py",
+    "src/transformers/models/pegasus/modeling_pegasus.py",
+    "src/transformers/models/pegasus/modeling_tf_pegasus.py",
+    "src/transformers/models/prophetnet/modeling_prophetnet.py",
+    "src/transformers/models/speech_to_text/modeling_speech_to_text.py",
+    "src/transformers/models/t5/modeling_t5.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/bart/modeling_bart.py",
+    "src/transformers/models/t5/modeling_t5.py",
+    "docs/source/model_doc/bart.rst",
+    "docs/source/model_doc/t5.rst",
+    "src/transformers/utils/dummy_pt_objects.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/transformers/models/bart/modeling_bart.py\",\n        \"src/transformers/models/t5/modeling_t5.py\",\n        \"docs/source/model_doc/bart.rst\",\n        \"docs/source/model_doc/t5.rst\",\n        \"src/transformers/utils/dummy_pt_objects.py\"\n    ],\n    \"reasoning\": \"The issue concerns incorrect parameter documentation for 'decoder_input_ids' in the 'forward' method of BartForConditionalGeneration and T5ForConditionalGeneration. Although direct searches for these strings did not yield matches, these files logically contain the necessary documentation and likely require updates:\\n\\n1. src/transformers/models/bart/modeling_bart.py \u2013 This is the primary implementation for BartForConditionalGeneration, and the parameter documentation for 'decoder_input_ids' needs to be corrected to refer to 'LABELS' instead of 'INPUT_IDS'.\\n\\n2. src/transformers/models/t5/modeling_t5.py \u2013 This is the primary implementation for T5ForConditionalGeneration, and should also have the documentation for 'decoder_input_ids' fixed as per the issue.\\n\\n3. docs/source/model_doc/bart.rst \u2013 This file contains the official documentation rendered on the Hugging Face website and might duplicate the incorrect parameter description; it should be updated for correctness.\\n\\n4. docs/source/model_doc/t5.rst \u2013 For the same reason as above, the doc for T5 should be revised if the mistake appears there.\\n\\n5. src/transformers/utils/dummy_pt_objects.py \u2013 This file contains dummy class stubs which may also duplicate documentation and thus benefit from a correction to maintain consistency throughout the codebase and stubs.\\n\\nIf not all files contain the error, at least the first two will certainly require modification and the others should be inspected and updated to ensure consistency and eliminate the documentation mistake wherever it appears.\"\n}",
+  "error": null
+}

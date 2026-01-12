@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/1443",
+  "repo_name": "flask",
+  "title": "json_encoder not invoked from flask.jsonify",
+  "base_commit": "f17e6061fcffdc290f615d3fdc9d949e9e719574",
+  "ground_truth_files": [
+    "AUTHORS",
+    "CHANGES",
+    "docs/security.rst",
+    "flask/json.py",
+    "tests/test_helpers.py"
+  ],
+  "predicted_files": [
+    "flask/json.py",
+    "tests/test_helpers.py",
+    "flask/helpers.py",
+    "flask/app.py",
+    "flask/globals.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/json.py', 'flask/app.py', 'flask/helpers.py', 'tests/test_helpers.py', 'flask/globals.py'], 'reasoning': '1. flask/json.py: Contains jsonify, dumps, and JSONEncoder. This is where current_app.json_encoder is used and the main routing occurs, making it the most crucial for modification.\\n2. flask/app.py: Where app.json_encoder is defined and possibly connected into current_app; may need adjustment for context propagation.\\n3. flask/helpers.py: Might wrap or expose jsonify; if so, needs to ensure app-level encoder is used.\\n4. tests/test_helpers.py: To verify and update tests so custom JSONEncoder behaviors are properly validated in test cases.\\n5. flask/globals.py: If context access or current_app propagation issues exist, could require fixes; otherwise, can be deprioritized.'}",
+  "error": null
+}

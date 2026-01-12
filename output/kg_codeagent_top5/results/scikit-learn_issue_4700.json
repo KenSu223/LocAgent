@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/4700",
+  "repo_name": "scikit-learn",
+  "title": "cross_val_predict AttributeError with lists",
+  "base_commit": "9385c45c0379ceab913daa811b1e7d4128faee35",
+  "ground_truth_files": [
+    "sklearn/cross_validation.py",
+    "sklearn/tests/test_cross_validation.py",
+    "sklearn/utils/mocking.py"
+  ],
+  "predicted_files": [
+    "sklearn/cross_validation.py",
+    "doc/modules/cross_validation.rst",
+    "doc/modules/model_selection.rst",
+    "sklearn/base.py",
+    "sklearn/utils/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/cross_validation.py\",\n        \"doc/modules/cross_validation.rst\",\n        \"doc/modules/model_selection.rst\",\n        \"sklearn/base.py\",\n        \"sklearn/utils/__init__.py\"\n    ],\n    \"reasoning\": \"1. sklearn/cross_validation.py is the source file containing the cross_val_predict implementation, where the error occurs. The handling of X (whether array or list) and the check for its shape attribute needs to be adapted here for proper support of list inputs, in line with cross_val_score's behavior.\\n2. doc/modules/cross_validation.rst documents the functionality and expected input types for cross_val_predict. If list support is clarified or behavior changes, the documentation should reflect that to inform users.\\n3. doc/modules/model_selection.rst could reference cross_val_predict and related behavior, so input support (list/array) may require clarification or alignment with code changes.\\n4. sklearn/base.py may contain shared fitting or data handling logic (e.g., validation helpers) used by cross_val_predict and cross_val_score. If changes to input handling are made, shared utilities or helpers may need updates to ensure consistent treatment of list-like data structures.\\n5. sklearn/utils/__init__.py is likely to have utility functions for input validation, such as conversion from lists to arrays. Modifications in input validation logic for supporting lists may be necessary to make behavior robust in cross_val_predict and similar functions.\"\n}",
+  "error": null
+}

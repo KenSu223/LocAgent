@@ -1,0 +1,28 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/10078",
+  "repo_name": "pandas",
+  "title": "Pandas attempts to convert some strings to timestamps when grouping by a timestamp and aggregating?",
+  "base_commit": "45d8d77f27cf0dbc8cefe932f8fb64f6982b9527",
+  "ground_truth_files": [
+    "pandas/tests/frame/test_constructors.py",
+    "pandas/tests/frame/test_missing.py",
+    "pandas/tests/groupby/test_apply.py",
+    "pandas/tests/groupby/test_categorical.py",
+    "pandas/tests/groupby/test_groupby.py",
+    "pandas/tests/indexing/multiindex/test_loc.py",
+    "pandas/tests/indexing/test_loc.py",
+    "pandas/tests/io/parser/test_index_col.py",
+    "pandas/tests/reshape/test_concat.py",
+    "pandas/tests/reshape/test_pivot.py"
+  ],
+  "predicted_files": [
+    "pandas/core/groupby/groupby.py",
+    "pandas/core/groupby/generic.py",
+    "pandas/core/frame.py",
+    "pandas/core/series.py",
+    "pandas/core/dtypes/cast.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/groupby/groupby.py\",\n        \"pandas/core/groupby/generic.py\",\n        \"pandas/core/frame.py\",\n        \"pandas/core/series.py\",\n        \"pandas/core/dtypes/cast.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/groupby/groupby.py is the core implementation for the groupby machinery and is most likely where result-object construction and potential type coercion takes place after a user-defined function (such as 'apply') is called. Any logic that wrongly infers a column as a Timestamp instead of keeping its original string/integer type must be addressed here. 2. pandas/core/groupby/generic.py contains the public-facing SeriesGroupBy and DataFrameGroupBy classes and their groupby-apply logic, potentially wrapping/customizing result post-processing and type inference for grouped operations. 3. pandas/core/frame.py contains the DataFrame.groupby method and is the entry point for DataFrame groupby operations; it may handle construction of result objects and apply logic. 4. pandas/core/series.py contains the Series.groupby method and logic that could be relevant if groupby/apply is called on Series; also, Series construction methods may invoke type-detection utilities that should preserve string types instead of converting to Timestamp. 5. pandas/core/dtypes/cast.py is a key utility file for type casting and construction inside pandas. If string-to-Timestamp coercion is happening unexpectedly, generic logic here (potentially invoked by groupby/apply output construction) needs to be checked to ensure it doesn't over-aggressively infer time-like types from strings. These files collectively cover the flow from public API to groupby/apply machinery and the dtype preservation or conversion layers most directly relevant to the issue.\"\n}",
+  "error": null
+}

@@ -1,0 +1,27 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2023",
+  "repo_name": "flask",
+  "title": "How should logging in Flask look like?",
+  "base_commit": "85fa8aabf5a7bd0adf204f0c2dacbba1fa6683de",
+  "ground_truth_files": [
+    "CHANGES",
+    "docs/config.rst",
+    "docs/contents.rst.inc",
+    "docs/errorhandling.rst",
+    "flask/app.py",
+    "flask/logging.py",
+    "tests/test_basic.py",
+    "tests/test_helpers.py",
+    "tests/test_subclassing.py",
+    "tests/test_templating.py",
+    "tests/test_testing.py"
+  ],
+  "predicted_files": [
+    "flask/logging.py",
+    "flask/app.py",
+    "flask/cli.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"flask/logging.py\",\n        \"flask/app.py\",\n        \"flask/cli.py\"\n    ],\n    \"reasoning\": \"1. flask/logging.py is the core module that implements logging support in Flask. The function create_logger(app) sets up the default hardcoded logging handler. To stop Flask from installing a default handler unconditionally and enable a more flexible or environment/CLI-specific setup, this file needs to be refactored.\\n\\n2. flask/app.py is where the Flask application object and its logger (Flask.logger property) live. The logic that attaches the logger, or calls create_logger, will need to change so that logging setup is not forced during normal app construction. Instead, it may defer setup, reduce defaults, or check for CLI context. This ensures custom logging can be configured easily.\\n\\n3. flask/cli.py will need modification to add (or move) the default logging handler setup so that developing via the Flask CLI (e.g., flask run) still gives suitable log output, but production/non-CLI usage does not get an unwanted default handler. This is the suggested migration in the issue and hence must be implemented here.\\n\\nOther files (such as config.py for policy defaults, or documentation in docs/) could be involved if configuration options or documentation change, but only the above three core files must be changed to resolve the direct technical issue as described.\"\n}",
+  "error": null
+}

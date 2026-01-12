@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/544",
+  "repo_name": "localstack",
+  "title": "S3 object metadata not saved when uploaded with presigned url",
+  "base_commit": "6c8f52d42563c1207a8cb3fbbfccb6d4af2a0670",
+  "ground_truth_files": [
+    "localstack/services/s3/s3_listener.py",
+    "tests/integration/test_s3.py"
+  ],
+  "predicted_files": [
+    "localstack/services/s3/s3_listener.py",
+    "localstack/services/s3/infra.py",
+    "localstack/utils/persistence.py",
+    "localstack/utils/aws/aws_responses.py",
+    "tests/integration/test_s3.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/s3/s3_listener.py\",\n        \"localstack/services/s3/infra.py\",\n        \"localstack/utils/persistence.py\",\n        \"localstack/utils/aws/aws_responses.py\",\n        \"tests/integration/test_s3.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/s3/s3_listener.py is the most important file, as it contains the request parsing and S3 event logic, and is responsible for extracting metadata from incoming PUT requests (including those made via presigned URLs) and saving it with the object. The bug is likely due to missing or incorrect handling of 'x-amz-meta-*' headers in this file when objects are uploaded with presigned URLs. 2. localstack/services/s3/infra.py may contain S3 object store/mock backend logic and is often responsible for the actual persistence/retrieval of metadata alongside content, so changes here may be needed to ensure metadata is stored and retrieved. 3. localstack/utils/persistence.py is involved if object metadata is being (de)serialized from disk, so a fix may be needed if metadata is incorrectly omitted or not loaded/saved. 4. localstack/utils/aws/aws_responses.py could need modification if the HEAD object response is not formatting metadata similarly to AWS, leading to empty metadata in responses. 5. tests/integration/test_s3.py should be updated to add regression tests for metadata via presigned URL PUTs, ensuring future changes preserve correct behavior.\"\n}",
+  "error": null
+}

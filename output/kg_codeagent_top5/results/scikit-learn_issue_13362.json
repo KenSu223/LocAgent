@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/13362",
+  "repo_name": "scikit-learn",
+  "title": "return_intercept==True in ridge_regression raises an exception",
+  "base_commit": "eda99f3cec70ba90303de0ef3ab7f988657fadb9",
+  "ground_truth_files": [
+    "doc/whats_new/v0.21.rst",
+    "sklearn/linear_model/ridge.py",
+    "sklearn/linear_model/tests/test_ridge.py"
+  ],
+  "predicted_files": [
+    "sklearn/linear_model/ridge.py",
+    "sklearn/linear_model/tests/test_ridge.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/linear_model/ridge.py\",\n        \"sklearn/linear_model/tests/test_ridge.py\"\n    ],\n    \"reasoning\": \"1. The exception traceback points explicitly to 'sklearn/linear_model/ridge.py' as the location of the ridge_regression implementation and the source of the UnboundLocalError. The root cause is that the 'intercept' variable is not always defined before being returned if the code path for 'return_intercept=True' is taken without ensuring 'intercept' is computed. This must be fixed directly in ridge.py by ensuring 'intercept' is always assigned in all code paths before use.\\n\\n2. Once the logic is fixed, the corresponding test file 'sklearn/linear_model/tests/test_ridge.py' should be updated or extended to include regression/unit tests for the scenario where 'return_intercept=True' is passed to 'ridge_regression', preventing such bugs from recurring and ensuring the fix is validated.\\n\\nNo other files are likely to require changes: the bug is internal to the implementation and exposure of ridge_regression, not the public API, documentation, or ancillary modules.\"\n}",
+  "error": null
+}

@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/9954",
+  "repo_name": "transformers",
+  "title": "[Good first issue] LXMERT TensorFlow Integration tests",
+  "base_commit": "626a0a01471accc32ded29ccca3ed93c4995fcd6",
+  "ground_truth_files": [
+    "tests/test_modeling_tf_lxmert.py"
+  ],
+  "predicted_files": [
+    "tests/test_modeling_tf_lxmert.py",
+    "tests/test_modeling_tf_bert.py",
+    "src/transformers/testing_utils.py",
+    "tests/conftest.py",
+    "tests/test_modeling_tf_common.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"tests/test_modeling_tf_lxmert.py\",\n        \"tests/test_modeling_tf_bert.py\",\n        \"src/transformers/testing_utils.py\",\n        \"tests/conftest.py\",\n        \"tests/test_modeling_tf_common.py\"\n    ],\n    \"reasoning\": \"1. tests/test_modeling_tf_lxmert.py is the primary location to add the integration tests as outlined in the issue description. This file currently lacks TensorFlow integration tests and needs new test cases, marked as @slow and @require_tf, modeled after test_modeling_tf_bert.py.\\n2. tests/test_modeling_tf_bert.py is referenced as an example for best practices and integration test methods. Reviewing and potentially referencing or adapting code from this file ensures the new tests match repository conventions.\\n3. src/transformers/testing_utils.py may house the implementations or imports of core test decorators like @slow and @require_tf. If these decorators do not exist or need to be enhanced for the LXMERT tests, changes are necessary here.\\n4. tests/conftest.py is responsible for test configuration and imports from testing_utils. If new test markers, fixtures, or import adjustments are needed to support the new tests, this file should be updated.\\n5. tests/test_modeling_tf_common.py might contain shared TensorFlow testing logic or helper functions. If integration tests require common utilities (such as checkpoint downloading or shared setUp logic), they should go here for reuse and maintenance.\"\n}",
+  "error": null
+}

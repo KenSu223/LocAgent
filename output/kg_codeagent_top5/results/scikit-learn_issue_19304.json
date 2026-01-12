@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/19304",
+  "repo_name": "scikit-learn",
+  "title": "Poisson criterion in RandomForestRegressor",
+  "base_commit": "a0ba256dbe9380b5d2cf9cee133482fc87768267",
+  "ground_truth_files": [
+    "sklearn/ensemble/_forest.py"
+  ],
+  "predicted_files": [
+    "sklearn/ensemble/_forest.py",
+    "sklearn/ensemble/tests/test_forest.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/ensemble/_forest.py', 'sklearn/ensemble/tests/test_forest.py'], 'reasoning': \"1. sklearn/ensemble/_forest.py: The implementation file for RandomForestRegressor. Here, you must update the docstring to note Poisson criterion support, ensure input validation for non-negative y when Poisson is chosen, and assure Poisson logic is correctly handled. 2. sklearn/ensemble/tests/test_forest.py: This test file covers RandomForestRegressor and should be updated/expanded to include tests for criterion='poisson' and input validation errors/correctness. All other documentation changes are either auto-generated from code docstrings or not explicitly present in top-level doc files; further files may be needed only if broader documentation is found elsewhere.\"}",
+  "error": null
+}

@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/22471",
+  "repo_name": "pandas",
+  "title": "TST/CLN: remove TestData from frame-tests; replace with fixtures",
+  "base_commit": "953757a3e37ffb80570a20a8eca52dae35fc27bb",
+  "ground_truth_files": [
+    "pandas/tests/frame/common.py",
+    "pandas/tests/frame/test_indexing.py",
+    "pandas/tests/frame/test_query_eval.py"
+  ],
+  "predicted_files": [
+    "test_constructors.py",
+    "pandas/tests/frame/test_constructors.py",
+    "pandas/tests/frame/test_dtypes.py",
+    "test_nonunique_indexes.py",
+    "test_dtypes.py",
+    "pandas/conftest.py",
+    "test_convert_to.py",
+    "conftest.py",
+    "pandas/tests/frame/test_nonunique_indexes.py",
+    "pandas/tests/frame/test_convert_to.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/tests/frame/test_constructors.py', 'pandas/tests/frame/test_convert_to.py', 'pandas/tests/frame/test_dtypes.py', 'pandas/tests/frame/test_nonunique_indexes.py', 'pandas/conftest.py'], 'reasoning': '1. test_constructors.py: Explicitly listed in the issue as requiring migration from legacy attribute usage to new fixtures. 2. test_convert_to.py: Also listed and likely contains similar legacy patterns needing replacement. 3. test_dtypes.py: Another unchecked file, likely with attribute usage to be replaced by fixtures. 4. test_nonunique_indexes.py: Listed in the issue as not yet migrated; may require refactor for fixtures. 5. conftest.py: This holds the central fixture definitions and should be checked/updated alongside test migration if new or revised fixtures are needed.'}",
+  "error": null
+}

@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/21668",
+  "repo_name": "scikit-learn",
+  "title": "CI with boundscheck=False",
+  "base_commit": "bb7e34bc52461749e6014787a05a9507eda11011",
+  "ground_truth_files": [
+    "azure-pipelines.yml",
+    "doc/computing/parallelism.rst",
+    "sklearn/_build_utils/__init__.py"
+  ],
+  "predicted_files": [
+    "sklearn/setup.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['azure-pipelines.yml', 'pyproject.toml', 'sklearn/setup.py', 'build_tools/azure/install.sh', 'build_tools/github/build_wheels.sh'], 'reasoning': '1. azure-pipelines.yml: Main CI configuration; set up a job with boundscheck=True for global builds and tests.\\n2. pyproject.toml: Allows setting global Cython compiler directives; can enforce boundscheck=True for all modules during build.\\n3. sklearn/setup.py: Controls how all Cython extensions are built; can pass boundscheck=True via cythonize options.\\n4. build_tools/azure/install.sh: Used in CI installation/build process; can ensure environment variables or flags for boundscheck are set.\\n5. build_tools/github/build_wheels.sh: Handles builds/tests for GitHub Actions; modify to ensure boundscheck=True configuration for relevant jobs.'}",
+  "error": null
+}

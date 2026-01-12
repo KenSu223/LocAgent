@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2813",
+  "repo_name": "flask",
+  "title": "Allow flexible routing with SERVER_NAME config",
+  "base_commit": "07c7d5730a2685ef2281cc635e289685e5c3d478",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "docs/config.rst",
+    "src/flask/app.py",
+    "tests/test_basic.py",
+    "tests/test_blueprints.py"
+  ],
+  "predicted_files": [
+    "src/flask/ctx.py",
+    "tests/test_request.py",
+    "src/flask/config.py",
+    "tests/test_regression.py",
+    "src/flask/app.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/app.py', 'src/flask/ctx.py', 'src/flask/config.py', 'tests/test_request.py', 'tests/test_regression.py'], 'reasoning': '1. src/flask/app.py: Contains the Flask class and the create_url_adapter method where SERVER_NAME and routing logic are implemented. Modification here enables flexible routing for multiple domains as required by the issue. 2. src/flask/ctx.py: Handles request and app context creation, may need changes for context propagation of routing logic and adapter creation to align with SERVER_NAME usage. 3. src/flask/config.py: In charge of configuration; changes may be required to better document, validate, or manipulate SERVER_NAME for advanced use cases. 4. tests/test_request.py: Should be updated or created to verify correct routing and URL generation behaviors under multiple host scenarios as described in the issue. 5. tests/test_regression.py: Provides additional coverage to ensure previous routing behaviors remain intact after the fix, prevents regressions.'}",
+  "error": null
+}

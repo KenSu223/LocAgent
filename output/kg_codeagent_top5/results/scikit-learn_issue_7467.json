@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/7467",
+  "repo_name": "scikit-learn",
+  "title": "float numbers can't be set to RFECV's parameter \"step\"",
+  "base_commit": "c9e227b70d64f73b953d8d60629d6ac63e02a91c",
+  "ground_truth_files": [
+    "sklearn/feature_selection/rfe.py",
+    "sklearn/feature_selection/tests/test_rfe.py"
+  ],
+  "predicted_files": [
+    "sklearn/feature_selection/rfe.py",
+    "sklearn/feature_selection/tests/test_rfe.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/feature_selection/rfe.py\",\n        \"sklearn/feature_selection/tests/test_rfe.py\"\n    ],\n    \"reasoning\": \"1. The main logic for handling the 'step' parameter in both RFE and RFECV is located in sklearn/feature_selection/rfe.py. This file contains the core implementation where the conversion from float percentage to integer occurs, but slicing errors arise if 'step' isn't properly converted to an integer. Improvements should be made to ensure step is always an integer at all steps and to provide better validation and error messages. 2. After fixing the logic, tests should be added or updated in sklearn/feature_selection/tests/test_rfe.py to cover cases where 'step' is a float, ensuring both proper behavior and no warnings/errors arise from such values. No other files (like base.py or utils) are directly involved with this parameter.\"\n}",
+  "error": null
+}

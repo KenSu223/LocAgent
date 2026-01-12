@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/8403",
+  "repo_name": "transformers",
+  "title": "[s2s finetune] huge increase in memory demands with --fp16 native amp",
+  "base_commit": "77a257fc210a56f1fd0d75166ecd654cf58111f3",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "examples/seq2seq/finetune.py",
+    "src/transformers/trainer.py",
+    "examples/seq2seq/convert_model_to_fp16.py",
+    "seq2seq_trainer.py",
+    "examples/seq2seq/seq2seq_training_args.py",
+    "seq2seq_training_args.py",
+    "examples/seq2seq/seq2seq_trainer.py",
+    "finetune.py",
+    "convert_model_to_fp16.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['examples/seq2seq/seq2seq_trainer.py', 'examples/seq2seq/seq2seq_training_args.py', 'examples/seq2seq/finetune.py', 'examples/seq2seq/convert_model_to_fp16.py', 'src/transformers/trainer.py'], 'reasoning': '1. seq2seq_trainer.py: The core custom trainer; modifies Trainer usage, may need explicit fixes for torch AMP memory issues, or disables native AMP in favor of APEX where applicable.\\n2. seq2seq_training_args.py: The dataclass for argument configuration; may need to expose or adapt fp16/AMP settings to match new PyTorch memory requirements.\\n3. finetune.py: The entry-point script; may require changes to how batch size, fp16 args, or Trainer setup are passed, especially with problematic memory spike.\\n4. convert_model_to_fp16.py: For static conversion scenarios or manual fp16 handling, which may influence memory footprint if used in workflow.\\n5. src/transformers/trainer.py: If the bug cannot be overcome at the example level, a patch or workaround may be necessary in the main Trainer class provided by Huggingface, since all logic is ultimately inherited from here.'}",
+  "error": null
+}

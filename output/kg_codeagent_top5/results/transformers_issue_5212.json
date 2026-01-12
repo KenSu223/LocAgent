@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/5212",
+  "repo_name": "transformers",
+  "title": "BartConfig wrong decoder_start_token_id?",
+  "base_commit": "88d7f96e33c3f3e541bcdd913f2ff1e50aa18c1b",
+  "ground_truth_files": [
+    "src/transformers/modeling_tf_utils.py",
+    "src/transformers/modeling_utils.py"
+  ],
+  "predicted_files": [
+    "src/transformers/tokenization_bart.py",
+    "src/transformers/configuration_bart.py",
+    "src/transformers/generation_utils.py",
+    "src/transformers/modeling_bart.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/transformers/configuration_bart.py\",\n        \"src/transformers/modeling_bart.py\",\n        \"src/transformers/tokenization_bart.py\",\n        \"src/transformers/generation_utils.py\",\n        \"docs/source/model_doc/bart.rst\"\n    ],\n    \"reasoning\": \n    \"1. src/transformers/configuration_bart.py: This file defines BartConfig and contains the assignment of decoder_start_token_id. To resolve the mismatch, ensure decoder_start_token_id is explicitly set to match bart's bos_token_id or clarify why it defaults to eos. Update inline documentation for clarity.\\n\\\n2. src/transformers/modeling_bart.py: The Bart model implementation may have logic initializing/configuring decoder_start_token_id. Any default or hardcoded behavior should be made consistent with the config and tokenizer.\\n\\\n3. src/transformers/tokenization_bart.py: The bos_token_id and eos_token_id definitions live here. It may need a note or logic for clear mapping in interaction with BartConfig.\\n\\\n4. src/transformers/generation_utils.py: This is the core location for generate() handling decoder_start_token_id. The documentation and/or actual code should clarify which is used by default (BOS, EOS, or config value) and update any misleading defaults or comments.\\n\\\n5. docs/source/model_doc/bart.rst: Documentation for the Bart model should be updated for users to understand the relationship between decoder_start_token_id, bos_token_id, and eos_token_id so this is not misleading.\"\n}",
+  "error": null
+}

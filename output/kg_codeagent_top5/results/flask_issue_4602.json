@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/4602",
+  "repo_name": "flask",
+  "title": "Flask.auto_find_instance_path() can return wrong path for namespace packages installed in development mode",
+  "base_commit": "fb89745408cc02515815c792355c7e883b2d08a4",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "src/flask/scaffold.py",
+    "tests/test_instance_config.py",
+    "tox.ini"
+  ],
+  "predicted_files": [
+    "src/flask/app.py",
+    "tests/test_basic.py",
+    "src/flask/scaffold.py",
+    "tests/test_instance_config.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/scaffold.py', 'src/flask/app.py', 'tests/test_instance_config.py', 'tests/test_basic.py'], 'reasoning': '1. src/flask/scaffold.py is most important because it contains both _find_package_path and find_package, where the root cause of the bug is present. This file needs modification so _find_package_path can use import_name for correct namespace package resolution.\\n2. src/flask/app.py defines Flask.auto_find_instance_path; coordination or adaptation may be required here to use the improved find_package logic.\\n3. tests/test_instance_config.py should be modified or expanded to include tests for correct behavior of instance_path in complex namespace and development setups.\\n4. tests/test_basic.py may need updates if instance_path or namespace package behavior is covered there or if additional sanity tests are required.'}",
+  "error": null
+}

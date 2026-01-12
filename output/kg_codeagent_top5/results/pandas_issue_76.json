@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/76",
+  "repo_name": "pandas",
+  "title": "Sparse cumsum functions do not work",
+  "base_commit": "05123af1b2f8db1bc4f05c22515ef378cbeefbd3",
+  "ground_truth_files": [
+    "pandas/core/frame.py",
+    "pandas/core/generic.py",
+    "pandas/core/series.py",
+    "pandas/core/sparse.py",
+    "pandas/tests/test_frame.py",
+    "pandas/tests/test_sparse.py"
+  ],
+  "predicted_files": [
+    "pandas/core/sparse.py",
+    "pandas/tests/test_sparse.py",
+    "pandas/core/series.py",
+    "pandas/core/common.py",
+    "pandas/core/internals.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/sparse.py\",\n        \"pandas/tests/test_sparse.py\",\n        \"pandas/core/series.py\",\n        \"pandas/core/common.py\",\n        \"pandas/core/internals.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/sparse.py: This file is where the sparse data structures are implemented. Since SparseSeries and any related 'cumsum' functionality would be defined or delegated here, it's the primary candidate for fixing or adding cumulative sum support for sparse series. 2. pandas/tests/test_sparse.py: The issue is about broken or missing functionality, so tests must be added or fixed in this file to ensure correct behavior and prevent regressions for SparseSeries.cumsum and related sparse cumulative operations. 3. pandas/core/series.py: SparseSeries might inherit or share logic from the general Series implementation. To properly support or delegate cumsum behavior for sparse structures, integration or fixes might be necessary here. 4. pandas/core/common.py: Common utilities related to NA handling, reduction operations, or function delegation may require modification if cumsum needs underlying utility functions to properly handle sparse data. 5. pandas/core/internals.py: If the underlying storage or block mechanics for sparse arrays do not handle cumulative sum operations properly, this file may need changes to support the needed calculations for sparse types.\"\n}",
+  "error": null
+}

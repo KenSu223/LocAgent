@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/27682",
+  "repo_name": "scikit-learn",
+  "title": "MAINT Directly `cimport` interfaces from `std::algorithm`",
+  "base_commit": "3d19272be75fe32edd4cf01cb2eeac2281305e42",
+  "ground_truth_files": [
+    "sklearn/metrics/_pairwise_distances_reduction/_middle_term_computer.pyx.tp",
+    "sklearn/metrics/_pairwise_distances_reduction/_radius_neighbors.pyx.tp"
+  ],
+  "predicted_files": [
+    "_middle_term_computer.py",
+    "_radius_neighbors.py",
+    "sklearn/metrics/_pairwise_distances_reduction/_radius_neighbors.py",
+    "sklearn/metrics/_pairwise_distances_reduction/_middle_term_computer.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/metrics/_pairwise_distances_reduction/_radius_neighbors.pyx.tp', 'sklearn/metrics/_pairwise_distances_reduction/_middle_term_computer.pyx.tp'], 'reasoning': \"1. _radius_neighbors.pyx.tp: This file currently uses a verbose Cython extern declaration for std::move from the C++ standard library. It should be updated to directly 'cimport move' from 'libcpp.algorithm' as allowed in Cython 3, simplifying and modernizing the code.\\n2. _middle_term_computer.pyx.tp: This file uses a verbose extern declaration for std::fill from the C++ standard library. It should similarly be updated to use 'from libcpp.algorithm cimport fill'.\\nNo other files in the _pairwise_distances_reduction directory or repository match usage of these interfaces or the verbose import pattern.\"}",
+  "error": null
+}

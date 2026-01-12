@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/4220",
+  "repo_name": "flask",
+  "title": "`template_filter` decorator typing does not support custom filters with multiple arguments",
+  "base_commit": "8e589daaf2cec6a10262b8ff88801127f2fa14fd",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "src/flask/typing.py"
+  ],
+  "predicted_files": [
+    "src/flask/templating.py",
+    "src/flask/helpers.py",
+    "src/flask/app.py",
+    "tests/test_templating.py",
+    "src/flask/typing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/typing.py', 'src/flask/app.py', 'src/flask/templating.py', 'src/flask/helpers.py', 'tests/test_templating.py'], 'reasoning': '1. src/flask/typing.py: The typing file likely restricts template filter decorators to single-argument callables, causing mypy errors with multiple arguments. Updating typing here will resolve the false positive. 2. src/flask/app.py: The app module generally provides the public API for decorators such as template_filter, and may require updates to its method signature or docstring to clarify multi-argument filters. 3. src/flask/templating.py: Responsible for template logic, and may require registration fix or doc changes to support multi-argument filters. 4. src/flask/helpers.py: Might house decorator helpers that enforce the problematic type signatures or need to support flexible arguments. 5. tests/test_templating.py: The main test file verifying template filtering, and should be updated or extended to cover tests for multi-argument filter registration.'}",
+  "error": null
+}

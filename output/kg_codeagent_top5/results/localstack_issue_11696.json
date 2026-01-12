@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/11696",
+  "repo_name": "localstack",
+  "title": "bug: API Gateway does not persist correctly when you restart the localstack docker container",
+  "base_commit": "8c9d9b0475247f667a0f184f2fbc6d66b955749f",
+  "ground_truth_files": [
+    "localstack-core/localstack/services/apigateway/next_gen/execute_api/router.py",
+    "localstack-core/localstack/services/apigateway/next_gen/provider.py"
+  ],
+  "predicted_files": [
+    "localstack/services/plugins.py",
+    "localstack/utils/aws/aws_stack.py",
+    "localstack/services/apigateway/apigateway_listener.py",
+    "localstack/utils/persistence.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/apigateway/apigateway_listener.py', 'localstack/utils/persistence.py', 'bin/docker-entrypoint.sh', 'localstack/utils/aws/aws_stack.py', 'localstack/services/plugins.py'], 'reasoning': '1. localstack/services/apigateway/apigateway_listener.py requires modifications to emit persistence events on API creation and add restoration hooks.\\n2. localstack/utils/persistence.py needs to support and correctly replay API Gateway commands for restoration.\\n3. bin/docker-entrypoint.sh should trigger restoration logic during startup to recover persisted APIs.\\n4. localstack/utils/aws/aws_stack.py may require adjustments to support proper (de)serialization and resource re-creation for API Gateway entities.\\n5. localstack/services/plugins.py (or main service registry) should ensure the persistence and restoration hooks for API Gateway are registered and invoked at the right lifecycle moments.\\nThis order prioritizes the main service implementation and persistence logic, followed by startup and integration points.'}",
+  "error": null
+}

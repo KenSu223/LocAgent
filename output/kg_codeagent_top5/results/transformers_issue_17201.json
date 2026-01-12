@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/17201",
+  "repo_name": "transformers",
+  "title": "a memory leak in qqp prediction using bart",
+  "base_commit": "1a688709b34b10bd372e3e0860c8d39d170ebf53",
+  "ground_truth_files": [
+    "src/transformers/trainer.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/bart/modeling_bart.py",
+    "src/transformers/data/processors/glue.py",
+    "src/transformers/trainer.py",
+    "src/transformers/data/data_collator.py",
+    "classification/run_glue.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/trainer.py', 'examples/pytorch/text-classification/run_glue.py', 'src/transformers/models/bart/modeling_bart.py', 'src/transformers/data/data_collator.py', 'src/transformers/data/processors/glue.py'], 'reasoning': \"1. src/transformers/trainer.py: The Trainer class is the core of evaluation, prediction, accumulation, and device memory management. Memory leaks from excessive result accumulation or lack of tensor detachment are most likely here.\\n2. examples/pytorch/text-classification/run_glue.py: Entry script configures Trainer and launches prediction; may need to change argument passing or invocation for memory changes.\\n3. src/transformers/models/bart/modeling_bart.py: Model outputs may be inappropriately buffered; fixes ensuring tensors are moved to CPU or detached could be needed here.\\n4. src/transformers/data/data_collator.py: Data collators can indirectly contribute to retention if batched data isn't released correctly.\\n5. src/transformers/data/processors/glue.py: GLUE-specific utils may marshal large datasets, affecting memory footprint if not handled with care.\"}",
+  "error": null
+}

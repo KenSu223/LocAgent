@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/28007",
+  "repo_name": "transformers",
+  "title": "Can't do word timestamps and beam search at the same time (whisper)",
+  "base_commit": "b8378b658e9846e647d15a8fd85ad1421326b1e5",
+  "ground_truth_files": [
+    "src/transformers/models/whisper/modeling_whisper.py",
+    "src/transformers/pipelines/automatic_speech_recognition.py",
+    "tests/models/whisper/test_modeling_whisper.py",
+    "tests/pipelines/test_pipelines_automatic_speech_recognition.py"
+  ],
+  "predicted_files": [
+    "src/transformers/pipelines/automatic_speech_recognition.py",
+    "src/transformers/pipelines/base.py",
+    "src/transformers/pipelines/pt_utils.py",
+    "src/transformers/models/whisper/modeling_whisper.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/transformers/pipelines/automatic_speech_recognition.py\",\n        \"src/transformers/pipelines/base.py\",\n        \"src/transformers/pipelines/pt_utils.py\",\n        \"src/transformers/models/whisper/modeling_whisper.py\"\n    ],\n    \"reasoning\": \"1. The primary bug emerges when both 'beam search' and 'word-level timestamps' are enabled, traced directly to src/transformers/pipelines/automatic_speech_recognition.py, where the interaction of arguments leads to a TypeError due to stride being a tuple. Modification should ensure compatibility between the stride, num_beams, and timestamp extraction logic, and careful handling of tuple vs. int. 2. The pipeline logic and main call/forward methods in src/transformers/pipelines/base.py coordinate the request and may need adjustments to argument passing or result unwrapping to avoid type confusion. 3. Data iteration and batch logic in src/transformers/pipelines/pt_utils.py (iterator, infer, etc.) may require more robust handling for beams/timestamps. 4. Because the issue is Whisper-model-specific, code in src/transformers/models/whisper/modeling_whisper.py that handles generation and timestamps could potentially be at fault, especially if certain features interact poorly when both are enabled. These four files collectively orchestrate the ASR pipeline, and changes are almost certainly needed across them to robustly support word-level timestamps with beam search.\"\n}",
+  "error": null
+}

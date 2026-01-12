@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1808",
+  "repo_name": "localstack",
+  "title": "SNS: unable to ConfirmSubscription: Topic not found",
+  "base_commit": "5b6eee89f41af000b2da5ff43e3292529ff4c56f",
+  "ground_truth_files": [
+    "localstack/services/sns/sns_listener.py",
+    "tests/integration/test_sns.py"
+  ],
+  "predicted_files": [
+    "localstack/services/sns/sns_listener.py",
+    "localstack/utils/aws/aws_stack.py",
+    "localstack/services/generic_proxy.py",
+    "localstack/utils/aws/aws_responses.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/sns/sns_listener.py\",\n        \"localstack/utils/aws/aws_stack.py\",\n        \"localstack/services/generic_proxy.py\",\n        \"localstack/utils/aws/aws_responses.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/sns/sns_listener.py: This is the central file handling SNS actions. The error 'Topic does not exist' is raised here if the TopicArn is not found in the in-memory SNS_SUBSCRIPTIONS map. The main cause is likely an inconsistency between topic creation/account ID munging and subscription confirmation lookups. The ConfirmSubscription action must ensure correct ARN normalization/lookup, and/or topic creation/subscription storage must be robust to different account IDs or ARN variants.\\n\\n2. localstack/utils/aws/aws_stack.py: This utility provides functions for parsing and fixing ARNs (e.g., fix_account_id_in_arns, sns_topic_arn) to ensure consistency. If ARNs are stored in one format but queried in another, this file may need changes.\\n\\n3. localstack/services/generic_proxy.py: If ConfirmSubscription is handled by a generic endpoint dispatcher, or if forwarding/request handling for SNS actions is done here, code for validating request parameters and routing ConfirmSubscription may need updating to check the correct state.\\n\\n4. localstack/utils/aws/aws_responses.py: Handles error message construction returned to SNS clients. If XML error responses (e.g., for NotFound) require adjustment or if error context is needed for debugging, this file may need minor amendments.\\n\\nIn practice, fixes should focus on making sure ConfirmSubscription and TopicArn matching in sns_listener.py (and any helpers like fix_account_id_in_arns in aws_stack.py) are consistent, robust, and account for all ARN/account ID rewritings used elsewhere in localstack.\"\n}",
+  "error": null
+}

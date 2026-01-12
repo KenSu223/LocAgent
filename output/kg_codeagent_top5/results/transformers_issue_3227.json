@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/3227",
+  "repo_name": "transformers",
+  "title": "An Error report about pipeline",
+  "base_commit": "010e0460b22ddd7f74e31163f69ab3da2e9741ba",
+  "ground_truth_files": [
+    "examples/utils_multiple_choice.py",
+    "src/transformers/data/processors/squad.py"
+  ],
+  "predicted_files": [
+    "src/transformers/pipelines.py",
+    "src/transformers/pipelines/__init__.py",
+    "src/transformers/pipelines/question_answering.py",
+    "src/transformers/modelcard.py",
+    "src/transformers/data/processors/squad.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/pipelines/question_answering.py', 'src/transformers/pipelines/__init__.py', 'src/transformers/modelcard.py', 'src/transformers/pipelines.py', 'src/transformers/data/processors/squad.py'], 'reasoning': \"1. 'src/transformers/pipelines/question_answering.py' manages the question-answering pipeline where KeyError 'token_type_ids' likely originates when the pipeline preprocesses/model expects this key.\\n2. 'src/transformers/pipelines/__init__.py' is the entry point for pipeline creation and could require update to better handle missing model card or manage defaults for input keys.\\n3. 'src/transformers/modelcard.py' handles downloading/loading the model card file; modifications here may resolve download errors or fallback behavior.\\n4. 'src/transformers/pipelines.py' ties together model card logic inside pipeline and manages error/fallback handling seen in the initial model card warning.\\n5. 'src/transformers/data/processors/squad.py' is responsible for preprocessing data and generating 'token_type_ids' (essential for question-answering); missing values or preprocessing bugs here might be the root of the KeyError.\"}",
+  "error": null
+}

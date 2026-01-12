@@ -1,0 +1,29 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/29906",
+  "repo_name": "scikit-learn",
+  "title": "Incorrect sample weight handling in `KBinsDiscretizer`",
+  "base_commit": "e25e8e2119ab6c5aa5072b05c0eb60b10aee4b05",
+  "ground_truth_files": [
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_gradient_boosting.py",
+    "sklearn/inspection/tests/test_permutation_importance.py",
+    "sklearn/preprocessing/_discretization.py",
+    "sklearn/preprocessing/tests/test_discretization.py",
+    "sklearn/preprocessing/tests/test_polynomial.py",
+    "sklearn/preprocessing/tests/test_target_encoder.py",
+    "sklearn/tests/test_docstring_parameters.py",
+    "sklearn/utils/_indexing.py",
+    "sklearn/utils/_test_common/instance_generator.py",
+    "sklearn/utils/stats.py",
+    "sklearn/utils/tests/test_indexing.py",
+    "sklearn/utils/tests/test_stats.py"
+  ],
+  "predicted_files": [
+    "sklearn/base.py",
+    "sklearn/preprocessing/_discretization.py",
+    "sklearn/utils/validation.py",
+    "sklearn/preprocessing/tests/test_discretization.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/preprocessing/_discretization.py', 'sklearn/utils/validation.py', 'sklearn/preprocessing/tests/test_discretization.py', 'sklearn/base.py', 'doc/api/preprocessing.rst'], 'reasoning': \"1. sklearn/preprocessing/_discretization.py - This file contains the KBinsDiscretizer implementation and is directly responsible for handling sample weights and subsampling. Changes are needed to ensure sample_weight is properly subsampled along with X to avoid shape errors.\\n2. sklearn/utils/validation.py - The _check_sample_weight utility function raises the error seen; if logic for handling 'sample_weight' or its shape-checking needs to support subsampling, a fix is required here.\\n3. sklearn/preprocessing/tests/test_discretization.py - This is the main test file for KBinsDiscretizer; new and updated tests should be added to cover sample_weight with subsample scenarios.\\n4. sklearn/base.py - KBinsDiscretizer inherits from BaseEstimator and TransformerMixin, which may need modification if data passing/signature changes are required for proper weight support with subsampling.\\n5. doc/api/preprocessing.rst - If behavior/specification for sample_weight/subsample handling changes, documentation should be updated to reflect proper usage and new behavior.\"}",
+  "error": null
+}

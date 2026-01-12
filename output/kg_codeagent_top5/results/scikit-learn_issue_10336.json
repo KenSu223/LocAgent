@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/10336",
+  "repo_name": "scikit-learn",
+  "title": "Should mixture models have a clusterer-compatible interface",
+  "base_commit": "4143356c3c51831300789e4fdf795d83716dbab6",
+  "ground_truth_files": [
+    "doc/whats_new/v0.20.rst",
+    "sklearn/mixture/base.py",
+    "sklearn/mixture/tests/test_bayesian_mixture.py",
+    "sklearn/mixture/tests/test_gaussian_mixture.py"
+  ],
+  "predicted_files": [
+    "sklearn/mixture/gaussian_mixture.py",
+    "sklearn/mixture/base.py",
+    "gaussian_mixture.py",
+    "sklearn/mixture/bayesian_mixture.py",
+    "bayesian_mixture.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/mixture/base.py', 'sklearn/mixture/gaussian_mixture.py', 'sklearn/mixture/bayesian_mixture.py', 'doc/modules/mixture.rst', 'doc/modules/clustering.rst'], 'reasoning': 'The mixture model implementations are in sklearn/mixture/base.py, gaussian_mixture.py, and bayesian_mixture.py, where the interface (addition of fit_predict, labels_ attribute, and alignment of n_components with clustering API) needs to be made clusterer-compatible. The documentation for mixture models (doc/modules/mixture.rst) and for clusterers (doc/modules/clustering.rst) should also be updated to reflect any changes and improve consistency. These files are listed in order of importance: the code files are primary for functionality, followed by the documentation files.'}",
+  "error": null
+}

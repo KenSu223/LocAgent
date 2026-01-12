@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/16607",
+  "repo_name": "pandas",
+  "title": "to_datetime should support ISO week year",
+  "base_commit": "65c0441a41b2dcaeebb648274d30978419a8661a",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v0.25.0.rst",
+    "pandas/_libs/tslibs/strptime.pyx",
+    "pandas/core/tools/datetimes.py",
+    "pandas/tests/indexes/datetimes/test_tools.py"
+  ],
+  "predicted_files": [
+    "core/tools/datetimes.py",
+    "pandas/_libs/tslibs/strptime.py",
+    "pandas/core/tools/datetimes.py",
+    "strptime.py",
+    "pandas/tests/series/test_to_datetime_iso_week.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/_libs/tslibs/strptime.pyx', 'pandas/core/tools/datetimes.py', 'doc/source/reference/api/pandas.to_datetime.rst', 'pandas/_libs/tslibs/strptime.pxd', 'pandas/tests/series/test_to_datetime_iso_week.py'], 'reasoning': '1. strptime.pyx is the main Cython implementation for parsing format strings; adding ISO week year support must happen here.\\n2. core/tools/datetimes.py contains the `to_datetime` entrypoint and format dispatch logic \u2014 must enable routing and possibly add helpers for new formats.\\n3. The docs file must be updated to list new directive support and example uses for users.\\n4. strptime.pxd type/signature file may need updates if new function signatures or structures are required for parsing.\\n5. Tests for ISO week year parsing must be implemented or added, either in a new file (recommended, since none currently exist), or wherever `to_datetime` parsing tests are located.'}",
+  "error": null
+}

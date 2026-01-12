@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/10059",
+  "repo_name": "scikit-learn",
+  "title": "Duplicated input points silently create duplicated clusters in KMeans",
+  "base_commit": "effd75dda5f4afa61f988035ff8fe4b3a447464e",
+  "ground_truth_files": [
+    "doc/whats_new/v0.20.rst",
+    "sklearn/cluster/k_means_.py",
+    "sklearn/cluster/tests/test_k_means.py"
+  ],
+  "predicted_files": [
+    "sklearn/cluster/k_means_.py",
+    "sklearn/cluster/tests/test_k_means.py",
+    "sklearn/cluster/_k_means.py",
+    "sklearn/base.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cluster/k_means_.py', 'sklearn/cluster/tests/test_k_means.py', 'sklearn/cluster/_k_means.pyx', 'sklearn/base.py', 'doc/modules/clustering.rst'], 'reasoning': '1. sklearn/cluster/k_means_.py: This is the main location for clustering logic, including cluster initialization and input validation. The code should check for uniqueness of input points versus n_clusters, and raise an error or handle the scenario as described.2. sklearn/cluster/tests/test_k_means.py: Test coverage must be updated for these edge cases to ensure new logic is correctly enforced.3. sklearn/cluster/_k_means.pyx: This file contains cython routines for KMeans. If input validation is handled at this level for performance, corresponding logic should be updated as well.4. sklearn/base.py: This provides shared validation/estimator logic. Update only if framework-wide input validation should be extended.5. doc/modules/clustering.rst: Documentation must describe the behavior when n_clusters > n_unique, guiding users on new error/warning messages and expected outcomes.'}",
+  "error": null
+}

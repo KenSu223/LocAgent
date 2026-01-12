@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/4657",
+  "repo_name": "transformers",
+  "title": "--fp causes an issue when running example scripts in distributed mode",
+  "base_commit": "b231a413f5d58592bb4d98304c3d3b668c5d4a42",
+  "ground_truth_files": [
+    "src/transformers/training_args.py"
+  ],
+  "predicted_files": [
+    "modeling/run_language_modeling.py",
+    "src/transformers/trainer.py",
+    "src/transformers/modeling_utils.py",
+    "src/transformers/training_args.py",
+    "classification/run_glue.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/trainer.py', 'src/transformers/training_args.py', 'examples/language-modeling/run_language_modeling.py', 'examples/text-classification/run_glue.py', 'src/transformers/modeling_utils.py'], 'reasoning': '1. src/transformers/trainer.py: Core file handling the training loop, optimizer and gradient logic, distributed/fp16 interactions, and device placement; it directly manages loss scaling, optimizer steps, and distributed samplers, and is the most likely site for race conditions or device errors in distributed fp16 mode.\\n2. src/transformers/training_args.py: All command line flags and dataclass fields (including --fp16 and local_rank) are parsed/managed here; device logic and argument validation need to be patched if distributed support for fp16 is buggy.\\n3. examples/language-modeling/run_language_modeling.py: Main script that parses CLI arguments and launches Trainer, may need to patch argument passing/initialization/data loader.\\n4. examples/text-classification/run_glue.py: GLUE training script with analogous CLI parsing, may require modifications for distributed/helper fixes or argument wiring.\\n5. src/transformers/modeling_utils.py: Sometimes underlying model device/dtype logic (e.g., .to() or .half()) is mishandled in distributed/fp16 context and this file may be relevant for bugs not visible at the Trainer level.'}",
+  "error": null
+}

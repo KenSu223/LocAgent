@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/27982",
+  "repo_name": "scikit-learn",
+  "title": "Ensure that we have an example in the docstring of each public function or class",
+  "base_commit": "77aeb825b6494de1e3a2c1e7233b182e05d55ab0",
+  "ground_truth_files": [
+    "sklearn/datasets/_samples_generator.py"
+  ],
+  "predicted_files": [
+    "sklearn/covariance/_graph_lasso.py",
+    "sklearn/base.py",
+    "sklearn/cluster/_affinity_propagation.py",
+    "sklearn/datasets/_base.py",
+    "sklearn/datasets/_samples_generator.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/base.py', 'sklearn/cluster/_affinity_propagation.py', 'sklearn/covariance/_graph_lasso.py', 'sklearn/datasets/_samples_generator.py', 'sklearn/datasets/_base.py'], 'reasoning': \"1. sklearn/base.py: Contains the majority of foundational classes and functions listed in the issue (e.g., BaseEstimator, clone), so this file should be prioritized for adding docstring examples. 2. sklearn/cluster/_affinity_propagation.py: Implements 'affinity_propagation' and similar clustering functions/classes, covering another group of issue items. 3. sklearn/covariance/_graph_lasso.py: Houses 'graphical_lasso' and related covariance functions needing better docstrings. 4. sklearn/datasets/_samples_generator.py: Used for dataset generator functions (e.g., make_classification, make_moons, etc.) which are highly visible and often used by users. 5. sklearn/datasets/_base.py: Contains core dataset loading and utility functions (e.g., get_data_home, clear_data_home), required to resolve missing docstring examples for these public APIs.\"}",
+  "error": null
+}

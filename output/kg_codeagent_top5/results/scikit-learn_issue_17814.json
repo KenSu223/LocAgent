@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/17814",
+  "repo_name": "scikit-learn",
+  "title": "l1_ratio in sklearn.linear_model's ElasticNet greater than 1?",
+  "base_commit": "9b42b0cc7d5cf6978805619bc2433e3888c38d0c",
+  "ground_truth_files": [
+    "sklearn/linear_model/_coordinate_descent.py",
+    "sklearn/linear_model/tests/test_coordinate_descent.py"
+  ],
+  "predicted_files": [
+    "sklearn/linear_model/tests/test_coordinate_descent.py",
+    "sklearn/linear_model/_coordinate_descent.py",
+    "sklearn/linear_model/_base.py",
+    "sklearn/linear_model/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/linear_model/_coordinate_descent.py', 'sklearn/linear_model/tests/test_coordinate_descent.py', 'sklearn/linear_model/_base.py', 'sklearn/linear_model/__init__.py', 'doc/modules/linear_model.rst'], 'reasoning': \"1. sklearn/linear_model/_coordinate_descent.py: This is the main implementation of ElasticNet, where parameter validation for l1_ratio should be added or updated. 2. sklearn/linear_model/tests/test_coordinate_descent.py: This test file has multiple tests depending on ElasticNet, so tests for l1_ratio > 1 should be added or updated here to verify error raising. 3. sklearn/linear_model/_base.py: Parent class LinearModel may handle parameter checks or construction, and could need changes if input validation is handled at this level. 4. sklearn/linear_model/__init__.py: This file controls the public API exposure of ElasticNet. It's important if any changes to the import interface or docstring are needed after validation changes. 5. doc/modules/linear_model.rst: The main documentation source for linear_model. Changes may be needed to clarify l1_ratio requirements or new error messages.\"}",
+  "error": null
+}

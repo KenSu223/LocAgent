@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/49247",
+  "repo_name": "pandas",
+  "title": "BUG: Getting FutureWarning for Groupby.mean when using .pivot_table",
+  "base_commit": "f09d514cf0b09e65baf210a836de04e69b208cef",
+  "ground_truth_files": [
+    "pandas/core/reshape/pivot.py",
+    "pandas/tests/reshape/test_pivot.py",
+    "pandas/util/_exceptions.py"
+  ],
+  "predicted_files": [
+    "pandas/core/reshape/pivot.py",
+    "pandas/core/frame.py",
+    "pandas/core/groupby.py",
+    "pandas/core/reshape/__init__.py",
+    "pandas/core/generic.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/reshape/pivot.py\",\n        \"pandas/core/frame.py\",\n        \"pandas/core/groupby.py\",\n        \"pandas/core/reshape/__init__.py\",\n        \"pandas/core/generic.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/reshape/pivot.py is the primary file implementing the pivot_table function's internal logic. This is where the groupby mean aggregation is called, and where the numeric_only keyword needs to be surfaced to users. 2. pandas/core/frame.py contains DataFrame.pivot_table, which wraps and exposes the pivot_table API on DataFrames; its signature and documentation may need updating to pass numeric_only through to the underlying function. 3. pandas/core/groupby.py is the likely location of the DataFrameGroupBy class and its mean method, where the actual handling of numeric_only and the warning logic resides, so adjustments to its behavior or defaults may be needed. 4. pandas/core/reshape/__init__.py (if it re-exports pivot_table or controls imports) may need changes to expose any new arguments or document API changes. 5. pandas/core/generic.py should be considered in case NDFrame methods or internal finalization logic touch pivot_table, which affects DataFrame usage or argument propagation. Fewer files may be sufficient if the implementation is straightforward, but these cover the most critical code paths based on dependencies.\"\n}",
+  "error": null
+}

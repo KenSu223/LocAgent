@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/12081",
+  "repo_name": "pandas",
+  "title": "DataFrame.merge with Series should give nice error message",
+  "base_commit": "5de6b84f5117b005a8f010d4510a758b50f3d14e",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v0.18.0.txt",
+    "pandas/tools/merge.py",
+    "pandas/tools/tests/test_merge.py"
+  ],
+  "predicted_files": [
+    "pandas/core/reshape.py",
+    "pandas/core/generic.py",
+    "pandas/core/series.py",
+    "frame.py",
+    "pandas/core/frame.py",
+    "pandas/core/common.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/frame.py\",\n        \"pandas/core/series.py\",\n        \"pandas/core/reshape.py\",\n        \"pandas/core/common.py\",\n        \"pandas/core/generic.py\"\n    ],\n    \"reasoning\": \n        \"1. pandas/core/frame.py: This file defines the DataFrame class and likely implements the DataFrame.merge method. The check for the type of the right-hand argument (e.g., if not isinstance(right, DataFrame): raise ...) and the user-facing error message should be added here to immediately catch incorrect usage (attempting to merge with a Series).\\n\"\n        \"2. pandas/core/series.py: The Series class is imported in frame.py. You may want to add documentation notes or small interface adjustments especially if there is Series detection or handling involved in the merging interface. This is less likely to require code changes but may be appropriate for doc updates or for future expansion of compatibility checks.\\n\"\n        \"3. pandas/core/reshape.py: Contains reshaping and potentially lower-level merging utilities. If DataFrame.merge delegates merge logic here, type checking or error raising could alternatively or additionally be enforced at the start of such a function.\\n\"\n        \"4. pandas/core/common.py: Used for utility functions and type checks (as seen in imports). May be where helpers like 'is_sequence', 'is_list_like', etc. are defined, which could be expanded upon or referenced for rigorous input validation before or during a merge operation.\\n\"\n        \"5. pandas/core/generic.py: DataFrame inherits from NDFrame defined here, which may have generic validation or merging hooks. Adjustments may be needed if merging is handled more universally for all NDFrame subclasses, or for updating shared error messaging policies.\\n\"\n        \"\\nThese files are ordered by likelihood and impact of a fix. Most changes should be made in frame.py, with possible supporting changes in the other files depending on exactly how the merge method is structured and h",
+  "error": null
+}
