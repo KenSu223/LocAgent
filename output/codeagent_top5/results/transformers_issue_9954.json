@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/9954",
+  "repo_name": "transformers",
+  "title": "[Good first issue] LXMERT TensorFlow Integration tests",
+  "base_commit": "626a0a01471accc32ded29ccca3ed93c4995fcd6",
+  "ground_truth_files": [
+    "tests/test_modeling_tf_lxmert.py"
+  ],
+  "predicted_files": [
+    "tests/conftest.py",
+    "tests/test_modeling_tf_common.py",
+    "src/transformers/testing_utils.py",
+    "testing_utils.py",
+    "tests/test_modeling_tf_lxmert.py",
+    "tests/test_modeling_tf_bert.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['tests/test_modeling_tf_lxmert.py', 'src/transformers/testing_utils.py', 'tests/conftest.py', 'tests/test_modeling_tf_common.py', 'tests/test_modeling_tf_bert.py'], 'reasoning': '1. tests/test_modeling_tf_lxmert.py: This is the primary file needing modification to add integration tests for TF LXMERT, including usage of proper decorators and inference checks based on the BERT reference.\\n2. src/transformers/testing_utils.py: If the @slow and @require_tf decorators are not available, their definitions should be ensured or added here for reuse in all TF integration tests.\\n3. tests/conftest.py: In case test-specific fixtures or decorator imports need be managed, particularly if not present in testing_utils.py.\\n4. tests/test_modeling_tf_common.py: If any shared test helpers/utilities for TensorFlow integration testing need adjustment or extension.\\n5. tests/test_modeling_tf_bert.py: As a reference example for both structure and decorator usage patterns, but not needing direct modification.'}",
+  "error": null
+}

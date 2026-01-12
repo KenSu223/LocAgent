@@ -35,7 +35,7 @@ from smolagents import CodeAgent, tool
 # Default Configuration
 # ============================================================================
 
-DEFAULT_REPOS = ["fastapi", "transformers", "scikit-learn", "flask", "localstack"]
+DEFAULT_REPOS = ["pandas", "transformers", "scikit-learn", "flask", "localstack"]
 
 
 # ============================================================================

@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/15640",
+  "repo_name": "transformers",
+  "title": "Add support for ONNX-TensorRT conversion for GPT-J6B (and possible bug in rotary embedding)",
+  "base_commit": "147c8166852db64de12b851b8307f44c9e8fe0dd",
+  "ground_truth_files": [
+    "src/transformers/models/gptj/modeling_gptj.py"
+  ],
+  "predicted_files": [
+    "src/transformers/modeling_utils.py",
+    "src/transformers/convert_graph_to_onnx.py",
+    "src/transformers/onnx/convert.py",
+    "src/transformers/models/gptj/modeling_gptj.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/gptj/modeling_gptj.py', 'src/transformers/onnx/convert.py', 'src/transformers/convert_graph_to_onnx.py', 'src/transformers/modeling_utils.py', 'docs/source/model_doc/gptj.mdx'], 'reasoning': \"1. src/transformers/models/gptj/modeling_gptj.py: The actual fix to rotary positional embedding and operator usage must be here, as the bug and ONNX export issues stem from a specific function (apply_rotary_pos_emb) in this model implementation.\\n2. src/transformers/onnx/convert.py: Handles ONNX conversion and may require changes to avoid unsupported ONNX ops, plus guidance or exception handling improvements.\\n3. src/transformers/convert_graph_to_onnx.py: As a key ONNX export utility, documentation or export adaptation can clarify supported models/flows now possible due to the fix.\\n4. src/transformers/modeling_utils.py: This module's utilities may interact with the fix and require guard code, doc notes, or interface management concerning ONNX export.\\n5. docs/source/model_doc/gptj.mdx: User-facing documentation must explain any behavioral change and new instructions for ONNX export with TensorRT.\"}",
+  "error": null
+}

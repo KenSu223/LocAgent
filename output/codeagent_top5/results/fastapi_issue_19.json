@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/19",
+  "repo_name": "fastapi",
+  "title": "accessing the request object",
+  "base_commit": "92c825be6a7362099400c9c3fe8b01ea13add3dc",
+  "ground_truth_files": [
+    "docs/tutorial/extra-starlette.md",
+    "mkdocs.yml"
+  ],
+  "predicted_files": [
+    "fastapi/params.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/dependencies/models.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/routing.py', 'fastapi/dependencies/utils.py', 'fastapi/applications.py', 'fastapi/params.py', 'fastapi/dependencies/models.py'], 'reasoning': '1. fastapi/routing.py manages the APIRouter, APIRoute, and endpoint registration, which is where direct request injection should be supported. 2. fastapi/dependencies/utils.py solves endpoint dependencies and must be modified to recognize and inject the request object. 3. fastapi/applications.py instantiates routers and may require adaptation for public API consistency. 4. fastapi/params.py defines allowed parameters for handler functions and may need changes to handle request objects. 5. fastapi/dependencies/models.py supports dependency models, which might need to account for this new injection modality.'}",
+  "error": null
+}

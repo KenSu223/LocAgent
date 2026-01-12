@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2813",
+  "repo_name": "flask",
+  "title": "Allow flexible routing with SERVER_NAME config",
+  "base_commit": "07c7d5730a2685ef2281cc635e289685e5c3d478",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "docs/config.rst",
+    "src/flask/app.py",
+    "tests/test_basic.py",
+    "tests/test_blueprints.py"
+  ],
+  "predicted_files": [
+    "src/flask/helpers.py",
+    "src/flask/wrappers.py",
+    "src/flask/ctx.py",
+    "src/flask/app.py",
+    "src/flask/config.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/app.py', 'src/flask/ctx.py', 'src/flask/helpers.py', 'src/flask/config.py', 'src/flask/wrappers.py'], 'reasoning': \"1. src/flask/app.py: Central location for Flask's routing logic, adapter creation, and SERVER_NAME usage; the main changes must occur here to allow flexible routing while maintaining URL stability. 2. src/flask/ctx.py: Handles request/app context, could require updates for proper adapter instantiation and context-bound routing. 3. src/flask/helpers.py: Contains url_for and related utilities, likely needs updates to ensure absolute/stable URLs are generated per SERVER_NAME. 4. src/flask/config.py: Manages configuration values (e.g., SERVER_NAME), may need changes to better support flexible routing scenarios. 5. src/flask/wrappers.py: Handles request/response wrappers, could affect Host header handling during routing and adapter creation.\"}",
+  "error": null
+}

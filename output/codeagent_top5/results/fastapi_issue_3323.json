@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/3323",
+  "repo_name": "fastapi",
+  "title": "Support PEP 593 `Annotated` for specifying dependencies and parameters",
+  "base_commit": "ef176c663195489b44030bfe1fb94a317762c8d5",
+  "ground_truth_files": [
+    "fastapi/dependencies/utils.py",
+    "fastapi/param_functions.py",
+    "fastapi/params.py",
+    "fastapi/utils.py",
+    "tests/main.py",
+    "tests/test_application.py",
+    "tests/test_params_repr.py",
+    "tests/test_path.py"
+  ],
+  "predicted_files": [
+    "fastapi/params.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/param_functions.py",
+    "fastapi/applications.py",
+    "fastapi/routing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/dependencies/utils.py', 'fastapi/params.py', 'fastapi/param_functions.py', 'fastapi/routing.py', 'fastapi/applications.py'], 'reasoning': '1. fastapi/dependencies/utils.py is most critical as it implements the logic for extracting, unwrapping, and injecting dependencies and parameters from endpoint signatures. It must be updated to handle Annotated and properly interpret its arguments for Depends, Query, Body, etc. 2. fastapi/params.py defines the Param, Depends, Query, Body classes and their base mechanisms, which need updating to integrate Annotated payloads. 3. fastapi/param_functions.py provides factories/interfaces for Depends, Query, and Body and may need adjustments for signature handling and Annotated support. 4. fastapi/routing.py is responsible for registering endpoints and processing their dependency signatures; it should be updated to support the Annotated forms. 5. fastapi/applications.py manages application-level dependencies and would need modification to accept and process dependencies specified via Annotated.'}",
+  "error": null
+}

@@ -23,7 +23,7 @@ from dependency_graph.build_graph import build_graph, VERSION
 
 
 # Default repos (aligned with codeagent)
-DEFAULT_REPOS = ["fastapi", "transformers", "scikit-learn", "flask", "localstack"]
+DEFAULT_REPOS = ["pandas", "transformers", "scikit-learn", "flask", "localstack"]
 
 
 def build_kg_for_repo(repo_name: str, repos_dir: Path, output_dir: Path, force: bool = False) -> bool:

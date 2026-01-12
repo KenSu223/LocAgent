@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/fastapi/fastapi/issues/5859",
+  "repo_name": "fastapi",
+  "title": "FastAPI==0.89.0 Cannot use `None` as a return type when `status_code` is set to 204 with `from __future__ import annotations`",
+  "base_commit": "c6e950dc9cacefd692dbd8987a3acd12a44b506f",
+  "ground_truth_files": [
+    ".github/workflows/preview-docs.yml"
+  ],
+  "predicted_files": [
+    "fastapi/openapi/constants.py",
+    "fastapi/utils.py",
+    "fastapi/dependencies/utils.py",
+    "fastapi/param_functions.py",
+    "fastapi/routing.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['fastapi/routing.py', 'fastapi/utils.py', 'fastapi/dependencies/utils.py', 'fastapi/openapi/constants.py', 'fastapi/param_functions.py'], 'reasoning': '1. fastapi/routing.py: Main code for route setup, status code assertions, and response model analysis. The assertion that fails is here and must handle NoneType as None for status_code=204 cases.\\n2. fastapi/utils.py: Defines create_response_field, which receives endpoint return type and must treat NoneType as None, especially when using __future__ annotations.\\n3. fastapi/dependencies/utils.py: Handles endpoint signature parsing; normalization of return annotation types may be implemented or required here for correct response model deduction.\\n4. fastapi/openapi/constants.py: Centralizes knowledge of which status codes do not allow a body; might require adjustment if further codes are added or logic changes.\\n5. fastapi/param_functions.py: Sometimes used for type parsing or param/response analysis; verify if changes are needed to ensure robust type normalization with __future__ imports.'}",
+  "error": null
+}

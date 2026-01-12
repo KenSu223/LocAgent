@@ -44,7 +44,7 @@ CURRENT_KG_SEARCHER = None
 # Default Configuration
 # ============================================================================
 
-DEFAULT_REPOS = ["fastapi", "transformers", "scikit-learn", "flask", "localstack"]
+DEFAULT_REPOS = ["pandas", "transformers", "scikit-learn", "flask", "localstack"]
 
 
 # ============================================================================

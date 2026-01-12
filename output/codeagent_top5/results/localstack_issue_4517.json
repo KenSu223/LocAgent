@@ -1,0 +1,27 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/4517",
+  "repo_name": "localstack",
+  "title": "bug: AWS::NoValue produces error when used in IAM policy template",
+  "base_commit": "9f1b9dbf60f406e8d6205402b8ac078195cd0c01",
+  "ground_truth_files": [
+    "localstack/services/cloudformation/models/cloudwatch.py",
+    "localstack/services/cloudformation/models/iam.py",
+    "tests/integration/cloudformation/test_cloudformation_iam.py",
+    "tests/integration/cloudformation/test_cloudformation_iam.snapshot.json",
+    "tests/integration/templates/iam_policy_attachments.yaml",
+    "tests/integration/templates/iam_role_policy.yaml"
+  ],
+  "predicted_files": [
+    "deployment_utils.py",
+    "localstack/utils/cloudformation/template_deployer.py",
+    "localstack/services/cloudformation/models/iam.py",
+    "localstack/services/cloudformation/deployment_utils.py",
+    "template_deployer.py",
+    "test_cloudformation.py",
+    "tests/unit/test_cloudformation.py",
+    "models/iam.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/cloudformation/models/iam.py', 'localstack/services/cloudformation/deployment_utils.py', 'localstack/utils/cloudformation/template_deployer.py', 'tests/unit/test_cloudformation.py'], 'reasoning': '1. models/iam.py: Most important, directly handles IAM policy creation and must sanitize Resource lists in statements to remove __aws_no_value__ before validation/deployment. 2. deployment_utils.py: Performs placeholder cleanup at parameter level; method may need tightening or recursive application, to ensure AWS::NoValue is never propagated. 3. template_deployer.py: Deployment logic may propagate NoValue placeholder, should ensure only valid resources get passed on. 4. test_cloudformation.py: Add/extend tests to confirm proper handling and cleanup of AWS::NoValue in IAM policies, preventing future regressions.'}",
+  "error": null
+}

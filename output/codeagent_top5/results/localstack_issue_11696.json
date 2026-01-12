@@ -1,0 +1,25 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/11696",
+  "repo_name": "localstack",
+  "title": "bug: API Gateway does not persist correctly when you restart the localstack docker container",
+  "base_commit": "8c9d9b0475247f667a0f184f2fbc6d66b955749f",
+  "ground_truth_files": [
+    "localstack-core/localstack/services/apigateway/next_gen/execute_api/router.py",
+    "localstack-core/localstack/services/apigateway/next_gen/provider.py"
+  ],
+  "predicted_files": [
+    "core/localstack/services/apigateway/helpers.py",
+    "core/localstack/services/apigateway/next_gen/provider.py",
+    "core/localstack/state/pickle.py",
+    "core/localstack/state/core.py",
+    "helpers.py",
+    "provider.py",
+    "core/localstack/services/apigateway/models.py",
+    "pickle.py",
+    "core.py",
+    "models.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack-core/localstack/services/apigateway/next_gen/provider.py', 'localstack-core/localstack/services/apigateway/models.py', 'localstack-core/localstack/services/apigateway/helpers.py', 'localstack-core/localstack/state/pickle.py', 'localstack-core/localstack/state/core.py'], 'reasoning': '1. provider.py is the main controller for API Gateway v2 resource creation; it must register state persistence hooks or ensure state is saved/restored across docker restarts.\\n2. models.py defines the in-memory apigateway_stores; changes here may make the store serializable or compliant with persistence API.\\n3. helpers.py handles state transitions and links apigateway_stores with provider logic, possibly requiring modifications to enable persistence.\\n4. pickle.py provides custom serialization/deserialization infrastructure. If API Gateway resources are not correctly persisted, this file likely needs modification.\\n5. core.py defines the persistence and lifecycle protocol; to hook the API Gateway v2 store, modifications here may be required.'}",
+  "error": null
+}
