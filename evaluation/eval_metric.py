@@ -147,6 +147,12 @@ def convert_solutions_dict(dataset, key = 'model_patch'):
     return {elem['instance_id']: elem[key] for elem in dataset}
 
 
+def _normalize_pred_list(preds):
+    if isinstance(preds, list) and preds and isinstance(preds[0], list):
+        return preds[0]
+    return preds
+
+
 METRIC_FUNC = {
     'ndcg': normalized_dcg,
     'recall': recall_at_k,
@@ -197,15 +203,21 @@ def cal_metrics_w_file(gt_file, loc_file, key,
     else:
         pred_dict = convert_solutions_dict(load_jsonl(loc_file), key=key)
         for ins in pred_dict:
-            pred_funcs = pred_dict[ins]
-            pred_modules = []
-            for i, pf in enumerate(pred_funcs):
-                if level == 'function':
+            pred_dict[ins] = _normalize_pred_list(pred_dict[ins])
+        for ins in pred_dict:
+            pred_funcs = _normalize_pred_list(pred_dict[ins])
+            if level == 'function':
+                pred_modules = []
+                for pf in pred_funcs:
+                    if not isinstance(pf, str):
+                        continue
                     if pf.endswith('.__init__'):
                         pf = pf[:(len(pf)-len('.__init__'))]
                     if pf not in pred_modules:
                         pred_modules.append(pf)
-            pred_dict[ins] = pred_modules
+                pred_dict[ins] = pred_modules
+            else:
+                pred_dict[ins] = pred_funcs
         
     _gt_labels = []
     _pred_labels = []
