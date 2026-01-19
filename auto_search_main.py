@@ -62,6 +62,20 @@ def throttled_completion(**litellm_kwargs):
     return litellm.completion(**litellm_kwargs)
 
 
+def completion_with_rate_limit_retry(
+    retry_sleep: int = 60,
+    max_retries: int = 3,
+    **litellm_kwargs,
+):
+    for attempt in range(max_retries):
+        try:
+            return throttled_completion(**litellm_kwargs)
+        except litellm.exceptions.RateLimitError:
+            if attempt == max_retries - 1:
+                raise
+            sleep(retry_sleep)
+
+
 def _normalize_azure_base(api_base: str) -> str:
     # Strip Azure OpenAI path suffix if present to avoid duplicate path segments.
     if not api_base:
@@ -180,7 +194,7 @@ def auto_search_process(result_queue,
                         tools = None,
                         traj_data=None,
                         temp=1.0,
-                        max_iteration_num=20,
+                        max_iteration_num=5,
                         use_function_calling=True):
     # Configure Azure endpoint if needed
     azure_config = configure_azure_endpoint(model_name)
@@ -251,16 +265,19 @@ def auto_search_process(result_queue,
                     'repetition_penalty': 1.05,
                     'stop': NON_FNCALL_STOP_WORDS
                 })
-                response = throttled_completion(**litellm_kwargs)
+                response = completion_with_rate_limit_retry(**litellm_kwargs)
             elif tools:
                 litellm_kwargs['tools'] = tools
-                response = throttled_completion(**litellm_kwargs)
+                response = completion_with_rate_limit_retry(**litellm_kwargs)
             else:
                 litellm_kwargs['stop'] = ['</execute_ipython>']
-                response = throttled_completion(**litellm_kwargs)
+                response = completion_with_rate_limit_retry(**litellm_kwargs)
         except litellm.BadRequestError as e:
             # If there's an error, send the error info back to the parent process
             result_queue.put({'error': str(e), 'type': 'BadRequestError'})
+            return
+        except litellm.exceptions.RateLimitError as e:
+            result_queue.put({'error': str(e), 'type': 'RateLimitError'})
             return
         
         if last_message and response.choices[0].message.content == last_message:
@@ -370,7 +387,7 @@ def auto_search_process(result_queue,
     result_queue.put((final_output, messages, traj_data))
 
 
-def run_localize(rank, args, bug_queue, log_queue, output_file_lock, traj_file_lock):
+def run_localize(rank, args, bug_queue, log_queue, output_file_lock, traj_file_lock, processed_instance):
     queue_handler = logging.handlers.QueueHandler(log_queue)
     logger = logging.getLogger()
     logger.setLevel(logging.getLevelName(args.log_level))
@@ -386,6 +403,9 @@ def run_localize(rank, args, bug_queue, log_queue, output_file_lock, traj_file_l
             break
 
         instance_id = bug["instance_id"]
+        if instance_id in processed_instance:
+            logger.info(f"==== rank {rank} skip already processed {instance_id} ====")
+            continue
         prompt_manager = PromptManager(
             prompt_dir=os.path.join(os.path.dirname(__file__), 'util/prompts'),
             agent_skills_docs=LocationToolsRequirement.documentation,
@@ -399,6 +419,7 @@ def run_localize(rank, args, bug_queue, log_queue, output_file_lock, traj_file_l
         raw_output_loc = []
         loc_trajs = {'trajs': []}
         total_prompt_tokens, total_completion_tokens = 0, 0
+        skip_issue = False
 
         for _ in range(args.num_samples):
             logger.info("=" * 60)
@@ -467,11 +488,15 @@ def run_localize(rank, args, bug_queue, log_queue, output_file_lock, traj_file_l
                     
                     # loc_result, messages, traj_data = result_queue.get()
                     result = result_queue.get()
-                    if isinstance(result, dict) and 'error' in result and result['type'] == 'BadRequestError':
-                        raise litellm.BadRequestError(result['error'], args.model, args.model.split('/')[0])
-                        # print(f"Error occurred in subprocess: {result['error']}")
-                    else:
-                        loc_result, messages, traj_data = result
+                    if isinstance(result, dict) and 'error' in result:
+                        if result['type'] == 'BadRequestError':
+                            raise litellm.BadRequestError(result['error'], args.model, args.model.split('/')[0])
+                        if result['type'] == 'RateLimitError':
+                            logger.warning(f"{instance_id} hit rate limit after retries, skipping.")
+                            skip_issue = True
+                            break
+                        raise RuntimeError(result['error'])
+                    loc_result, messages, traj_data = result
                         
                 except litellm.BadRequestError as e:
                     logger.warning(f'{e}. Try again.')
@@ -502,6 +527,9 @@ def run_localize(rank, args, bug_queue, log_queue, output_file_lock, traj_file_l
                 raw_output_loc.append(loc_result)
                 break
 
+        if skip_issue:
+            reset_current_issue()
+            continue
         if not raw_output_loc:
             # loc generalization failed
             logger.info(f"==== localizing {instance_id} failed, save empty outputs ====")
@@ -609,7 +637,7 @@ def localize(args):
     mp.spawn(
         run_localize,
         nprocs=min(num_bugs, args.num_processes) if args.num_processes > 0 else num_bugs,
-        args=(args, queue, log_queue, output_file_lock, traj_file_lock),
+        args=(args, queue, log_queue, output_file_lock, traj_file_lock, set(processed_instance)),
         join=True
     )
     queue_listener.stop()
