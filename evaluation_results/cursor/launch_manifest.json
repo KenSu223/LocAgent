@@ -1,0 +1,35 @@
+{
+  "launched_at": "2026-01-18T23:55:30.001770",
+  "elapsed_seconds": 2.7597708702087402,
+  "dataset_path": "/Users/kensu/Downloads/loc_agent/LocAgent/evaluation/mulocbench_2/mulocbench.jsonl",
+  "total": 5,
+  "successful": 0,
+  "failed": 5,
+  "agents": [
+    {
+      "instance_id": "pallets__flask-2264",
+      "agent_id": null,
+      "error": "Failed to launch agent: 400 - {\"error\":\"Failed to verify existence of branch 'main' in repository pallets/flask. Please ensure the branch name is correct.\"}"
+    },
+    {
+      "instance_id": "pallets__flask-593",
+      "agent_id": null,
+      "error": "Failed to launch agent: 400 - {\"error\":\"Failed to verify existence of branch 'main' in repository pallets/flask. Please ensure the branch name is correct.\"}"
+    },
+    {
+      "instance_id": "pallets__flask-602",
+      "agent_id": null,
+      "error": "Failed to launch agent: 400 - {\"error\":\"Failed to verify existence of branch 'main' in repository pallets/flask. Please ensure the branch name is correct.\"}"
+    },
+    {
+      "instance_id": "pallets__flask-2813",
+      "agent_id": null,
+      "error": "Failed to launch agent: 400 - {\"error\":\"Failed to verify existence of branch 'main' in repository pallets/flask. Please ensure the branch name is correct.\"}"
+    },
+    {
+      "instance_id": "pallets__flask-3555",
+      "agent_id": null,
+      "error": "Failed to launch agent: 400 - {\"error\":\"Failed to verify existence of branch 'main' in repository pallets/flask. Please ensure the branch name is correct.\"}"
+    }
+  ]
+}
