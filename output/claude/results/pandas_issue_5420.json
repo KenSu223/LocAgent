@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/5420",
+  "repo_name": "pandas",
+  "title": "BUG: loc should not fallback for integer indexing for multi-index",
+  "base_commit": "324208eaa66a528f1e88f938c71c2d8efb8304f3",
+  "ground_truth_files": [
+    "doc/source/v0.14.1.txt",
+    "pandas/core/index.py",
+    "pandas/tests/test_indexing.py"
+  ],
+  "predicted_files": [
+    "pandas/core/indexes/multi.py",
+    "pandas/core/series.py",
+    "pandas/core/indexes/base.py",
+    "pandas/core/indexing.py",
+    "frame.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/indexing.py', 'pandas/core/indexes/multi.py', 'pandas/core/indexes/base.py', 'pandas/core/frame.py', 'pandas/core/series.py'], 'reasoning': '1. pandas/core/indexing.py: The main implementation for indexers, .loc logic, and fallbacks, including IndexingMixin and _LocIndexer, which handle advanced indexing and should prevent unintended fallback for integer indexing on MultiIndex.\\n2. pandas/core/indexes/multi.py: MultiIndex implementation, where indexing protocols and error handling are defined for multi-level indices.\\n3. pandas/core/indexes/base.py: Parent class for MultiIndex; changes here may propagate desired indexing behavior changes to all index types.\\n4. pandas/core/frame.py: DataFrame entrypoint, which delegates to indexers and may require update to error-handling or fallback behaviors for .loc-based indexing.\\n5. pandas/core/series.py: Series entrypoint; similar reasoning to frame.py for .loc and integer indexing behavior with multi-indexes.'}",
+  "error": null
+}

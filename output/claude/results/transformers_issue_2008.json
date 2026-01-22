@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/2008",
+  "repo_name": "transformers",
+  "title": "Expand run_lm_finetuning.py to all models",
+  "base_commit": "a8e3336a850e856188350a93e67d77c07c85b8af",
+  "ground_truth_files": [
+    "examples/ner/run_ner.py",
+    "examples/ner/run_tf_ner.py",
+    "examples/run_glue.py",
+    "examples/run_language_modeling.py",
+    "examples/run_squad.py",
+    "src/transformers/__init__.py",
+    "templates/adding_a_new_example_script/run_xxx.py"
+  ],
+  "predicted_files": [
+    "examples/language-modeling/run_lm_finetuning.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"examples/run_language_modeling.py\",\n        \"src/transformers/modeling_auto.py\",\n        \"src/transformers/configuration_auto.py\",\n        \"src/transformers/modeling_ctrl.py\",\n        \"src/transformers/modeling_xlnet.py\"\n    ],\n    \"reasoning\": \"1. The main file that needs modification is examples/run_language_modeling.py. The original run_lm_finetuning.py script has likely been renamed or replaced with run_language_modeling.py, which occupies its role in the repo. This script implements the finetuning logic and must be extended to support ctrl, xlm, xlnet, transfo-xl, and albert models, handling their model/tokenizer/config loading and any specific processing needs.\\n\\n2. src/transformers/modeling_auto.py handles dynamic loading of model classes via AutoModel, AutoModelForCausalLM, etc. To support the new models in the finetuning script, ensure these models are properly registered or integrated, especially if some (like CTRL or XLNet) currently lack AutoModelForCausalLM support.\\n\\n3. src/transformers/configuration_auto.py allows automatic loading of configurations. If new models require special configuration handling for language modeling, this file may need an update.\\n\\n4. src/transformers/modeling_ctrl.py is the specific implementation for the CTRL model. Ensure it exposes compatible APIs (like from_pretrained(), LM-head methods) for language model finetuning, as per needs of the main script. Similarly for\\n5. src/transformers/modeling_xlnet.py (and model files for xlm, transfo-xl, and albert if needed): these should be checked for compatibility and may require small additions to be fully supported by the main training script, especially wrt. CausalLM/MaskedLM heads and interfaces expected by finetuning logic.\\n\\nDepending on initial integration status, similar files for xlm, transfo-xl, and albert (modeling_xlm.py, modeling_transfo_xl.py, modeling_albert.py) may also require attention.\"\n}",
+  "error": null
+}

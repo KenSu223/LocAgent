@@ -1,0 +1,28 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/35811",
+  "repo_name": "pandas",
+  "title": "BUG/QST: Series.transform with a dictionary",
+  "base_commit": "2067d7e306ae720d455f356e4da21f282a8a762e",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v1.2.0.rst",
+    "pandas/core/aggregation.py",
+    "pandas/core/base.py",
+    "pandas/core/frame.py",
+    "pandas/core/generic.py",
+    "pandas/core/series.py",
+    "pandas/core/shared_docs.py",
+    "pandas/tests/frame/apply/test_frame_transform.py",
+    "pandas/tests/series/apply/test_series_apply.py",
+    "pandas/tests/series/apply/test_series_transform.py"
+  ],
+  "predicted_files": [
+    "pandas/core/apply.py",
+    "pandas/core/series.py",
+    "pandas/tests/series/test_analytics.py",
+    "pandas/core/groupby/generic.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/series.py', 'pandas/core/apply.py', 'pandas/core/frame.py', 'pandas/core/groupby/generic.py', 'pandas/tests/series/test_analytics.py'], 'reasoning': '1. pandas/core/series.py defines Series and its transform/aggregate methods, so changes must be made there to modify the logic or documentation.\\n2. pandas/core/apply.py contains helper/infrastructure code that is reused and possibly delegated by Series.transform/aggregate.\\n3. pandas/core/frame.py defines DataFrame.transform, which should be checked and possibly updated for consistency, and for comparative examples/tests.\\n4. pandas/core/groupby/generic.py contains generic groupby aggregation logic, which may require harmonization or refactoring if the behavior is adjusted.\\n5. pandas/tests/series/test_analytics.py should be updated to validate and illustrate all new or altered behaviors for dictionary input to Series.transform.'}",
+  "error": null
+}

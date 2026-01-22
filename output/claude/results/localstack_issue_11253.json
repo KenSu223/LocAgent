@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/11253",
+  "repo_name": "localstack",
+  "title": "bug: API Gateway V1 (targeted to Lambda) gives 500 error with // in path",
+  "base_commit": "1aad84d96159f6d12f872357e04f080a39836f5f",
+  "ground_truth_files": [
+    "localstack-core/localstack/services/apigateway/context.py",
+    "localstack-core/localstack/services/apigateway/helpers.py",
+    "localstack-core/localstack/services/apigateway/next_gen/execute_api/integrations/aws.py",
+    "tests/aws/services/apigateway/test_apigateway_lambda.py",
+    "tests/aws/services/apigateway/test_apigateway_lambda.snapshot.json",
+    "tests/aws/services/apigateway/test_apigateway_lambda.validation.json"
+  ],
+  "predicted_files": [
+    "localstack-core/localstack/services/apigateway/provider.py",
+    "localstack-core/localstack/services/apigateway/router_asf.py",
+    "localstack-core/localstack/services/apigateway/integration.py",
+    "localstack-core/localstack/services/apigateway/helpers.py",
+    "localstack-core/localstack/services/apigateway/invocations.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack-core/localstack/services/apigateway/provider.py\",\n        \"localstack-core/localstack/services/apigateway/router_asf.py\",\n        \"localstack-core/localstack/services/apigateway/integration.py\",\n        \"localstack-core/localstack/services/apigateway/helpers.py\",\n        \"localstack-core/localstack/services/apigateway/invocations.py\"\n    ],\n    \"reasoning\": \"1. provider.py is the central implementation file for the API Gateway service; it likely receives HTTP requests, parses the path, and delegates to routing/integration logic. Normalization of the incoming path (collapsing multiple slashes) should occur here to mimic AWS behavior and route '/prod/orders' and '/prod//orders' identically.\\n\\n2. router_asf.py is likely responsible for routing API Gateway requests to resources or integrations; it may need logic to standardize the path before matching, especially if the double-slash causes routing lookup failures.\\n\\n3. integration.py manages API Gateway integrations (e.g., Lambda proxy); it must process events generated from normalized paths and may require adjustment if the event construction fails due to duplicate slashes.\\n\\n4. helpers.py contains utility functions that could be involved in path manipulation or normalization shared across routing and integration. Centralizing normalization fixes here would ensure code reuse.\\n\\n5. invocations.py deals with Lambda invocation logic from API Gateway; ensuring the Lambda receives the correct normalized path within its event payload may require changes here.\\n\\nThe files are ordered by their likelihood to contain the bug or need the normalization fix, starting with the main provider/router logic, then integration/event construction, followed by helpers used for path processing and invocation specifics. Fixing normalization at the entrypoint or just before resource matching would resolve the double-slash-path bug and ensure that API Gateway V1 mimics AWS\u2019s tolerant path matc",
+  "error": null
+}

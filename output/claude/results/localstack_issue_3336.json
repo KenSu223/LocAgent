@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/3336",
+  "repo_name": "localstack",
+  "title": "SNS Fifo topic ",
+  "base_commit": "c2c025a96888ce091adc4d9c6c9053af86704c4f",
+  "ground_truth_files": [
+    "localstack/services/awslambda/lambda_api.py"
+  ],
+  "predicted_files": [
+    "localstack/services/sns/sns_listener.py",
+    "localstack/services/sns/__init__.py",
+    "localstack/utils/aws/aws_stack.py",
+    "localstack/services/infra.py",
+    "tests/unit/test_sns.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/sns/sns_listener.py\",\n        \"localstack/services/sns/__init__.py\",\n        \"localstack/utils/aws/aws_stack.py\",\n        \"localstack/services/infra.py\",\n        \"tests/unit/test_sns.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/sns/sns_listener.py: This is the main handler for SNS logic. Topic creation requests are parsed and processed here, so the restrictive topic name validation (which must allow the '.fifo' suffix for FIFO topics) almost certainly resides or is referenced here.\\n2. localstack/services/sns/__init__.py: The module initializer may register endpoints, listeners, or provide general service setup including validation utility imports.\\n3. localstack/utils/aws/aws_stack.py: This is a common place for AWS name/ARN construction and utility validation. Topic name validation or helpers may be referenced from here, and so might require updates to permit the '.fifo' suffix.\\n4. localstack/services/infra.py: If topic creation is routed through generic infrastructure APIs, infra.py may include cross-cutting resource validation or error raising for service requests.\\n5. tests/unit/test_sns.py: To ensure the fix, the tests for SNS should include the FIFO topic case, verifying that '.fifo' suffixes are accepted and behave as AWS expects.\\n\\nIf after closer reading, you find the validation logic specifically in one file (e.g., in sns_listener.py), then modifying only that file and the test would suffice. The other modules are included here due to their proximity to where the validation bug could be cross-referenced, routed, or tested.\"\n}",
+  "error": null
+}

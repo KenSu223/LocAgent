@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/3722",
+  "repo_name": "scikit-learn",
+  "title": "preprocessing.scale provides consistent results on arrays with zero variance",
+  "base_commit": "3f49cee020a91a0be5d0d5602d29b3eefce9d758",
+  "ground_truth_files": [
+    "doc/whats_new.rst",
+    "sklearn/preprocessing/_weights.py",
+    "sklearn/preprocessing/data.py",
+    "sklearn/preprocessing/tests/test_data.py"
+  ],
+  "predicted_files": [
+    "sklearn/preprocessing/data.py",
+    "sklearn/preprocessing/_data.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/preprocessing/data.py\",\n        \"sklearn/preprocessing/__init__.py\",\n        \"sklearn/preprocessing/tests/test_data.py\",\n        \"sklearn/linear_model/tests/test_logistic.py\",\n        \"sklearn/linear_model/tests/test_sgd.py\"\n    ],\n    \"reasoning\": \"1. sklearn/preprocessing/data.py: This is the main file that implements the scale function and related scaling logic. The bug described relates directly to how arrays with zero or near-zero variance are handled in preprocessing.scale(). The fix must ensure that very small (near machine zero) standard deviations are correctly treated as zero, to provide consistent scaling output. 2. sklearn/preprocessing/__init__.py: This file exposes the scale function to the public API, so any changes to its interface or documentation should be reflected here. 3. sklearn/preprocessing/tests/test_data.py: To verify that the fix works for zero-variance and near-zero-variance arrays, existing or new tests should be updated or added in this test module. 4. sklearn/linear_model/tests/test_logistic.py and 5. sklearn/linear_model/tests/test_sgd.py: These test modules invoke scale and might contain tests that observe or depend on its behavior for corner cases. After fixing the scaling behavior, their tests should be checked and updated if necessary to reflect the new, correct logic, and ensure that the overall workflow remains consistent and robust.\"\n}",
+  "error": null
+}

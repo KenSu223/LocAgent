@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/37748",
+  "repo_name": "pandas",
+  "title": "BUG: ValueError is mistakenly raised if a numpy array is assigned to a pd.Series of dtype=object and both have the same length",
+  "base_commit": "03e58585036c83ca3d4c86d7d3d7ede955c15130",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v1.2.0.rst",
+    "pandas/core/indexers.py",
+    "pandas/tests/indexing/test_indexers.py",
+    "pandas/tests/indexing/test_loc.py"
+  ],
+  "predicted_files": [
+    "pandas/core/internals/managers.py",
+    "pandas/core/series.py",
+    "pandas/core/indexing.py",
+    "pandas/tests/series/test_series.py",
+    "pandas/core/internals/blocks.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/internals/blocks.py', 'pandas/core/internals/managers.py', 'pandas/core/indexing.py', 'pandas/core/series.py', 'pandas/tests/series/test_series.py'], 'reasoning': '1. pandas/core/internals/blocks.py: This file contains the actual logic for assigning values to object-typed blocks and where the dtype mismatch/casting and ValueError arise, as shown at line 887 in the traceback. The fix will likely involve guarding against incorrect dtype coercion when assigning numpy arrays to elements of object dtype blocks.\\n2. pandas/core/internals/managers.py: This manages how assignment is coordinated between blocks and ensures assignment flows correctly to the right block when a Series element is assigned. The bug may require better checks here for object dtype assignments.\\n3. pandas/core/indexing.py: All .loc/.iloc assignment logic for Series/DataFrame starts here. It will need adjustment to direct object dtype assignments along a safe path for numpy arrays, avoiding unwanted element-wise expansion.\\n4. pandas/core/series.py: The Series interface needs to ensure assignments of numpy arrays to a Series of dtype object are interpreted as single objects rather than elements that should be expanded or coerced wrongly.\\n5. pandas/tests/series/test_series.py: This location should be updated or new tests added to verify that the bug is fixed and numpy arrays can be assigned correctly to Series elements of dtype=object without errors or unexpected expansion.'}",
+  "error": null
+}

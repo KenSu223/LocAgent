@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/7435",
+  "repo_name": "scikit-learn",
+  "title": "[RFC?] Make cross_val_score output a dict/named tuple.",
+  "base_commit": "e8a15d544490b3fe80ef77dd995d12de84194d00",
+  "ground_truth_files": [
+    "doc/modules/classes.rst",
+    "doc/modules/cross_validation.rst",
+    "doc/modules/grid_search.rst",
+    "doc/modules/model_evaluation.rst",
+    "doc/whats_new.rst",
+    "sklearn/metrics/scorer.py",
+    "sklearn/metrics/tests/test_score_objects.py",
+    "sklearn/model_selection/__init__.py",
+    "sklearn/model_selection/_search.py",
+    "sklearn/model_selection/_validation.py",
+    "sklearn/model_selection/tests/test_search.py",
+    "sklearn/model_selection/tests/test_validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/model_selection/_validation.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/model_selection/_validation.py', 'sklearn/model_selection/_search.py', 'sklearn/model_selection/__init__.py', 'sklearn/model_selection/tests/test_validation.py', 'sklearn/linear_model/tests/test_logistic.py'], 'reasoning': '1. sklearn/model_selection/_validation.py: This is the main implementation file for both cross_val_score and _fit_and_score, where the output structure and generation logic will be updated.\\n2. sklearn/model_selection/_search.py: Major dependency of _fit_and_score for Grid/RandomizedSearchCV, may require output logic updates.\\n3. sklearn/model_selection/__init__.py: Exports cross_val_score as part of the public API; may need updates for docstrings or explicit export changes.\\n4. sklearn/model_selection/tests/test_validation.py: Principal unit tests for validation and fit-and-score functions\u2014output type changes require test assertion and usage updates.\\n5. sklearn/linear_model/tests/test_logistic.py: Example of a test file outside model_selection that invokes cross_val_score and may rely on its output structure, representative of other similar tests.'}",
+  "error": null
+}

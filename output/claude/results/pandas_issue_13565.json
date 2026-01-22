@@ -1,0 +1,29 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/13565",
+  "repo_name": "pandas",
+  "title": "Call unique() on a timezone aware datetime series returns non timezone aware result",
+  "base_commit": "be61825986ba565bc038beb2f5df2750fc1aca30",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v0.19.0.txt",
+    "pandas/core/base.py",
+    "pandas/core/series.py",
+    "pandas/indexes/base.py",
+    "pandas/indexes/category.py",
+    "pandas/tests/indexes/test_category.py",
+    "pandas/tests/indexes/test_multi.py",
+    "pandas/tests/test_base.py",
+    "pandas/tests/test_categorical.py",
+    "pandas/tseries/base.py",
+    "pandas/util/testing.py"
+  ],
+  "predicted_files": [
+    "pandas/core/series.py",
+    "pandas/core/algorithms.py",
+    "pandas/core/base.py",
+    "pandas/core/categorical.py",
+    "pandas/core/common.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/series.py\",\n        \"pandas/core/algorithms.py\",\n        \"pandas/core/base.py\",\n        \"pandas/core/categorical.py\",\n        \"pandas/core/common.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/series.py: This file contains the Series class, whose unique() method is invoked by users. The fix likely needs to start here by ensuring timezone information is preserved when returning unique values from a Series with a datetime64[ns, tz] dtype.\\n\\n2. pandas/core/algorithms.py: This file implements the unique() algorithms for various dtypes. Handling of datetime64[ns, tz] may be missing or incorrect here, resulting in the loss of timezone information. A patch is likely needed to correctly propagate tz information.\\n\\n3. pandas/core/base.py: The IndexOpsMixin and related base classes provide generic implementations of unique() and delegate to algorithms.py. It is important to verify (and if required, update) the delegation and preservation of tz-aware metadata in these mixins.\\n\\n4. pandas/core/categorical.py: Categorical and extension array logic for unique() may also need updating if those types interact with timezone-aware data. Ensuring proper handling here helps avoid inconsistent results for categoricals containing timezone-aware datetimes.\\n\\n5. pandas/core/common.py: If any utility functions are used during unique() calculations and they strip metadata (such as timezone) from datetime64[ns, tz] values, they must also be updated. \\n\\nThese files are listed in decreasing order of importance: the first three are the main call chain for Series.unique() on datetimetz data, while the last two are backends/utilities that may be involved in propagation and must be checked for correct handling if the dtype appears there.\"\n}",
+  "error": null
+}

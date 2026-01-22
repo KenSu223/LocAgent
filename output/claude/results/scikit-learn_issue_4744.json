@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/4744",
+  "repo_name": "scikit-learn",
+  "title": "Bug with using TreeClassifier with OOB score and sparse matrices",
+  "base_commit": "abb31d0a7ca769a1e6406553a58a7fb0bd3b259a",
+  "ground_truth_files": [
+    "doc/whats_new.rst",
+    "sklearn/ensemble/forest.py",
+    "sklearn/ensemble/tests/test_forest.py"
+  ],
+  "predicted_files": [
+    "sklearn/ensemble/_forest.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/ensemble/forest.py', 'sklearn/tree/tree.py', 'sklearn/utils/validation.py', 'sklearn/ensemble/tests/test_forest.py'], 'reasoning': '1. sklearn/ensemble/forest.py: This is the primary location of the bug due to csc matrix conversion and usage of check_input=False. Update usage to ensure matrix formats compatible with downstream calls, and set check_input=True when needed, especially in OOB scoring.\\n2. sklearn/tree/tree.py: Defines predict_proba and input validation; may need updates to better handle matrix format exceptions or convert inputs.\\n3. sklearn/utils/validation.py: check_array utility determines matrix type during validation; may need standardization for sparse format handling.\\n4. sklearn/ensemble/tests/test_forest.py: Test file for ExtraTreesClassifier and OOB score; needs additional/updated test for sparse matrices and OOB scoring to ensure bug is fixed.'}",
+  "error": null
+}

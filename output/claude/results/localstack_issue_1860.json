@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1860",
+  "repo_name": "localstack",
+  "title": "Route53 Add HostedZone or Add recordSet failing when done via terraform ",
+  "base_commit": "83ff0cb0a0366db3c8067eef40b7869f15e7d05e",
+  "ground_truth_files": [
+    "localstack/plugins.py",
+    "localstack/services/infra.py",
+    "tests/integration/test_route53.py"
+  ],
+  "predicted_files": [
+    "localstack/plugins.py",
+    "localstack/utils/aws/aws_stack.py",
+    "localstack/services/infra.py",
+    "tests/integration/test_route53.py",
+    "localstack/services/generic_proxy.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/infra.py', 'localstack/services/generic_proxy.py', 'localstack/plugins.py', 'tests/integration/test_route53.py', 'localstack/utils/aws/aws_stack.py'], 'reasoning': '1. localstack/services/infra.py: Primary location to patch or inject missing Route53 APIs or handlers. 2. localstack/services/generic_proxy.py: May need updates if endpoint proxying or custom handling for GetChange is needed. 3. localstack/plugins.py: Registers Route53; updates may be necessary if plugin logic changes. 4. tests/integration/test_route53.py: Should be updated to validate the fix and cover GetChange workflows. 5. localstack/utils/aws/aws_stack.py: Update here if aws_stack.connect_to_service logic requires specialized connection/workaround for Route53 endpoints.'}",
+  "error": null
+}

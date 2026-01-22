@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/12779",
+  "repo_name": "scikit-learn",
+  "title": "Remove \"from __future__ import XXX\"",
+  "base_commit": "62d205980446a1abc1065f4332fd74eee57fcf73",
+  "ground_truth_files": [
+    "sklearn/utils/_random.pyx"
+  ],
+  "predicted_files": [
+    "sklearn/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/externals/_pilutil.py', 'sklearn/externals/joblib/_dask.py', 'sklearn/externals/joblib/parallel.py', 'sklearn/externals/joblib/memory.py', 'sklearn/externals/joblib/logger.py'], 'reasoning': \"These files were found to contain 'from __future__ import XXX' statements. They are prioritized as follows: 1. _pilutil.py: Used for image utilities (fundamental for many ML pipelines involving images). 2. joblib/_dask.py: Handles parallel computations (core for efficient model training/evaluation). 3. joblib/parallel.py: Key for parallelism (widely used throughout scikit-learn for performance). 4. joblib/memory.py: Manages memory caching (central in high-performance settings/de-duplication). 5. joblib/logger.py: Contributes to logging in parallel jobs (critical for diagnostics and debugging). Removing legacy __future__ imports modernizes these commonly used modules and prevents unnecessary compatibility code. Lower-level or external vendor files (e.g., cloudpickle, loky) may be less critical but could be addressed later.\"}",
+  "error": null
+}

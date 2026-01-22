@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/2329",
+  "repo_name": "localstack",
+  "title": "s3.upload returns `Location: http://localhost:4566`",
+  "base_commit": "8433682f8ad29dc23a5e909cb229d0cb033beeaa",
+  "ground_truth_files": [
+    "localstack/services/edge.py",
+    "tests/integration/test_lambda.py",
+    "tests/unit/test_sns.py"
+  ],
+  "predicted_files": [
+    "localstack/services/edge.py",
+    "localstack/services/s3/s3_listener.py",
+    "localstack/config.py",
+    "tests/integration/test_s3.py",
+    "localstack/constants.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/s3/s3_listener.py', 'localstack/config.py', 'localstack/constants.py', 'localstack/services/edge.py', 'tests/integration/test_s3.py'], 'reasoning': '1. localstack/services/s3/s3_listener.py constructs the Location output for S3 uploads, and its logic generates the response using host/port from config, so it is the most direct place to fix Location generation. 2. localstack/config.py sets HOSTNAME/HOSTNAME_EXTERNAL and (likely dynamically) PORT_S3; if PORT_S3 is incorrectly set or missing, the S3 listener cannot build the correct Location string. 3. localstack/constants.py may need updates if default service port mappings for S3 are missing or incorrect. 4. localstack/services/edge.py handles proxy/port routing and may override port assignment; it should be verified for influence on Location. 5. tests/integration/test_s3.py validates expected Location outputs and should be updated to reflect or test the correct URL.'}",
+  "error": null
+}

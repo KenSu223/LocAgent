@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2731",
+  "repo_name": "flask",
+  "title": "Flask 1.0 backwards-incompat with double-slash/no-slash re. #2629",
+  "base_commit": "f808c20139649b747f604492bc33b61a7dd3e13a",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "flask/blueprints.py",
+    "tests/test_blueprints.py"
+  ],
+  "predicted_files": [
+    "flask/app.py",
+    "flask/blueprints.py"
+  ],
+  "success": true,
+  "raw_output": null,
+  "error": null
+}

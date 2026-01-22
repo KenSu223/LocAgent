@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2264",
+  "repo_name": "flask",
+  "title": "Handle app factory in FLASK_APP",
+  "base_commit": "cb94f4c5d3d4e1797207fd03d20d06c7bc0d05b4",
+  "ground_truth_files": [
+    "flask/cli.py",
+    "tests/test_cli.py"
+  ],
+  "predicted_files": [
+    "flask/cli.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/cli.py', 'flask/app.py', 'flask/helpers.py'], 'reasoning': '1. flask/cli.py is the principal file handling FLASK_APP parsing, importing, and factory invocation: modifications are needed here to support regex and literal_eval for safely passing factory arguments (lines 32-160). 2. flask/app.py may optionally need changes if factory support or application instantiation helpers must be updated for full compatibility with new argument parsing logic. 3. flask/helpers.py could require extensions for utilities assisting with regex matching or safe argument evaluation (literal_eval), should the logic be abstracted from cli.py. No evidence suggests changes are needed beyond these files, and most work is in cli.py.'}",
+  "error": null
+}

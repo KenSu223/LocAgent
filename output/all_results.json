@@ -1,0 +1,50 @@
+{
+  "codeagent": {
+    "folder": "/home/ubuntu/locagent/output/codeagent",
+    "total_samples": 35,
+    "successful_runs": 35,
+    "failed_runs": 0,
+    "metrics": {
+      "acc@1": 0.1429,
+      "acc@5": 0.2,
+      "recall@1": 0.2863,
+      "recall@5": 0.3986
+    },
+    "raw_counts": {
+      "acc@1_correct": 5,
+      "acc@5_correct": 7
+    }
+  },
+  "codeagent_top5": {
+    "folder": "/home/ubuntu/locagent/output/codeagent_top5",
+    "total_samples": 231,
+    "successful_runs": 231,
+    "failed_runs": 0,
+    "metrics": {
+      "acc@1": 0.0606,
+      "acc@5": 0.1991,
+      "recall@1": 0.1343,
+      "recall@5": 0.3959
+    },
+    "raw_counts": {
+      "acc@1_correct": 14,
+      "acc@5_correct": 46
+    }
+  },
+  "kg_codeagent_top5": {
+    "folder": "/home/ubuntu/locagent/output/kg_codeagent_top5",
+    "total_samples": 216,
+    "successful_runs": 216,
+    "failed_runs": 14,
+    "metrics": {
+      "acc@1": 0.0787,
+      "acc@5": 0.1667,
+      "recall@1": 0.1592,
+      "recall@5": 0.3476
+    },
+    "raw_counts": {
+      "acc@1_correct": 17,
+      "acc@5_correct": 36
+    }
+  }
+}

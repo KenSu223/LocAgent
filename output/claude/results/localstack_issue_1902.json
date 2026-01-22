@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/1902",
+  "repo_name": "localstack",
+  "title": "changeMessageVisibility function doesn't work",
+  "base_commit": "2641d910cc5f1a04f70dd60a7ebfc25cd716bcd6",
+  "ground_truth_files": [
+    "localstack/services/sqs/sqs_listener.py",
+    "localstack/utils/aws/aws_stack.py",
+    "tests/integration/test_sqs.py"
+  ],
+  "predicted_files": [
+    "localstack/services/sqs/sqs_listener.py",
+    "localstack/services/sqs/__init__.py",
+    "tests/integration/test_sqs.py",
+    "localstack/services/sqs/sqs_starter.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/sqs/sqs_listener.py\",\n        \"localstack/services/sqs/__init__.py\",\n        \"tests/integration/test_sqs.py\",\n        \"localstack/services/sqs/sqs_starter.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/sqs/sqs_listener.py: This is the most likely location where SQS queue logic, including message visibility changes (e.g., via 'VisibilityTimeout'), is handled. Even though direct searches did not return precise results, the presence of SQS attributes and the overall structure strongly indicate that implementation or correction of ChangeMessageVisibility API logic must go here. 2. localstack/services/sqs/__init__.py: May contain initialization or helper logic for SQS handlers and should be checked for routing or function exposure related to message visibility. 3. tests/integration/test_sqs.py: To add or update tests that reflect correct ChangeMessageVisibility behavior and validate the fix. 4. localstack/services/sqs/sqs_starter.py: In case SQS startup logic or routing requires updates for properly exposing functionality or for integration with listeners. These files are listed by likely degree of impact on the ChangeMessageVisibility API behavior and its verification.\"\n}",
+  "error": null
+}

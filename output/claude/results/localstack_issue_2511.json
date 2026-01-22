@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/2511",
+  "repo_name": "localstack",
+  "title": "Cannot connect to DynamoDB from lambda",
+  "base_commit": "3794f1e20a56f3b7bcd23f82a006e266f2a57a05",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "localstack/services/dynamodb/dynamodb_listener.py",
+    "localstack/services/awslambda/lambda_api.py",
+    "localstack/config.py",
+    "localstack/utils/aws/aws_stack.py",
+    "tests/integration/lambdas/lambda_put_item.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/utils/aws/aws_stack.py', 'localstack/config.py', 'localstack/services/awslambda/lambda_api.py', 'localstack/services/dynamodb/dynamodb_listener.py', 'tests/integration/lambdas/lambda_put_item.py'], 'reasoning': \"1. localstack/utils/aws/aws_stack.py: Contains the core logic for resolving endpoint URLs and connecting to AWS services, including DynamoDB from Lambda; critical for bug resolution.\\n2. localstack/config.py: Handles environment variables important for endpoint construction and container network visibility; changing endpoint resolution or related config here can resolve communication issues.\\n3. localstack/services/awslambda/lambda_api.py: Implements Lambda logic and fallback handling for DynamoDB connections; should be modified to ensure proper endpoint propagation and error management.\\n4. localstack/services/dynamodb/dynamodb_listener.py: Manages DynamoDB's request/response logic and may need updates for correct endpoint routing.\\n5. tests/integration/lambdas/lambda_put_item.py: The test code for inserting to DynamoDB from Lambda, useful for validating and demonstrating the fix, as well as for updating test-correctness/examples.\"}",
+  "error": null
+}

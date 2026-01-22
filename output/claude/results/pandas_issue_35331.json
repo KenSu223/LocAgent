@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/35331",
+  "repo_name": "pandas",
+  "title": "BUG: np.argwhere on pandas series",
+  "base_commit": "f231c9a74a544ec94cd12e813cb2543fb5a18556",
+  "ground_truth_files": [
+    "pandas/tests/series/test_npfuncs.py"
+  ],
+  "predicted_files": [
+    "pandas/core/series.py",
+    "pandas/core/indexes/base.py",
+    "pandas/core/internals/managers.py",
+    "pandas/core/frame.py",
+    "pandas/core/arrays/sparse/array.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/series.py', 'pandas/core/indexes/base.py', 'pandas/core/internals/managers.py', 'pandas/core/frame.py', 'pandas/core/arrays/sparse/array.py'], 'reasoning': '1. pandas/core/series.py: Series is the central object affected and where compatibility, method hooks, and the problematic usage of nonzero appear (see line 1197 usage). 2. pandas/core/indexes/base.py: Implements __nonzero__ protocol logic and array-like hooks used by Series (and DataFrame), affecting how numpy interacts with pandas objects; deprecation warnings or method errors may propagate from here. 3. pandas/core/internals/managers.py: Contains __nonzero__ and __bool__ logic for internal structures of Series and DataFrame, often called when array-like protocols are triggered. 4. pandas/core/frame.py: The DataFrame analog to Series, potentially showing similar shape/value logic issues, and may contain array-like protocol handling that provides a fix model or needs parallel updates. 5. pandas/core/arrays/sparse/array.py: Contains explicit nonzero handling for Series with sparse dtype, so updating or reviewing its nonzero protocol may be needed in cases where Series objects use sparse arrays.'}",
+  "error": null
+}

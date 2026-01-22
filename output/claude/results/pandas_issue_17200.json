@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/17200",
+  "repo_name": "pandas",
+  "title": "read_json(lines=True) broken for s3 urls in Python 3 (v0.20.3)",
+  "base_commit": "674fb96b33c07c680844f674fcdf0767b6e3c2f9",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v0.21.1.txt",
+    "pandas/io/json/json.py",
+    "pandas/tests/io/json/test_pandas.py",
+    "pandas/tests/io/parser/test_network.py"
+  ],
+  "predicted_files": [
+    "pandas/io/json/json.py",
+    "pandas/io/common.py",
+    "pandas/io/json/_json.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/io/json/json.py\",\n        \"pandas/io/common.py\",\n        \"pandas/io/json/_json.py\"\n    ],\n    \"reasoning\": \"1. pandas/io/json/json.py must be modified because the bug occurs when a bytes file-like object from S3 is passed to StringIO in read_json (lines=True mode)\u2014the code must explicitly decode bytes to str before passing to StringIO, or use BytesIO and decode as needed. This is the primary location for the required fix and error handling.\\n\\n2. pandas/io/common.py is the main IO utility module responsible for file opening and buffer management; modifying or improving its logic for transparently decoding file-like objects from S3/binary sources to text would allow other locations in pandas to handle binary/text streams more reliably. This could include helper functions to wrap S3 files in text wrappers, depending on encoding.\\n\\n3. pandas/io/json/_json.py: As the entry point for read_json and delegator to json.py, changes here may be necessary to adapt IO or buffer handling to correctly interpret s3fs-returned bytes objects and ensure robustness across storage backends. While direct S3 or buffer logic does not seem to exist here, changes to argument passing or class construction might be required after fixing json.py.\\n\\nFurther files are not needed unless deeper refactoring is planned, as all evidence suggests the bug can be resolved at the above points.\"\n}",
+  "error": null
+}

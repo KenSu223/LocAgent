@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/10043",
+  "repo_name": "pandas",
+  "title": "iloc breaks on read-only dataframe",
+  "base_commit": "2e087c7841aec84030fb489cec9bfeb38fe8086f",
+  "ground_truth_files": [
+    "pandas/src/generate_code.py",
+    "pandas/tests/test_common.py"
+  ],
+  "predicted_files": [
+    "pandas/core/indexing.py",
+    "pandas/core/internals.py",
+    "pandas/core/frame.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/indexing.py\",\n        \"pandas/core/internals.py\",\n        \"pandas/core/frame.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/indexing.py is the most important, as the iloc mechanism is implemented here via _iLocIndexer and related base/indexing classes. This is where slicing logic triggers the ValueError on a read-only underlying buffer. Modifications here are needed to ensure that iloc row selection does not perform in-place writes or that it defensively copies underlying data as needed. 2. pandas/core/internals.py is responsible for managing the underlying arrays/blocks of the DataFrame. The selection and construction of result DataFrames after iloc selection must ensure compatibility with backing read-only arrays. Fixes here may be required to prevent write attempts, or to ensure safe copying. 3. pandas/core/frame.py is the DataFrame implementation and the glue for slicing/indexing; it might require minor adaptations to accept/handle changes in indexing and underlying buffer handling. Other files in the core or internals modules could conceivably be involved, but these three files encompass all locations where iloc selection is managed, and interaction with the NumPy buffer occurs. The problem is not with the public API routing, but with lower-level handling and safe treatment of read-only arrays.\"\n}",
+  "error": null
+}

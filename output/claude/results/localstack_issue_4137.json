@@ -1,0 +1,31 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/4137",
+  "repo_name": "localstack",
+  "title": "Consider Kinesis-Mock over Kinesalite",
+  "base_commit": "3cc0541a260c2f2af90e435f333c623e84ed4880",
+  "ground_truth_files": [
+    "README.md",
+    "localstack/config.py",
+    "localstack/services/kinesis/kinesis_listener.py",
+    "localstack/services/kinesis/kinesis_starter.py",
+    "tests/integration/test_cloudformation.py",
+    "tests/integration/test_dynamodb.py",
+    "tests/integration/test_kinesis.py",
+    "tests/unit/test_kinesis.py"
+  ],
+  "predicted_files": [
+    "kinesis_starter.py",
+    "localstack/utils/kinesis/kinesis_connector.py",
+    "localstack/services/install.py",
+    "localstack/services/kinesis/kinesis_listener.py",
+    "kinesis_connector.py",
+    "config.py",
+    "localstack/services/kinesis/kinesis_starter.py",
+    "kinesis_listener.py",
+    "localstack/config.py",
+    "install.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/kinesis/kinesis_starter.py', 'localstack/services/install.py', 'localstack/services/kinesis/kinesis_listener.py', 'localstack/config.py', 'localstack/utils/kinesis/kinesis_connector.py'], 'reasoning': \"1. kinesis_starter.py: Handles Kinesalite process startup, installation, and validation logic. Swapping to Kinesis-Mock requires core changes here. 2. install.py: Contains specific installation routines and CLI paths for Kinesalite; needs updating to support Kinesis-Mock across the codebase. 3. kinesis_listener.py: Emulates Kinesalite's API and responses, which will differ for Kinesis-Mock, thereby necessitating significant logic changes. 4. config.py: Contains configuration relevant to the mock's behavior, including resource limits and delays; should be updated to reflect Kinesis-Mock options. 5. kinesis_connector.py: Includes interoperability and edge case handling that was written with Kinesalite in mind; may require updates for compatibility with Kinesis-Mock.\"}",
+  "error": null
+}

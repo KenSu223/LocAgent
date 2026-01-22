@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/2475",
+  "repo_name": "scikit-learn",
+  "title": "Multinomial Naive Bayes: Scikit and Weka have different results",
+  "base_commit": "f7026b04f5e5909aa15848b25de2becd675871a9",
+  "ground_truth_files": [
+    "sklearn/cross_validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/naive_bayes.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/naive_bayes.py', 'sklearn/metrics/_ranking.py', 'sklearn/naive_bayes.py', 'sklearn/metrics/tests/test_metrics.py', 'sklearn/tests/test_naive_bayes.py'], 'reasoning': \"1. sklearn/naive_bayes.py: Primary implementation of MultinomialNB, likely where probability outputs are computed affecting AUC values (central to the issue).\\n2. sklearn/metrics/_ranking.py: Implements roc_auc_score which evaluates AUC; any needed harmonization or bugfixes reside here.\\n3. sklearn/naive_bayes.py (_BaseDiscreteNB): Base class may require changes if probability calculation/reporting is at issue.\\n4. sklearn/metrics/tests/test_metrics.py: Must be modified to test/fix AUC calculation scenarios and verify correctness after bugfix.\\n5. sklearn/tests/test_naive_bayes.py: Update and add tests to check MultinomialNB's output compatibility with metrics, especially AUC.\"}",
+  "error": null
+}

@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/12306",
+  "repo_name": "scikit-learn",
+  "title": "SimpleImputer to Crash on Constant Imputation with string value when dataset is encoded Numerically",
+  "base_commit": "45019594938f92f3344c80bb0d351793dd91334b",
+  "ground_truth_files": [
+    "sklearn/impute/_base.py"
+  ],
+  "predicted_files": [
+    "sklearn/impute/_base.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/impute/_base.py', 'doc/common_pitfalls.rst'], 'reasoning': '1. sklearn/impute/_base.py: This file contains the SimpleImputer class docstring and parameter documentation. The main documentation seen by users is generated from these docstrings, so updating them is essential. Add explicit notes that using string fill_value on numeric data will crash and how to avoid this (e.g., cast or check types). 2. doc/common_pitfalls.rst: Users commonly check this document for typical mistakes. Adding the observed pitfall (imputing with string on numeric columns) will help users avoid this issue and debug quickly. No other files need changes, as the error is rooted in imputer/documentation usage, not implementation or pipeline mechanics.'}",
+  "error": null
+}

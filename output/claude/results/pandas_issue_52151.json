@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/52151",
+  "repo_name": "pandas",
+  "title": "BUG: Inconsistent behavior with `groupby/min` and `observed=False` on categoricals between 2.0 and 2.1",
+  "base_commit": "32f789fbc5d5a72d9d1ac14935635289eeac9009",
+  "ground_truth_files": [
+    "pandas/core/groupby/ops.py",
+    "pandas/tests/groupby/test_min_max.py"
+  ],
+  "predicted_files": [
+    "pandas/core/algorithms.py",
+    "pandas/_typing.py",
+    "pandas/core/groupby/groupby.py",
+    "pandas/core/groupby/categorical.py",
+    "categorical.py",
+    "pandas/core/arrays/categorical.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/groupby/groupby.py', 'pandas/core/groupby/categorical.py', 'pandas/core/arrays/categorical.py', 'pandas/core/algorithms.py', 'pandas/_typing.py'], 'reasoning': '1. pandas/core/groupby/groupby.py: This file is the central implementation of groupby logic, controlling behavior for groupby/aggregation (such as min) and how the observed flag is handled.\\n2. pandas/core/groupby/categorical.py: Manages groupby operations specifically for categorical data, including recoding and how missing categories (from observed=False) are treated in aggregation outputs.\\n3. pandas/core/arrays/categorical.py: Handles categorical dtype logic and interaction with grouping, including filling, recoding, and outputting missing categories.\\n4. pandas/core/algorithms.py: Imported by categorical.py; may be involved in category recoding, filling, and reduction operations used during groupby/aggregation of categoricals.\\n5. pandas/_typing.py: Contains the definition and passing of the observed argument for groupby, possibly affecting how the flag is propagated to relevant methods.\\nThis list focuses on the files where the incorrect handling of observed=False and aggregation on categoricals is likely originated and needs correction, based on PR references, dependency relations, and the core groupby/categorical structure.'}",
+  "error": null
+}

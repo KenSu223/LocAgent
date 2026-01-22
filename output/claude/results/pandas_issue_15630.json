@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/15630",
+  "repo_name": "pandas",
+  "title": "Pandas (0.18) Rank: unexpected behavior for method = 'dense' and pct = True",
+  "base_commit": "b6691127523f965003dbf877a358c81af5012989",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v0.23.0.txt",
+    "pandas/_libs/algos_rank_helper.pxi.in",
+    "pandas/tests/frame/test_rank.py",
+    "pandas/tests/series/test_rank.py"
+  ],
+  "predicted_files": [
+    "pandas/core/algorithms.py",
+    "pandas/core/generic.py",
+    "pandas/core/series.py",
+    "pandas/core/frame.py",
+    "pandas/tests/test_algos.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/algorithms.py\",\n        \"pandas/core/generic.py\",\n        \"pandas/core/series.py\",\n        \"pandas/core/frame.py\",\n        \"pandas/tests/test_algos.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/algorithms.py: The root cause for the bug is in the calculation logic for 'dense' method with pct=True, which should use the number of distinct ranks as the denominator. This file is the core location for rank algorithms and must be updated to apply the correct denominator based on the ranking method and pct flag.\\n2. pandas/core/generic.py: NDFrame.rank is the user-facing API where rank is dispatched. Its arguments, handling, and possibly 'pct' post-processing may need to adapt to changes in the algorithm and to ensure the API documentation's requirements are met.\\n3. pandas/core/series.py: pd.Series.rank method likely calls the generic implementation but may handle or dispatch keyword arguments and defaults, which may need amending to adopt new logic or docs.\\n4. pandas/core/frame.py: For completeness, since pd.DataFrame.rank wraps the NDFrame/generic logic, similar updates may be needed for DataFrames (to maintain API consistency), and potential future bugs are prevented if logic is shared.\\n5. pandas/tests/test_algos.py: This file already includes tests for rank (and pct). It should be updated (and expanded) to add/validate tests for the revised behavior, including invariance to n_rep and correct percentage calculations for method='dense'.\"\n}",
+  "error": null
+}

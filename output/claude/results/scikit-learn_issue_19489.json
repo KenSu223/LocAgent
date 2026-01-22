@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/19489",
+  "repo_name": "scikit-learn",
+  "title": "'feature_name' referenced before assignment",
+  "base_commit": "6f7ae911f18fda59669309582706f1aa1f36374d",
+  "ground_truth_files": [
+    "doc/whats_new/v1.0.rst",
+    "sklearn/feature_extraction/_dict_vectorizer.py",
+    "sklearn/feature_extraction/tests/test_dict_vectorizer.py"
+  ],
+  "predicted_files": [
+    "sklearn/compose/_column_transformer.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/feature_extraction/_dict_vectorizer.py', 'sklearn/feature_extraction/__init__.py', 'sklearn/feature_extraction/text.py', 'sklearn/feature_extraction/tests/', 'sklearn/feature_extraction/_hash.py'], 'reasoning': '1. sklearn/feature_extraction/_dict_vectorizer.py: This is where the bug actually manifests\u2014feature_name can be referenced before assignment in _transform, so logic must be corrected here.2. sklearn/feature_extraction/__init__.py: Exposes DictVectorizer and any interface changes should be reflected here to ensure correct behavior.3. sklearn/feature_extraction/text.py: As a highly related module using feature extraction components, possible shared feature logic or function calls may need synchronization.4. sklearn/feature_extraction/tests/: Tests should be modified or added to cover the fixed code path to prevent regression\u2014even if none exist, new tests should be created.5. sklearn/feature_extraction/_hash.py: This utility may interact with dict features or vectorization logic and should be reviewed for any parallel logical flaws or dependency changes.'}",
+  "error": null
+}

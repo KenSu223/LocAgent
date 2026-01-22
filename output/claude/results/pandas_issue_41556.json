@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/41556",
+  "repo_name": "pandas",
+  "title": "BUG: groupby.shift return keys filled with `fill_value` when `fill_value` is specified",
+  "base_commit": "8924277fa3dbe775f46e679ab8bd97b293e465ea",
+  "ground_truth_files": [
+    "asv_bench/benchmarks/groupby.py",
+    "doc/source/whatsnew/v1.4.0.rst",
+    "pandas/core/groupby/groupby.py",
+    "pandas/tests/groupby/test_groupby_shift_diff.py"
+  ],
+  "predicted_files": [
+    "pandas/core/groupby/groupby.py",
+    "pandas/core/generic.py",
+    "pandas/core/frame.py",
+    "pandas/tests/frame/test_shift.py",
+    "pandas/core/array_algos/transforms.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/groupby/groupby.py\",\n        \"pandas/core/generic.py\",\n        \"pandas/core/frame.py\",\n        \"pandas/tests/frame/test_shift.py\",\n        \"pandas/core/array_algos/transforms.py\"\n    ],\n    \"reasoning\": \"1. pandas/core/groupby/groupby.py: This is the central file for groupby operations. Although direct 'shift' strings didn't match, KG and standard pandas structure indicate that any special handling of groupby keys and fill_value in shift output must be implemented or corrected here (e.g., filtering excluded columns after shifting and before returning the result).\\n\\n2. pandas/core/generic.py: The NDFrame base class contains logic for methods like _reindex_with_indexers, which is directly invoked by GroupBy.shift and is likely responsible for DataFrame construction and possibly the column structure with fill_value specified. A fix may require ensuring that keys are not accidentally included when reconstructing the shifted DataFrame.\\n\\n3. pandas/core/frame.py: DataFrame exposes shift and may play a role in dispatching the shift functionality for groupby results, potentially requiring changes to how outputs are constructed or documented, especially for groupby operations that utilize fill_value.\\n\\n4. pandas/tests/frame/test_shift.py: Since tests for groupby.shift do not exist in pandas/tests/groupby, this is the logical location to add or update regression tests for the expected output shape and behavior, confirming that keys are not returned when fill_value is specified.\\n\\n5. pandas/core/array_algos/transforms.py: This file implements general algorithms, including shift, and could be involved in low-level handling of fill_value and might need a modification if, in some code path, it erroneously shifts/groupby keys as part of the result.\\n\\nThis order reflects the most direct source of the bug (groupby.py), core logic that determines column output (_reindex_with_indexers in generic.py), DataFrame behavior (frame.py), e",
+  "error": null
+}

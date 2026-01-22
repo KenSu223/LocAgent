@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/35650",
+  "repo_name": "pandas",
+  "title": "BUG: pd.factorize with read-only datetime64 numpy array raises ValueError",
+  "base_commit": "13940c7f3c0371d6799bbd88b9c6546392b418a1",
+  "ground_truth_files": [
+    "pandas/tests/test_algos.py"
+  ],
+  "predicted_files": [
+    "pandas/_libs/tslibs/conversion.pyx",
+    "pandas/core/algorithms.py",
+    "pandas/core/arrays/datetimelike.py",
+    "pandas/_libs/tslibs/np_datetime.pyx"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/_libs/tslibs/conversion.pyx\",\n        \"pandas/core/algorithms.py\",\n        \"pandas/core/arrays/datetimelike.py\",\n        \"pandas/_libs/tslibs/np_datetime.pyx\"\n    ],\n    \"reasoning\": \"1. pandas/_libs/tslibs/conversion.pyx: The traceback directly references this file as the point of failure (ensure_datetime64ns) when attempting to convert a read-only datetime64 numpy array. The fix must be here to properly handle read-only buffers -- for example, by making a writable copy if needed, or using safe memoryview logic. 2. pandas/core/algorithms.py: This is the main implementation of pd.factorize, which delegates to conversion routines and should be improved to accept (and possibly warn on) read-only arrays, or handle conversion logic more robustly. 3. pandas/core/arrays/datetimelike.py: Handles datetime-like arrays and their factorization, and may need adjustments if additional wrapping/copying logic is necessary for extension arrays or dispatching to conversion. 4. pandas/_libs/tslibs/np_datetime.pyx: Contains lower-level handling of numpy datetime64 arrays and may also interact directly with read-only buffer logic; a fix here ensures robust conversion/memory management at the numpy layer. Other files are not shown by search or dependency analysis as being directly involved in this issue; most fixes should concentrate on the above sources, with conversion.pyx as the central component. No evidence was found that the bug is addressed elsewhere, nor are writeable/read-only protections implemented, making these files the most critical to modify.\"\n}",
+  "error": null
+}

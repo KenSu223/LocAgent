@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/3555",
+  "repo_name": "flask",
+  "title": "Remove simplejson",
+  "base_commit": "024f0d384cf5bb65c76ac59f8ddce464b2dc2ca1",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "docs/api.rst",
+    "docs/installation.rst",
+    "src/flask/json/__init__.py",
+    "src/flask/json/tag.py",
+    "tests/test_helpers.py",
+    "tox.ini"
+  ],
+  "predicted_files": [
+    "flask/json.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/flask/json/__init__.py\",\n        \"src/flask/json/tag.py\"\n    ],\n    \"reasoning\": \"The core of Flask's JSON handling and any abstraction or pluggable JSON modules reside within src/flask/json/__init__.py. This file handles imports, sets up the _json module (currently via itsdangerous) and contains the only reference to simplejson at all (see comment at line 20), as well as any code that would need to be updated to ensure only the standard library json is used, or to remove legacy compatibility code. If any direct or conditional simplejson logic exists, it will be here. The src/flask/json/tag.py module is also included, as it is part of Flask's JSON ecosystem and may contain references to simplejson, or provide encoder/decoder utilities that would need to match any refactor from __init__.py. No other Flask core module (e.g. helpers, app, wrappers, sessions) references simplejson or the abstracted JSON import in this codebase, so only these files need modification to resolve the issue. The focus should be on removing old compatibility logic/testing for simplejson, updating imports to use the built-in json module directly, and updating any references that presume simplejson's peculiarities.\"\n}",
+  "error": null
+}

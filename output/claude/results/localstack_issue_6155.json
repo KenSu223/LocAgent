@@ -1,0 +1,31 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/6155",
+  "repo_name": "localstack",
+  "title": "samlocal not returning on second and later deploys",
+  "base_commit": "31286eb81823ee97e4e4a6b519abab9efcffe091",
+  "ground_truth_files": [
+    "localstack/services/cloudformation/models/cdk.py",
+    "localstack/services/cloudformation/models/ec2.py",
+    "localstack/services/cloudformation/provider.py",
+    "localstack/utils/cloudformation/template_deployer.py",
+    "tests/integration/cloudformation/test_cloudformation_stacks.py",
+    "tests/integration/cloudformation/test_cloudformation_stacks.snapshot.json",
+    "tests/integration/templates/template36.yaml",
+    "tests/integration/test_cloudformation.py"
+  ],
+  "predicted_files": [
+    "localstack/services/dynamodbstreams/provider.py",
+    "kinesis_event_source_listener.py",
+    "stream_event_source_listener.py",
+    "localstack/utils/threads.py",
+    "dynamodbstreams/provider.py",
+    "localstack/services/kinesis/kinesis_mock_server.py",
+    "threads.py",
+    "localstack/services/awslambda/event_source_listeners/kinesis_event_source_listener.py",
+    "localstack/services/awslambda/event_source_listeners/stream_event_source_listener.py",
+    "kinesis_mock_server.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/awslambda/event_source_listeners/stream_event_source_listener.py', 'localstack/services/awslambda/event_source_listeners/kinesis_event_source_listener.py', 'localstack/utils/threads.py', 'localstack/services/kinesis/kinesis_mock_server.py', 'localstack/services/dynamodbstreams/provider.py'], 'reasoning': '1. stream_event_source_listener.py: This abstract base (and its threads/logic) is likely where event source listeners get stuck if the shard iterator expires; needs logic for thread recovery and expiration handling. 2. kinesis_event_source_listener.py: Inherits from the stream listener and contains Kinesis-specific batch/iterator logic; modifications here could prevent stuck deploys from Kinesis expired iterators. 3. threads.py: Manages background listener threads and may require enhancement to ensure stuck/expired threads are detected/cleaned up. 4. kinesis_mock_server.py: Launches and controls the mock Kinesis server, which ultimately emits the JVM errors; may need to improve session/stream reinitialization logic or logging for better detection. 5. dynamodbstreams/provider.py: Handles GetRecords and exceptions for DynamoDBStreams (and indirectly Kinesis); should improve how iterator expiration is propagated or logged to listeners.'}",
+  "error": null
+}

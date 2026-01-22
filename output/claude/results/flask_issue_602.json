@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/602",
+  "repo_name": "flask",
+  "title": "Misspelling in docs @ flask.Flask.handle_exception",
+  "base_commit": "ee76129812419d473eb62434051e81d5855255b6",
+  "ground_truth_files": [
+    "flask/app.py"
+  ],
+  "predicted_files": [
+    "flask/app.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/app.py'], 'reasoning': \"The misspelling 'occours' appears only in the docstring for the 'handle_exception' method in flask/app.py (line 1268). This is the definition site and primary location where the error exists. No other files or references contain the misspelling, so only this file requires modification to resolve the issue.\"}",
+  "error": null
+}

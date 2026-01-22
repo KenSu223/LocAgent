@@ -1,0 +1,30 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/19705",
+  "repo_name": "scikit-learn",
+  "title": "[RFC] Minimal scipy version for 1.0 (or 0.26) release",
+  "base_commit": "053d2d1af477d9dc17e69162b9f2298c0fda5905",
+  "ground_truth_files": [
+    ".circleci/config.yml",
+    ".travis.yml",
+    "azure-pipelines.yml",
+    "build_tools/azure/install.sh",
+    "build_tools/azure/posix-32.yml",
+    "build_tools/azure/test_script.sh",
+    "doc/conftest.py",
+    "doc/modules/sgd.rst",
+    "doc/tutorial/statistical_inference/supervised_learning.rst",
+    "doc/whats_new/v1.0.rst",
+    "pyproject.toml",
+    "sklearn/_min_dependencies.py",
+    "sklearn/decomposition/_truncated_svd.py",
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_loss.py",
+    "sklearn/utils/tests/test_validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/_min_dependencies.py",
+    "setup.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/_min_dependencies.py', 'setup.py', 'pyproject.toml', 'README.rst', 'azure-pipelines.yml'], 'reasoning': '1. sklearn/_min_dependencies.py stores the canonical minimal version for scipy, used across the codebase and for install/build checks (most important). 2. setup.py uses min_deps.SCIPY_MIN_VERSION for install-time version enforcement. 3. pyproject.toml declares the minimal scipy version for build-system dependency resolution. 4. README.rst documents this version for user/contributor reference and must match new requirement. 5. azure-pipelines.yml only refers to minimal scipy version in comments/context, so update for clarity if necessary (least important).'}",
+  "error": null
+}

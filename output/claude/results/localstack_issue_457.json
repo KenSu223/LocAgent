@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/457",
+  "repo_name": "localstack",
+  "title": "CloudWatch listener returns Internal Server Error",
+  "base_commit": "91859102289e257e360682887e871c6a4bfbd75d",
+  "ground_truth_files": [
+    "README.md",
+    "localstack/constants.py",
+    "localstack/ext/java/pom.xml",
+    "localstack/services/install.py",
+    "requirements.txt"
+  ],
+  "predicted_files": [
+    "localstack/services/infra.py",
+    "localstack/plugins.py",
+    "localstack/utils/cloudwatch/cloudwatch_util.py",
+    "localstack/services/generic_proxy.py",
+    "localstack/config.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/infra.py\",\n        \"localstack/plugins.py\",\n        \"localstack/utils/cloudwatch/cloudwatch_util.py\",\n        \"localstack/services/generic_proxy.py\",\n        \"localstack/config.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/infra.py: This file contains both the start_cloudwatch() function and the core start_moto_server() implementation used to launch the CloudWatch service on port 4582. Errors related to listener setup and service initialization are most likely to be rooted here.\\n\\n2. localstack/plugins.py: This file registers and maps the CloudWatch service to its startup logic. If there is an issue with service registration, plugin loading, or orchestration, changes must be made here to ensure the CloudWatch service is included and launched correctly.\\n\\n3. localstack/utils/cloudwatch/cloudwatch_util.py: Contains CloudWatch-specific utilities and is referenced by other components. Issues with request proxying, stubbed responses, or metrics decorators may reside here and could cause server errors if not handled correctly.\\n\\n4. localstack/services/generic_proxy.py: As the dispatcher for service requests, problems in routing or error handling for proxied endpoints\u2014such as CloudWatch's\u2014may manifest here as HTTP 500 errors.\\n\\n5. localstack/config.py: Provides port and configuration settings for services, including CloudWatch. Misconfiguration (such as incorrect port or environment setup) here could prevent the service from starting correctly and result in internal errors.\"\n}",
+  "error": null
+}

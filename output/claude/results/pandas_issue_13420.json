@@ -1,0 +1,26 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/13420",
+  "repo_name": "pandas",
+  "title": "DataFrame.groupby(grp, axis=1) with categorical grp breaks",
+  "base_commit": "95be01dbc060f405b7928cc6e4ba4d6d6181c22a",
+  "ground_truth_files": [
+    "pandas/tests/groupby/test_categorical.py"
+  ],
+  "predicted_files": [
+    "tests/test_frame.py",
+    "pandas/core/dtypes/common.py",
+    "pandas/core/groupby/generic.py",
+    "groupby.py",
+    "pandas/core/groupby/groupby.py",
+    "pandas/core/groupby/categorical.py",
+    "grouper.py",
+    "generic.py",
+    "pandas/core/groupby/grouper.py",
+    "dtypes/common.py",
+    "categorical.py",
+    "pandas/tests/test_frame.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/groupby/groupby.py', 'pandas/core/groupby/grouper.py', 'pandas/core/groupby/categorical.py', 'pandas/core/groupby/generic.py', 'pandas/core/dtypes/common.py', 'pandas/tests/test_frame.py'], 'reasoning': '1. groupby.py: The core implementation of DataFrame.groupby, handling axis logic and where the check should be corrected.\\n2. grouper.py: Where groupers are constructed/validated, and where the error is raised for categorical mismatch.\\n3. categorical.py: Handles groupby operations involving categorical types; might need update for axis logic or dtype handling.\\n4. generic.py: DataFrame/Series interface layer for groupby, especially for axis-related routing.\\n5. dtypes/common.py: Contains the utility function is_categorical_dtype referenced in the condition.\\n6. tests/test_frame.py: Most appropriate location for adding or updating tests verifying correct axis/column groupby behaviour for new/buggy categorical handling.'}",
+  "error": null
+}

@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/5991",
+  "repo_name": "scikit-learn",
+  "title": "PERF : StratifiedShuffleSplit is slow when using large number of classes",
+  "base_commit": "41e129f1a6eb17a39ff0b25f682d903d0ae3c5af",
+  "ground_truth_files": [
+    "doc/whats_new.rst",
+    "sklearn/model_selection/_split.py"
+  ],
+  "predicted_files": [
+    "sklearn/model_selection/_split.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/model_selection/_split.py', 'sklearn/utils/arrayfuncs.pyx', 'sklearn/utils/setup.py', 'sklearn/model_selection/tests/test_split.py', 'sklearn/utils/tests/'], 'reasoning': '1. sklearn/model_selection/_split.py: Main implementation of StratifiedShuffleSplit, where the class-wise indexing is currently inefficient and must be optimized. 2. sklearn/utils/arrayfuncs.pyx: Cython file to implement the efficient bincount_with_ref helper, enabling the proposed performance gain. 3. sklearn/utils/setup.py: Ensures the new or modified Cython function is correctly built and exposed to Python. 4. sklearn/model_selection/tests/test_split.py: Update and/or add tests to confirm correctness and improved performance for large numbers of classes. 5. sklearn/utils/tests/: Add or update tests for arrayfuncs Cython module to verify low-level function behavior.'}",
+  "error": null
+}

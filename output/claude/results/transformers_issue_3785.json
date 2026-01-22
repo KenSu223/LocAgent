@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/3785",
+  "repo_name": "transformers",
+  "title": "How to fine tune EncoderDecoder model for training a new corpus of data ?",
+  "base_commit": "41750a6cff55e401364568868d619747de3db037",
+  "ground_truth_files": [
+    "docs/source/index.rst",
+    "src/transformers/__init__.py",
+    "src/transformers/configuration_auto.py",
+    "src/transformers/modeling_auto.py",
+    "src/transformers/modeling_bert.py",
+    "src/transformers/modeling_encoder_decoder.py",
+    "src/transformers/modeling_utils.py",
+    "src/transformers/utils_encoder_decoder.py"
+  ],
+  "predicted_files": [
+    "docs/source/en/model_doc/encoder_decoder.rst"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/encoder_decoder/modeling_encoder_decoder.py', 'docs/source/model_doc/encoderdecoder.rst', 'examples/run_encoderdecoder.py', 'docs/source/index.rst', 'README.md'], 'reasoning': \"1. src/transformers/models/encoder_decoder/modeling_encoder_decoder.py: Main code base for EncoderDecoderModel. Add/clarify docstrings and practical fine-tuning notes if needed.\\n2. docs/source/model_doc/encoderdecoder.rst: New dedicated documentation page for EncoderDecoder model, including fine-tuning instructions for new corpora.\\n3. examples/run_encoderdecoder.py: Example script for fine-tuning and training EncoderDecoder model, to guide users in practice.\\n4. docs/source/index.rst: Link the new model doc so it's discoverable in documentation index.\\n5. README.md: Announce the availability of EncoderDecoder fine-tuning and link to docs and examples for user guidance.\"}",
+  "error": null
+}

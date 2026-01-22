@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/4015",
+  "repo_name": "flask",
+  "title": "2.0.0: build requires ContextVar module",
+  "base_commit": "22d82e70b3647ed16c7d959a939daf533377382b",
+  "ground_truth_files": [
+    "setup.py"
+  ],
+  "predicted_files": [
+    "flask/globals.py",
+    "setup.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/app.py'], 'reasoning': \"The only location requiring modification to resolve the issue is 'src/flask/app.py', which erroneously imports 'ContextVar' from 'werkzeug.local'. This import fails because Werkzeug does not provide ContextVar. The correct approach is to either remove this import or replace it with 'from contextvars import ContextVar' from Python's standard library, as needed. Other files do not reference 'ContextVar' nor require changes.\"}",
+  "error": null
+}

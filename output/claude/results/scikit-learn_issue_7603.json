@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/7603",
+  "repo_name": "scikit-learn",
+  "title": "When min_samples_split and min_samples_leaf are greater than or equal to 1.0 and 0.5, no error is thrown.",
+  "base_commit": "9b2aac9e5c8749243c73f2377519d2f2c407b095",
+  "ground_truth_files": [
+    "sklearn/tree/tests/test_tree.py",
+    "sklearn/tree/tree.py"
+  ],
+  "predicted_files": [
+    "sklearn/tree/_classes.py"
+  ],
+  "success": true,
+  "raw_output": null,
+  "error": null
+}

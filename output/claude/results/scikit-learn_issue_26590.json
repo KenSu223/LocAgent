@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/26590",
+  "repo_name": "scikit-learn",
+  "title": "KNNImputer add_indicator fails to persist where missing data had been present in training",
+  "base_commit": "e04b8e70e60df88751af5cd667cafb66dc32b397",
+  "ground_truth_files": [
+    "doc/whats_new/v1.3.rst",
+    "sklearn/impute/_knn.py",
+    "sklearn/impute/tests/test_common.py"
+  ],
+  "predicted_files": [
+    "sklearn/impute/_knn.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/impute/_knn.py', 'sklearn/impute/_base.py', 'sklearn/impute/tests/test_common.py', 'sklearn/impute/tests/test_impute.py', 'sklearn/impute/__init__.py'], 'reasoning': \"1. 'sklearn/impute/_knn.py' implements KNNImputer itself and likely contains logic for add_indicator and the transform output shape; may require changes for output persistence and shape handling.\\n2. 'sklearn/impute/_base.py' is the base class for all imputers and manages the indicator logic, input/output adaptation, and the MissingIndicator transform's persistence.\\n3. 'sklearn/impute/tests/test_common.py' contains tests for imputers (including indicator behavior); modifications ensure that edge cases and bugfixes are properly covered.\\n4. 'sklearn/impute/tests/test_impute.py' contains additional tests for MissingIndicator and imputation functionality, and should be updated/verified accordingly.\\n5. 'sklearn/impute/__init__.py' may need updates if public API or imports/exports change, though this is typically the least affected unless signatures or component exposure change.\"}",
+  "error": null
+}

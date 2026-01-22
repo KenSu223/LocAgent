@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/894",
+  "repo_name": "localstack",
+  "title": "ERROR:localstack.services.generic_proxy: Error forwarding request:",
+  "base_commit": "737ca72b7bce6e377dd6876eacee63338fa8c30c",
+  "ground_truth_files": [
+    "README.md",
+    "localstack/config.py",
+    "localstack/services/kinesis/kinesis_starter.py"
+  ],
+  "predicted_files": [
+    "localstack/services/generic_proxy.py",
+    "localstack/services/infra.py",
+    "localstack/config.py",
+    "localstack/services/__init__.py",
+    "localstack/plugins.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/generic_proxy.py\",\n        \"localstack/services/infra.py\",\n        \"localstack/config.py\",\n        \"localstack/services/__init__.py\",\n        \"localstack/plugins.py\"\n    ],\n    \"reasoning\": \"The root cause is an error in the forwarding mechanism within localstack's generic proxy code, where requests are sent to an unresponsive or non-initialized service (port 4564). The most critical file is generic_proxy.py, where the error is raised and where request forwarding logic (especially around line 201) takes place. Next, infra.py likely controls the lifecycle and port mapping of mock services and may be failing to start or register the service expected at 4564. config.py is important because it may contain the port and service configuration, and problems there could lead to missing or mismatched service port assignments. services/__init__.py likely participates in the orchestration or registration of services, so bugs here could lead to missing service initialization. Finally, plugins.py could influence dynamic registration, discovery, or lazy initialization of services, impacting routing and proxying. Reviewing and modifying these files (with focus moving from proxy logic, service startup, configuration, orchestration, and plugin-based registration) are necessary to address connection errors resulting in failed request forwarding to ports/services that aren't running.\"\n}",
+  "error": null
+}

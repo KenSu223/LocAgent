@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/29742",
+  "repo_name": "scikit-learn",
+  "title": "spin docs --no-plot runs the examples",
+  "base_commit": "c13703c8dfb7324a05a82e8befe9b203a6590257",
+  "ground_truth_files": [
+    "doc/Makefile"
+  ],
+  "predicted_files": [
+    "doc/Makefile"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['doc/Makefile', 'doc/conf.py', 'doc/sphinxext/move_gallery_links.py'], 'reasoning': '1. doc/Makefile: This file orchestrates the documentation build and passes Sphinx and Sphinx-Gallery options. It must be modified to propagate SPHINXOPTS and plot_gallery=0 reliably for all build commands, fixing the logic so that --no-plot works as intended.\\n2. doc/conf.py: This file sets the runtime configuration for documentation, including Sphinx-Gallery. It should read plot_gallery from build options or environment and configure sphinx_gallery accordingly, thereby actually controlling example execution.\\n3. doc/sphinxext/move_gallery_links.py: If any custom gallery code is used or output is altered here, this file may also need updates to respect the gallery enable/disable logic. Other files (top-level Makefile and generic Sphinx extensions) have negligible impact for this issue.'}",
+  "error": null
+}

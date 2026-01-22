@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/31778",
+  "repo_name": "transformers",
+  "title": "Bug in whisper word-level timestamps (`tokenizer._decode_asr`)",
+  "base_commit": "85a1269e19af022e04bc2aad82572cd5a9e8cdd9",
+  "ground_truth_files": [
+    "src/transformers/models/whisper/tokenization_whisper.py",
+    "tests/models/whisper/test_tokenization_whisper.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/whisper/tokenization_whisper.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/transformers/models/whisper/tokenization_whisper.py\",\n        \"src/transformers/models/whisper/tokenization_whisper_fast.py\",\n        \"src/transformers/pipelines/automatic_speech_recognition.py\",\n        \"src/transformers/models/whisper/feature_extraction_whisper.py\",\n        \"src/transformers/models/whisper/configuration_whisper.py\"\n    ],\n    \"reasoning\": \"1. The most critical file is 'src/transformers/models/whisper/tokenization_whisper.py' because it contains the core implementation of the _decode_asr function, where word/timestamp alignment logic lives and must be fixed for word-level timestamps. 2. 'src/transformers/models/whisper/tokenization_whisper_fast.py' wraps or reuses the same function for fast tokenization, so it may need updates to match any logic changes or to properly pass timestamp data. 3. 'src/transformers/pipelines/automatic_speech_recognition.py' calls tokenizer._decode_asr and handles how outputs and timestamp info are collected and formatted for the user, so any mismatch or bug at the pipeline level should be patched. 4. 'src/transformers/models/whisper/feature_extraction_whisper.py' may affect timestamp precision calculations (as its outputs are used in the pipeline), so if there is a core calculation bug it should be addressed here. 5. 'src/transformers/models/whisper/configuration_whisper.py' defines model config parameters (such as chunk length and max positions) that impact time-to-token alignment; if word-level timestamps are misaligned due to configuration, corrections may be required here as well. These five files together cover the full decoding, timestamp extraction, and configuration flow required to robustly solve bugs in Whisper word-level timestamp output.\"\n}",
+  "error": null
+}

@@ -1,0 +1,36 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/27",
+  "repo_name": "localstack",
+  "title": "Use lambci/docker-lambda for local lambda execution?",
+  "base_commit": "ae8db74df81821040e3ac654c62d2118da85255a",
+  "ground_truth_files": [
+    "Dockerfile",
+    "Makefile",
+    "README.md",
+    "localstack/config.py",
+    "localstack/constants.py",
+    "localstack/mock/apis/lambda_api.py",
+    "localstack/mock/infra.py",
+    "localstack/mock/proxy/dynamodb_listener.py",
+    "localstack/utils/aws/aws_stack.py",
+    "localstack/utils/common.py",
+    "localstack/utils/testutil.py",
+    "setup.py",
+    "tests/test_integration.py"
+  ],
+  "predicted_files": [
+    "localstack/services/lambda_/lambda_api.py",
+    "config.py",
+    "localstack/services/lambda_/lambda_utils.py",
+    "lambda_utils.py",
+    "lambda_api.py",
+    "lambda_executors.py",
+    "localstack/config.py",
+    "localstack/utils/docker_utils.py",
+    "localstack/services/lambda_/lambda_executors.py",
+    "docker_utils.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/lambda_/lambda_executors.py', 'localstack/services/lambda_/lambda_api.py', 'localstack/utils/docker_utils.py', 'localstack/services/lambda_/lambda_utils.py', 'localstack/config.py'], 'reasoning': '1. lambda_executors.py: Most important, as it contains the Lambda executor classes and is responsible for execution logic; modify/add code to support lambci/docker-lambda as an executor.\\n2. lambda_api.py: Handles selection and usage of executors; must update to allow configuration or switching to lambci/docker-lambda.\\n3. docker_utils.py: Orchestrates Docker container actions, must adapt to any lambci/docker-lambda-specific requirements for image, volume, environment.\\n4. lambda_utils.py: May require changes for runtime detection and helper utilities targeting the new container environment.\\n5. config.py: To allow configuring or selecting lambci/docker-lambda as the executor, either through env var or settings.'}",
+  "error": null
+}

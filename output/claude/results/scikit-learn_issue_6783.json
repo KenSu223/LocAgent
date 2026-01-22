@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/6783",
+  "repo_name": "scikit-learn",
+  "title": "\"scoring must return a number\" error with custom scorer",
+  "base_commit": "417788c6a54c39614b82acf1a04b1f97f8a32199",
+  "ground_truth_files": [
+    "sklearn/cross_validation.py",
+    "sklearn/model_selection/_validation.py",
+    "sklearn/model_selection/tests/test_validation.py"
+  ],
+  "predicted_files": [
+    "sklearn/metrics/_scorer.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/model_selection/_validation.py', 'sklearn/metrics/_scorer.py', 'sklearn/cross_validation.py', 'sklearn/model_selection/tests/test_validation.py', 'sklearn/tests/test_cross_validation.py'], 'reasoning': '1. sklearn/model_selection/_validation.py contains the main scoring enforcement and error raising logic for custom scorers (most imports and checks for scoring are here).\\n2. sklearn/metrics/_scorer.py is where all scorer interfaces, classes, and type conversions live; modifications to casting, error messages, or scorer protocol belong here.\\n3. sklearn/cross_validation.py handles legacy cross-validation and scoring logic for backward compatibility; many users may still use this entry point as in the issue description.\\n4. sklearn/model_selection/tests/test_validation.py tests the main cross-validation and scoring features, and should verify fixes for custom scorer output types and correct error handling.\\n5. sklearn/tests/test_cross_validation.py ensures backward compatibility and covers the legacy API enforcement for scoring, necessary for complete coverage and regression testing.'}",
+  "error": null
+}

@@ -1,0 +1,29 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/5357",
+  "repo_name": "localstack",
+  "title": "bug: `AmazonopensearchserviceDestinationConfiguration` is not supported for Firehose-Streams",
+  "base_commit": "b09c4f89481cec43b3d126c15050910cae81e9d1",
+  "ground_truth_files": [
+    ".github/workflows/pro-integration.yml",
+    "localstack/services/firehose/provider.py",
+    "localstack/utils/aws/aws_stack.py",
+    "requirements.txt",
+    "tests/integration/conftest.py",
+    "tests/integration/test_firehose.py"
+  ],
+  "predicted_files": [
+    "localstack/aws/api/firehose/__init__.py",
+    "localstack/services/firehose/mappers.py",
+    "__init__.py",
+    "kinesisfirehose.py",
+    "localstack/services/firehose/provider.py",
+    "mappers.py",
+    "provider.py",
+    "test_firehose.py",
+    "localstack/services/cloudformation/models/kinesisfirehose.py",
+    "tests/integration/test_firehose.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/cloudformation/models/kinesisfirehose.py', 'localstack/services/firehose/provider.py', 'localstack/services/firehose/mappers.py', 'localstack/aws/api/firehose/__init__.py', 'tests/integration/test_firehose.py'], 'reasoning': '1. kinesisfirehose.py: Main cloudformation resource model listing destination configs; adding and validating support for AmazonopensearchserviceDestinationConfiguration requires changes here. 2. provider.py: Firehose stream provisioning and runtime handling of destination configs; logic must handle, create, and validate OpenSearch destination. 3. mappers.py: Maps delivery stream configuration into descriptions and runtime objects\u2014parallel support for OpenSearch alongside Elasticsearch. 4. __init__.py: Definition of config structs (TypedDicts) for destination configs; must be up-to-date and included in type checks/validations. 5. test_firehose.py: Integration tests may only cover the Elasticsearch config; tests should be extended to validate OpenSearch destination behavior for Firehose streams.'}",
+  "error": null
+}

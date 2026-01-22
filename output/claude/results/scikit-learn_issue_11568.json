@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/11568",
+  "repo_name": "scikit-learn",
+  "title": "TST: optics function is not tested",
+  "base_commit": "86476582a3759b82fd163d27522bd2de6ad95b6c",
+  "ground_truth_files": [
+    "doc/modules/classes.rst",
+    "sklearn/cluster/__init__.py",
+    "sklearn/cluster/dbscan_.py",
+    "sklearn/cluster/optics_.py"
+  ],
+  "predicted_files": [
+    "sklearn/cluster/tests/test_optics.py",
+    "sklearn/cluster/_optics.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cluster/tests/test_optics.py', 'sklearn/cluster/optics_.py', 'sklearn/cluster/__init__.py', 'doc/modules/clustering.rst'], 'reasoning': '1. sklearn/cluster/tests/test_optics.py: needs tests for the optics function itself, as it currently only tests the OPTICS class. 2. sklearn/cluster/optics_.py: contains the optics function definition, which may need documentation or minor changes to improve testability. 3. sklearn/cluster/__init__.py: should expose the optics function in the public cluster namespace if intended for public use. 4. doc/modules/clustering.rst: if optics is a public API, documentation should include it; update if missing.'}",
+  "error": null
+}

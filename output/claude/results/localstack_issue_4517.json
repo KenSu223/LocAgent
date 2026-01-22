@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/4517",
+  "repo_name": "localstack",
+  "title": "bug: AWS::NoValue produces error when used in IAM policy template",
+  "base_commit": "9f1b9dbf60f406e8d6205402b8ac078195cd0c01",
+  "ground_truth_files": [
+    "localstack/services/cloudformation/models/cloudwatch.py",
+    "localstack/services/cloudformation/models/iam.py",
+    "tests/integration/cloudformation/test_cloudformation_iam.py",
+    "tests/integration/cloudformation/test_cloudformation_iam.snapshot.json",
+    "tests/integration/templates/iam_policy_attachments.yaml",
+    "tests/integration/templates/iam_role_policy.yaml"
+  ],
+  "predicted_files": [],
+  "success": false,
+  "raw_output": null,
+  "error": "Error in generating model output:\nError code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to gpt-4.1 for gpt-4.1 in West US have exceeded the token rate limit for your current OpenAI S0 pricing tier. This request was for ChatCompletions_Create under OpenAI Language Model Instance API. Please retry after 3 seconds. To increase your default rate limit, visit: https://aka.ms/oai/quotaincrease.'}}"
+}

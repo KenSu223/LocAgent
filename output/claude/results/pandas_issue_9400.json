@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/9400",
+  "repo_name": "pandas",
+  "title": "Improve error message in plotting.py's _plot",
+  "base_commit": "c4a996adfc91f023b46ce3cb67e33fc8b2ca3627",
+  "ground_truth_files": [
+    "pandas/tools/plotting.py"
+  ],
+  "predicted_files": [
+    "pandas/tools/plotting.py",
+    "plotting.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/tools/plotting.py'], 'reasoning': \"The error message 'Invalid chart type given %s' appears exclusively in pandas/tools/plotting.py at the locations where ValueError is raised for invalid chart types. No other file uses, propagates, or wraps this error directly, so only plotting.py requires modification for the improved error message formatting.\"}",
+  "error": null
+}

@@ -1,0 +1,35 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/20650",
+  "repo_name": "transformers",
+  "title": "[New Model] UDOP: Unifying Vision, Text, and Layout for Universal Document Processing",
+  "base_commit": "1681a6d452b60ff3652a96f03541dfa491124192",
+  "ground_truth_files": [
+    ".circleci/create_circleci_config.py",
+    "README.md",
+    "README_es.md",
+    "README_fr.md",
+    "README_hd.md",
+    "README_ja.md",
+    "README_ko.md",
+    "README_zh-hans.md",
+    "README_zh-hant.md",
+    "docs/source/en/_toctree.yml",
+    "docs/source/en/index.md",
+    "src/transformers/__init__.py",
+    "src/transformers/convert_slow_tokenizer.py",
+    "src/transformers/models/__init__.py",
+    "src/transformers/models/auto/configuration_auto.py",
+    "src/transformers/models/auto/image_processing_auto.py",
+    "src/transformers/models/auto/modeling_auto.py",
+    "src/transformers/models/auto/tokenization_auto.py",
+    "src/transformers/utils/dummy_pt_objects.py",
+    "src/transformers/utils/dummy_sentencepiece_objects.py",
+    "src/transformers/utils/dummy_tokenizers_objects.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/__init__.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/udop/modeling_udop.py', 'src/transformers/models/udop/configuration_udop.py', 'src/transformers/models/udop/__init__.py', 'src/transformers/models/auto/modeling_auto.py', 'src/transformers/__init__.py'], 'reasoning': \"1. src/transformers/models/udop/modeling_udop.py: Implements the UDOP model architecture, essential for adding the model.\\n2. src/transformers/models/udop/configuration_udop.py: Defines configuration details for the UDOP model; required for model instantiation.\\n3. src/transformers/models/udop/__init__.py: Ensures submodule imports for UDOP are available.\\n4. src/transformers/models/auto/modeling_auto.py: Registers UDOP in the AutoModel framework, enabling users to load it via AutoModel classes.\\n5. src/transformers/__init__.py: Adds UDOP to the library-level import structure so it's available as a supported model.\"}",
+  "error": null
+}

@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/8364",
+  "repo_name": "scikit-learn",
+  "title": "Matplotlib update on CI makes example look different",
+  "base_commit": "cdd693bf955acd2a97cce48011d168c6b1ef316d",
+  "ground_truth_files": [
+    "examples/svm/plot_separating_hyperplane.py"
+  ],
+  "predicted_files": [
+    "examples/classification/plot_classifier_comparison.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"examples/classification/plot_classifier_comparison.py\",\n        \"doc/conf.py\",\n        \"examples/classification/plot_classification_probability.py\",\n        \"examples/classification/plot_digits_classification.py\",\n        \"examples/classification/plot_lda_qda.py\"\n    ],\n    \"reasoning\": \"1. 'examples/classification/plot_classifier_comparison.py' is the main example affected by the Matplotlib style change, directly generating the plot that now looks different. It uses matplotlib.pyplot as plt, so updates may be made here to adapt to new styles, set rcParams, or adjust plotting code for consistency.\\n2. 'doc/conf.py' is the Sphinx configuration that generates the documentation and may explicitly reference, cache, or set style for the examples (including carousel thumbnails), which may need updating for consistent doc appearance with matplotlib v2.\\n3. 'examples/classification/plot_classification_probability.py', 'plot_digits_classification.py', and 'plot_lda_qda.py' are the next most relevant classifier-related examples which likely share similar plotting patterns and could be similarly affected by the style update. If the issue is style differences across several classifier plots, these should also be reviewed and adapted to maintain a consistent look across examples.\\nIf the issue proves to be more global (for all examples), then updating a central style utility, or a project-level matplotlib configuration file, and more doc build scripts may also be required.\"\n}",
+  "error": null
+}

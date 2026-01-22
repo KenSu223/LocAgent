@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/16001",
+  "repo_name": "scikit-learn",
+  "title": "Possible infinite loop iterations in synthetic data sets generation module",
+  "base_commit": "d7795a431e30d23f7e8499bdbe89dbdc6e9a068e",
+  "ground_truth_files": [
+    "doc/whats_new/v0.23.rst",
+    "sklearn/datasets/_samples_generator.py",
+    "sklearn/datasets/tests/test_samples_generator.py"
+  ],
+  "predicted_files": [
+    "sklearn/datasets/_samples_generator.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/datasets/_samples_generator.py', 'sklearn/datasets/__init__.py', 'sklearn/tests/test_multiclass.py', 'sklearn/linear_model/tests/test_ridge.py', 'sklearn/model_selection/tests/test_validation.py'], 'reasoning': \"1. 'sklearn/datasets/_samples_generator.py': This file contains the function where the infinite loop issue occurs and requires the main fix.\\n2. 'sklearn/datasets/__init__.py': This imports/exports the function and may require changes if the public API is updated.\\n3. 'sklearn/tests/test_multiclass.py': Contains tests that invoke the function and should be updated to cover the problematic edge cases.\\n4. 'sklearn/linear_model/tests/test_ridge.py': Contains tests using the function and may need updates for robustness and coverage.\\n5. 'sklearn/model_selection/tests/test_validation.py': Also directly invokes the function and its tests need to verify the fix and avoid infinite loops.\"}",
+  "error": null
+}

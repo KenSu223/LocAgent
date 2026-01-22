@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/13826",
+  "repo_name": "transformers",
+  "title": "Tokenizer - Raises wrong \"UserWarning: `max_length` is ignored when `padding`=`True`\"",
+  "base_commit": "8bbb53e20b7873ba7f63be70d4d798e0c3568bfa",
+  "ground_truth_files": [
+    "src/transformers/tokenization_utils_base.py"
+  ],
+  "predicted_files": [
+    "src/transformers/tokenization_utils_base.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/tokenization_utils_base.py', 'src/transformers/file_utils.py', 'docs/source/tokenizer_summary.rst', 'src/transformers/__init__.py', 'tests/test_tokenization.py'], 'reasoning': '1. src/transformers/tokenization_utils_base.py: The source of the incorrect warning and main logic governing max_length and padding, which needs to be fixed.\\n2. src/transformers/file_utils.py: Defines PaddingStrategy, which may need consistency updates if padding logic is changed.\\n3. docs/source/tokenizer_summary.rst: Documentation should be updated to reflect the correct behavior of max_length with padding.\\n4. src/transformers/__init__.py: For propagation of logic or if any global changes are required (least likely, but good for robustness).\\n5. tests/test_tokenization.py: Test cases should be updated or added to verify correct behavior and suppression of the misleading warning.'}",
+  "error": null
+}

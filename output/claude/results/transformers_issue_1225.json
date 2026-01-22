@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/1225",
+  "repo_name": "transformers",
+  "title": "Bert output last hidden state",
+  "base_commit": "34f28b2a1342fd72c2e4d4e5613855bfb9f35d34",
+  "ground_truth_files": [
+    "src/transformers/models/bert/modeling_bert.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/bert/modeling_bert.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pytorch_transformers/modeling_bert.py', 'examples/run_bertology.py', 'examples/run_squad.py', 'examples/utils_glue.py', 'examples/utils_squad.py'], 'reasoning': '1. modeling_bert.py: Core location where last hidden state tensor is created and returned. Any change to slicing hidden states or documentation belongs here.\\n2. run_bertology.py: Main example file for exploring BERT internals\u2014updates here would guide users on extracting only utterance-relevant hidden states.\\n3. run_squad.py: Handles question-answering task preprocessing and output handling for BERT, including mapping tokens to hidden states.\\n4. utils_glue.py: Utility functions for text classification tasks, includes sequence padding, masks, and is key for input-output mapping.\\n5. utils_squad.py: Utility functions for squad tasks, handles input formatting and padding, vital for preserving non-padded sequence indices.'}",
+  "error": null
+}

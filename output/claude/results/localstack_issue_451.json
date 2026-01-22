@@ -1,0 +1,14 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/451",
+  "repo_name": "localstack",
+  "title": "Unable to use self-signed certs - CN incorrect, and/or missing subject alternative name field",
+  "base_commit": "23cd5fba5b3a2012f280a10b0d7266514fc46eb5",
+  "ground_truth_files": [
+    "localstack/utils/common.py",
+    "tests/integration/test_sqs.py"
+  ],
+  "predicted_files": [],
+  "success": false,
+  "raw_output": null,
+  "error": "Error in generating model output:\nError code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to gpt-4.1 for gpt-4.1 in West US have exceeded the token rate limit for your current OpenAI S0 pricing tier. This request was for ChatCompletions_Create under OpenAI Language Model Instance API. Please retry after 56 seconds. To increase your default rate limit, visit: https://aka.ms/oai/quotaincrease.'}}"
+}

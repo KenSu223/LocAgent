@@ -1,0 +1,16 @@
+{
+  "folder": "/home/ubuntu/locagent/output/codeagent_top5",
+  "total_samples": 231,
+  "successful_runs": 231,
+  "failed_runs": 0,
+  "metrics": {
+    "acc@1": 0.0606,
+    "acc@5": 0.1991,
+    "recall@1": 0.1343,
+    "recall@5": 0.3959
+  },
+  "raw_counts": {
+    "acc@1_correct": 14,
+    "acc@5_correct": 46
+  }
+}

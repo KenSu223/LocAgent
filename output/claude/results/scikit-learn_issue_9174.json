@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/9174",
+  "repo_name": "scikit-learn",
+  "title": "SVC and OneVsOneClassifier decision_function inconsistent on sub-sample",
+  "base_commit": "adc1e590d4dc1e230b49a4c10b4cd7b672bb3d69",
+  "ground_truth_files": [
+    "doc/modules/multiclass.rst",
+    "doc/modules/svm.rst",
+    "doc/whats_new/v0.21.rst",
+    "sklearn/svm/base.py",
+    "sklearn/utils/estimator_checks.py",
+    "sklearn/utils/multiclass.py",
+    "sklearn/utils/tests/test_multiclass.py"
+  ],
+  "predicted_files": [
+    "sklearn/svm/_classes.py",
+    "sklearn/multiclass.py"
+  ],
+  "success": true,
+  "raw_output": "[{'type': 'text', 'text': \"Error in generating final LLM output: Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to gpt-4.1 for gpt-4.1 in West US have exceeded the token rate limit for your current OpenAI S0 pricing tier. This request was for ChatCompletions_Create under OpenAI Language Model Instance API. Please retry after 54 seconds. To increase your default rate limit, visit: https://aka.ms/oai/quotaincrease.'}}\"}]",
+  "error": null
+}

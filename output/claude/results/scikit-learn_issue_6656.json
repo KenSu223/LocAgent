@@ -1,0 +1,24 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/6656",
+  "repo_name": "scikit-learn",
+  "title": "var.monotone option in GradientBoosting",
+  "base_commit": "dcfb3df9a3df5aa2a608248316d537cd6b3643ee",
+  "ground_truth_files": [
+    "doc/modules/ensemble.rst",
+    "doc/whats_new/v0.23.rst",
+    "sklearn/ensemble/_hist_gradient_boosting/common.pxd",
+    "sklearn/ensemble/_hist_gradient_boosting/gradient_boosting.py",
+    "sklearn/ensemble/_hist_gradient_boosting/grower.py",
+    "sklearn/ensemble/_hist_gradient_boosting/splitting.pyx",
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_gradient_boosting.py",
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_grower.py",
+    "sklearn/ensemble/_hist_gradient_boosting/tests/test_splitting.py"
+  ],
+  "predicted_files": [
+    "sklearn/ensemble/_gb.py",
+    "sklearn/ensemble/_gradient_boosting.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/ensemble/_gb.py\",\n        \"sklearn/ensemble/_gb_losses.py\",\n        \"sklearn/ensemble/_hist_gradient_boosting/gradient_boosting.py\",\n        \"sklearn/ensemble/_hist_gradient_boosting/grower.py\",\n        \"sklearn/ensemble/_hist_gradient_boosting/loss.py\"\n    ],\n    \"reasoning\": \"1. sklearn/ensemble/_gb.py contains the main GradientBoostingClassifier, GradientBoostingRegressor, and BaseGradientBoosting implementations. To add a 'var.monotone'-like parameter and implement monotonic constraints, this is the critical location to update class constructors and the splitting logic, or to pass the parameter down to the underlying tree builder. \\n2. sklearn/ensemble/_gb_losses.py is responsible for loss functions used in boosting. If monotonic constraints need to interact with gradient/hessian calculations or require special loss handling, modifications are necessary here. \\n3. sklearn/ensemble/_hist_gradient_boosting/gradient_boosting.py implements the histogram-based GBMs (HistGradientBoostingClassifier/Regressor), and this is where the analogous monotonic constraints should be exposed and propagated. \\n4. sklearn/ensemble/_hist_gradient_boosting/grower.py likely contains the growing/tree-building logic for histogram-based trees; enforcing monotonic splitting rules will require updates here. \\n5. sklearn/ensemble/_hist_gradient_boosting/loss.py contains loss functions for histogram-based boosting, which may need updates if monotonic constraints interact with predictions, gradients, or regularization structure. \\n\\nThese files are listed in order of importance, focusing first on entry-point parameters and boosting logic, then on tree growing, finally on supporting loss calculations for the new constraint.\"\n}",
+  "error": null
+}

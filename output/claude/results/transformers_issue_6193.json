@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/6193",
+  "repo_name": "transformers",
+  "title": "Some weights not initialized in pre-trained RobertaForMaskedLM",
+  "base_commit": "43b9d93875cbf6756baf402a4720ca23d8c75015",
+  "ground_truth_files": [
+    "src/transformers/modeling_roberta.py"
+  ],
+  "predicted_files": [
+    "src/transformers/models/roberta/modeling_roberta.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/models/roberta/modeling_roberta.py', 'src/transformers/modeling_utils.py', 'src/transformers/models/roberta/modeling_bert.py', 'examples/language-modeling/run_language_modeling.py'], 'reasoning': \"1. src/transformers/models/roberta/modeling_roberta.py: Defines RobertaForMaskedLM, RobertaModel, RobertaLMHead, and RobertaEmbeddings. Changes here would ensure that 'position_ids' and 'lm_head.decoder.bias' are registered, loaded, and handled correctly as part of checkpoint loading.\\n2. src/transformers/modeling_utils.py: Contains the logic for loading pretrained weights, detecting missing weights, and logging warnings. Modifications may be needed to ensure proper registration, detection, and loading of buffers such as position_ids and decoder.bias.\\n3. src/transformers/models/roberta/modeling_bert.py: RoBERTa inherits from Bert, so embedding or buffer registration logic missing from RoBERTa may need to be ported or corrected here.\\n4. examples/language-modeling/run_language_modeling.py: Entry point for evaluation as described in the issue. Minor changes may be needed to ensure it works with any model instantiation fixes, handle warnings, or test proper initialization.\"}",
+  "error": null
+}

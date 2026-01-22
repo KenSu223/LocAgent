@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/51236",
+  "repo_name": "pandas",
+  "title": "DOC fix EX02 errors in docstrings",
+  "base_commit": "0e8331f85cde8db2841aad92054d8e896e88fcef",
+  "ground_truth_files": [
+    "ci/code_checks.sh",
+    "pandas/core/dtypes/common.py",
+    "pandas/plotting/_core.py",
+    "pandas/plotting/_misc.py"
+  ],
+  "predicted_files": [
+    "pandas/core/series.py",
+    "pandas/core/indexes/base.py",
+    "pandas/core/frame.py",
+    "pandas/_libs/tslibs/timestamps.py",
+    "pandas/plotting/_core.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/core/series.py\",\n        \"pandas/core/indexes/base.py\",\n        \"pandas/core/frame.py\",\n        \"pandas/_libs/tslibs/timestamps.py\",\n        \"pandas/plotting/_core.py\"\n    ],\n    \"reasoning\": \"The issue is to fix EX02 errors (doctest failures in docstring examples), specifically for functions currently excluded from the docstring validation in ci/code_checks.sh ('--ignore_functions'). The most important locations are the source files where these public API methods are implemented:\\n\\n1. pandas/core/series.py: Implements methods for pandas.Series, including 'factorize', 'floordiv', and possibly 'plot', which are found in the ignore list.\\n2. pandas/core/indexes/base.py: Base Index methods such as 'factorize' are usually here, as 'Index.factorize' is on the EX02 ignore list.\\n3. pandas/core/frame.py: Implements DataFrame public API, including accessors like 'plot', whose underlying docstrings need fixing (e.g., plot.line).\\n4. pandas/_libs/tslibs/timestamps.py: Implements Timestamp methods, including 'fromtimestamp', also ignored for EX02 errors.\\n5. pandas/plotting/_core.py: The 'plot.line' method for DataFrame/Series is likely defined or routed through this file. Fixing its docstring can resolve EX02 issues for DataFrame.plot.line and Series.plot.line.\\n\\nThese files must be updated to fix failing docstring examples, allowing them to pass EX02 and be removed from EX02 ignore lists in code_checks.sh.\"\n}",
+  "error": null
+}

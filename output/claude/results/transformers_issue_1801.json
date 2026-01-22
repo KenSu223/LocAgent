@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/1801",
+  "repo_name": "transformers",
+  "title": "run_glue.py RuntimeError: module must have its parameters and buffers on device cuda:0 (device_ids[0]) but found one of them on device: cuda:3",
+  "base_commit": "6d00033e97e1751a897f2317fdfd35dd853cee29",
+  "ground_truth_files": [
+    "examples/hans/test_hans.py",
+    "examples/mm-imdb/run_mmimdb.py",
+    "examples/ner/run_ner.py",
+    "examples/run_language_modeling.py",
+    "examples/run_multiple_choice.py",
+    "examples/run_xnli.py"
+  ],
+  "predicted_files": [
+    "examples/text-classification/run_glue.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['examples/run_glue.py', 'transformers/models/bert/modeling_bert.py', 'transformers/trainer.py', 'transformers/training_args.py', 'transformers/trainer_pt_utils.py'], 'reasoning': '1. examples/run_glue.py is the main script directly configuring device assignment and using DataParallel, which can lead to device mismatch errors if not handled correctly. 2. transformers/models/bert/modeling_bert.py defines the Bert model whose buffers and parameters must be assured to reside on the correct device during parallelism. 3. transformers/trainer.py contains the Trainer logic and device assignment routines, so must be checked for ensuring model and inputs are moved to the same GPU. 4. transformers/training_args.py handles device-related arguments (no_cuda, n_gpu, local_rank) and is involved in device selection, crucial for multi-GPU setup. 5. transformers/trainer_pt_utils.py provides utilities that may interact with model/device and could indirectly cause or propagate device-related issues.'}",
+  "error": null
+}

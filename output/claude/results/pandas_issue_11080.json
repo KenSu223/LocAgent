@@ -1,0 +1,20 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/11080",
+  "repo_name": "pandas",
+  "title": "PERF: checking is_monotonic_increasing/decreasing before sorting on an index",
+  "base_commit": "51a70dcb7133bc7cb8e6bea5da39a2cf58fa8319",
+  "ground_truth_files": [
+    "asv_bench/benchmarks/frame_methods.py",
+    "doc/source/whatsnew/v0.17.1.txt",
+    "pandas/core/frame.py"
+  ],
+  "predicted_files": [
+    "pandas/core/series.py",
+    "pandas/core/index.py",
+    "pandas/core/frame.py",
+    "pandas/core/generic.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/core/generic.py', 'pandas/core/frame.py', 'pandas/core/index.py', 'pandas/core/series.py'], 'reasoning': \"1. pandas/core/generic.py: NDFrame.sort_index logic is the base class for sorting, and improvements to pre-check sortedness would be most impactful here. 2. pandas/core/frame.py: DataFrame.sort_index delegates or overrides NDFrame, and would coordinate index monotonicity checks for DataFrame objects as shown in the issue's examples. 3. pandas/core/index.py: Contains definitions for Index and likely MultiIndex, including methods/properties that report sortedness (e.g., monotonic, lexsorted), whose implementation/performance could be improved; also possibly where new flags/attributes might be added. 4. pandas/core/series.py: Handles sorting for Series objects and exposes index properties; changes here may harmonize the API and performance improvements for Series alongside DataFrame.\"}",
+  "error": null
+}

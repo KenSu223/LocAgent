@@ -1,0 +1,16 @@
+{
+  "folder": "/home/ubuntu/locagent/output/claude",
+  "total_samples": 221,
+  "successful_runs": 221,
+  "failed_runs": 9,
+  "metrics": {
+    "acc@1": 0.0995,
+    "acc@5": 0.1222,
+    "recall@1": 0.1811,
+    "recall@5": 0.2431
+  },
+  "raw_counts": {
+    "acc@1_correct": 22,
+    "acc@5_correct": 27
+  }
+}

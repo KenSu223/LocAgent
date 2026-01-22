@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/187",
+  "repo_name": "localstack",
+  "title": "Pass custom environment variables to lambda functions",
+  "base_commit": "784d5c3329b9fd0b77db92ee464c2f5404eab93b",
+  "ground_truth_files": [
+    "localstack/services/awslambda/lambda_api.py",
+    "localstack/utils/testutil.py",
+    "tests/integration/test_lambda.py"
+  ],
+  "predicted_files": [
+    "localstack/services/awslambda/lambda_api.py",
+    "tests/integration/test_lambda.py",
+    "localstack/config.py",
+    "localstack/utils/common.py",
+    "localstack/utils/aws/aws_stack.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/awslambda/lambda_api.py', 'localstack/config.py', 'localstack/utils/aws/aws_stack.py', 'tests/integration/test_lambda.py', 'localstack/utils/common.py'], 'reasoning': '1. localstack/services/awslambda/lambda_api.py: The main file constructing the Docker Lambda invocation and passing environment variables. 2. localstack/config.py: Handles environment variable configuration, which may need enhancement to retrieve ENV from docker-compose or external sources. 3. localstack/utils/aws/aws_stack.py: Contains environment resolution functions, useful for building and maintaining AWS-style runtime ENV dictionaries for Lambda. 4. tests/integration/test_lambda.py: Integration tests should validate that custom environment variables are passed correctly to Lambda invocations. 5. localstack/utils/common.py: May provide/require general utilities to parse, merge, or manage environment variables when injecting them into such commands.'}",
+  "error": null
+}

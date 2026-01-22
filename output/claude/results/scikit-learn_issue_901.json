@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/901",
+  "repo_name": "scikit-learn",
+  "title": "add predict and fit_predict to more clustering algorithms",
+  "base_commit": "127415b209ca1df3f8502bdf74de56c33aff2565",
+  "ground_truth_files": [
+    "sklearn/base.py",
+    "sklearn/cluster/affinity_propagation_.py",
+    "sklearn/cluster/dbscan_.py",
+    "sklearn/cluster/hierarchical.py",
+    "sklearn/cluster/k_means_.py",
+    "sklearn/cluster/mean_shift_.py",
+    "sklearn/cluster/spectral.py",
+    "sklearn/cluster/tests/test_k_means.py"
+  ],
+  "predicted_files": [
+    "sklearn/cluster/_affinity_propagation.py",
+    "sklearn/cluster/_dbscan.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/cluster/affinity_propagation_.py', 'sklearn/cluster/dbscan_.py', 'sklearn/cluster/mean_shift_.py', 'sklearn/cluster/spectral.py', 'sklearn/cluster/tests/test_affinity_propagation.py'], 'reasoning': \"You need to add 'predict' and 'fit_predict' to the main clustering algorithm source files and update their test files. AffinityPropagation, DBSCAN, MeanShift, and Spectral clustering do not currently offer those methods. Source files come first for implementation, followed by their test files. This covers the bulk of the update required to address the issue.\"}",
+  "error": null
+}

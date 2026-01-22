@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/9326",
+  "repo_name": "transformers",
+  "title": "Issue with 'char_to_token()' function of DistilBertTokenizerFast ",
+  "base_commit": "5f7a07c0c867abedbb3ebf135915eeee56add24b",
+  "ground_truth_files": [
+    "docs/source/custom_datasets.rst"
+  ],
+  "predicted_files": [
+    "src/transformers/tokenization_utils_fast.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/transformers/tokenization_utils_fast.py\",\n        \"src/transformers/tokenization_distilbert.py\",\n        \"src/transformers/tokenization_utils_base.py\",\n        \"src/transformers/utils/import_utils.py\",\n        \"src/transformers/models/distilbert/__init__.py\"\n    ],\n    \"reasoning\": \"1. src/transformers/tokenization_utils_fast.py: This file contains the generic implementation and wrapper for 'Fast' tokenizers, including generic methods like char_to_token. Bugs or logic errors with offsets/tokens mapping will likely be present or need fixing here, as it interfaces with the Rust-backed Tokenizers library and exposes the char_to_token() API.\\n2. src/transformers/tokenization_distilbert.py: This contains DistilBert-specific tokenizer code, including the registration and configuration for both standard and fast variants. Modifications may be needed in how fast encodings are constructed or integrated if model-specific quirks affect offsets.\\n3. src/transformers/tokenization_utils_base.py: The base class for all tokenizers, handles generic encoding interfaces, and could affect inherited behavior for char/token mapping or underlying serialization that influences Fast tokenizers. This can affect fallback and generic logic.\\n4. src/transformers/utils/import_utils.py: Responsible for importing optional dependencies such as the tokenizers library. If there is a problem in how the fast tokenizers are loaded, the fix may be here.\\n5. src/transformers/models/distilbert/__init__.py: Ensures DistilBert tokenizer classes/paths are correctly registered, and that the Fast variant is exposed to users. Errors in exposing or linking the tokenizer may reside here, especially if users report a misbehavior specific to DistilBertTokenizerFast.\\nThis ordering prioritizes generic Fast-API and DistilBert code most likely responsible for mapping offset errors reported in the GitHub issue concerning char_to_token().\"\n}",
+  "error": null
+}

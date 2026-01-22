@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/30",
+  "repo_name": "transformers",
+  "title": "[Feature request] Add example of finetuning the pretrained models on custom corpus",
+  "base_commit": "d2871b29754abd0f72cf42c299bb1c041519f7bc",
+  "ground_truth_files": [
+    "src/transformers/modeling_utils.py",
+    "src/transformers/trainer.py",
+    "src/transformers/training_args.py"
+  ],
+  "predicted_files": [
+    "examples/language-modeling/run_clm.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['examples/pytorch/language-modeling/run_clm.py', 'examples/pytorch/language-modeling/README.md', 'examples/README.md', 'README.md', 'examples/pytorch/text-classification/run_classification.py'], 'reasoning': '1. run_clm.py: Primary script for finetuning pretrained language models on custom corpus; modify/add to provide example.\\n2. language-modeling/README.md: Update to include instructions and details about finetuning example.\\n3. examples/README.md: Reference new finetuning example for improved navigation.\\n4. README.md: Main repo documentation\u2014add a mention for discoverability of finetuning custom corpus example.\\n5. run_classification.py: Optionally, for users interested in finetuning on classification tasks, update or extend with an example if applicable.'}",
+  "error": null
+}

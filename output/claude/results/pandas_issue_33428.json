@@ -1,0 +1,19 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/33428",
+  "repo_name": "pandas",
+  "title": "DOC: Data links in Pandas API Reference are broken 404",
+  "base_commit": "e88c39225ef545123860c679822f1b567fe65c27",
+  "ground_truth_files": [
+    "pandas/plotting/_misc.py"
+  ],
+  "predicted_files": [
+    "pandas/plotting/_misc.py",
+    "doc/source/user_guide/visualization.rst",
+    "doc/source/user_guide/cookbook.rst",
+    "doc/source/user_guide/io.rst",
+    "doc/source/getting_started/intro_tutorials/plotting.rst"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"pandas/plotting/_misc.py\",\n        \"doc/source/user_guide/visualization.rst\",\n        \"doc/source/user_guide/cookbook.rst\",\n        \"doc/source/user_guide/io.rst\",\n        \"doc/source/getting_started/intro_tutorials/plotting.rst\"\n    ],\n    \"reasoning\": \"1. The docstring for pandas.plotting.parallel_coordinates (in pandas/plotting/_misc.py) is the primary API reference source and likely contains the broken example using the incorrect raw.github.com URL for loading iris.csv. 2. The user guide 'visualization.rst' frequently includes plotting examples, often copying/pasting sample data code; these likely also use the broken link. 3. The 'cookbook.rst' user guide often has exercises/examples using iris.csv, possibly with the flawed link. 4. 'io.rst' (large and central) collects many I/O examples, including remote reads\u2014broken links here would cause widespread 404 issues. 5. The introduction tutorials for plotting may also include this canonical example. Even though a literal string search failed (perhaps due to differences in quoting, formatting or line splits), these are the canonical and high-probability locations revealed both by project structure and the official error report. Review and update all sample CSV loading links in these files from 'https://raw.github.com' to 'https://raw.githubusercontent.com' as suggested in the issue.\"\n}",
+  "error": null
+}

@@ -1,0 +1,21 @@
+{
+  "issue_url": "https://github.com/pandas-dev/pandas/issues/21356",
+  "repo_name": "pandas",
+  "title": "JSON nested_to_record Silently Drops Top-Level None Values",
+  "base_commit": "636dd01fdacba0c8f0e7b5aaa726165983fc861d",
+  "ground_truth_files": [
+    "doc/source/whatsnew/v0.23.1.txt",
+    "pandas/io/json/normalize.py",
+    "pandas/tests/io/json/test_normalize.py"
+  ],
+  "predicted_files": [
+    "pandas/io/json/json.py",
+    "pandas/io/json/normalize.py",
+    "pandas/io/json/_normalize.py",
+    "pandas/tests/io/json/test_normalize.py",
+    "pandas/io/json/table_schema.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['pandas/io/json/_normalize.py', 'pandas/tests/io/json/test_normalize.py', 'pandas/io/json/normalize.py', 'pandas/io/json/json.py', 'pandas/io/json/table_schema.py'], 'reasoning': '1. pandas/io/json/_normalize.py: Contains the implementation of nested_to_record, the function with the issue.\\n2. pandas/tests/io/json/test_normalize.py: Directly tests nested_to_record and will break after changing its top-level None handling.\\n3. pandas/io/json/normalize.py: Wraps normalization utilities and may require changes if normalization output or API changes.\\n4. pandas/io/json/json.py: Main JSON module potentially affected by changes to normalization output (e.g., if read_json or related APIs call normalization routines).\\n5. pandas/io/json/table_schema.py: May interact with normalization for schema validation; including for completeness since normalization logic may indirectly impact its usage.'}",
+  "error": null
+}

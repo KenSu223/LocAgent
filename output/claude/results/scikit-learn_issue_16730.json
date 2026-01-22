@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/16730",
+  "repo_name": "scikit-learn",
+  "title": "BUG: MLE for PCA mis-estimates rank",
+  "base_commit": "eaf0a044fdc084ebeeb9bbfbcf42e6df2b1491bb",
+  "ground_truth_files": [
+    "doc/whats_new/v0.23.rst",
+    "sklearn/decomposition/_pca.py",
+    "sklearn/decomposition/tests/test_pca.py"
+  ],
+  "predicted_files": [
+    "sklearn/decomposition/_pca.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['sklearn/decomposition/_pca.py', 'sklearn/decomposition/_base.py', 'sklearn/decomposition/tests/test_pca.py', 'examples/decomposition/plot_pca_vs_fa_model_selection.py'], 'reasoning': \"1. sklearn/decomposition/_pca.py contains the core PCA logic, MLE mode, and sets n_components_, likely source of the off-by-one bug. 2. sklearn/decomposition/_base.py is the base class with potential MLE/rank estimation logic affecting PCA. 3. sklearn/decomposition/tests/test_pca.py contains unit tests for PCA's MLE and must cover/test any correction. 4. examples/decomposition/plot_pca_vs_fa_model_selection.py is an application example that demonstrates/validates PCA MLE rank estimation in practice. These cover the implementation, base logic, correctness verification, and demonstration, in order of direct impact.\"}",
+  "error": null
+}

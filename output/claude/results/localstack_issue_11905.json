@@ -1,0 +1,22 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/11905",
+  "repo_name": "localstack",
+  "title": "bug: KMS DeriveSharedSecret does not work symmetrically",
+  "base_commit": "61535b7d970493d9bb6740a03d698d075dd0a3b9",
+  "ground_truth_files": [
+    "localstack-core/localstack/services/kms/models.py",
+    "tests/aws/services/kms/test_kms.py",
+    "tests/aws/services/kms/test_kms.snapshot.json",
+    "tests/aws/services/kms/test_kms.validation.json"
+  ],
+  "predicted_files": [
+    "__init__.py",
+    "tests/unit/aws/test_kms.py",
+    "core/localstack/aws/api/kms/__init__.py",
+    "core/localstack/packages/cryptography.py",
+    "core/localstack/utils/crypto.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack-core/localstack/aws/api/kms/__init__.py\",\n        \"localstack-core/localstack/utils/crypto.py\",\n        \"localstack-core/localstack/aws/api/kms/__init__.py\",  // test coverage and command registration (if applicable, e.g., CLI or handlers)\n        \"tests/unit/aws/test_kms.py\",\n        \"localstack-core/localstack/packages/cryptography.py\"\n    ],\n    \"reasoning\": \"1. The primary implementation for the KMS APIs, including shared secret derivation, is most likely in localstack-core/localstack/aws/api/kms/__init__.py, as it's the only file in the kms API and would handle the request logic. This file is highly likely to contain the non-symmetric derive-shared-secret bug and is the main fix location. 2. Cryptographic utilities that perform ECC and ECDH operations, which might be located in localstack-core/localstack/utils/crypto.py (or similar), often contain the helper logic for symmetric key agreement and likely need adjustment to ensure symmetrical results. 3. If CLI or request handlers/command registration is separated but resides in the same file, further registration/dispatch code in __init__.py may need updates. 4. Test coverage for this bug should be implemented or updated in tests/unit/aws/test_kms.py to verify that ECDH key agreement is now symmetric. 5. If cryptographic routines are further abstracted, localstack-core/localstack/packages/cryptography.py may hold lower-level cryptographic helper functions and may require review and correction for proper ECC/ECDH computations.\"\n}",
+  "error": null
+}

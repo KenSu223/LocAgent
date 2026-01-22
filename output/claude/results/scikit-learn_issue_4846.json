@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/4846",
+  "repo_name": "scikit-learn",
+  "title": "RidgeClassifier triggers data copy",
+  "base_commit": "8453daa6b983ee2fd73d537e81e58b3f6b0e3147",
+  "ground_truth_files": [
+    "sklearn/linear_model/ridge.py"
+  ],
+  "predicted_files": [
+    "sklearn/linear_model/_ridge.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/linear_model/ridge.py\",\n        \"sklearn/linear_model/base.py\",\n        \"sklearn/utils/extmath.py\",\n        \"sklearn/utils/__init__.py\"\n    ],\n    \"reasoning\": \"1. **sklearn/linear_model/ridge.py**: This is the primary location of RidgeClassifier and its related base classes and fit logic. The issue is caused by how data copying (with `copy_X` and `sample_weight`) is handled in the fit method and the `_center_data` utility, as inherited from common Ridge logic. The bug is likely a conditional in `_center_data` or its usage in RidgeClassifier where a copy happens even without sample weights.\\n2. **sklearn/linear_model/base.py**: This file contains shared linear model base classes and utilities inherited by RidgeClassifier. If the data copy/centering logic is implemented in a linear base (e.g., LinearClassifierMixin, LinearModel) or if data is routed through these base classes before reaching RidgeClassifier, related bug fixes may be needed.\\n3. **sklearn/utils/extmath.py**: Contains `safe_sparse_dot` and other utility functions for matrix ops, which may be called to handle copying or matrix operations during training. If `_center_data` or similar functions live here, their copy conditions need to be checked.\\n4. **sklearn/utils/__init__.py**: Includes utility functions such as `check_X_y` and possibly helpers for sample weight logic and array validation. If array checking or sample weighting is causing a data copy through these utilities, fix may be necessary here.\\n\\nRationale: The regression was introduced in RidgeClassifier's fit logic (referencing _center_data and sample weights); primary modification will be in ridge.py and possibly supporting utilities. Based on the inheritance, helper logic, and utilities involved in preprocessing, these 4 files are most critical. Fixing conditional copying logic (to avoid unnecessary copies when sample_weight is None) would resolve the issue.\"\n}",
+  "error": null
+}

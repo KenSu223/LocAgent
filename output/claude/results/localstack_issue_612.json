@@ -1,0 +1,23 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/612",
+  "repo_name": "localstack",
+  "title": "Uploading to S3 presigned URLs doesn't check Content-MD5 or other presigned constraints",
+  "base_commit": "debb24a792a7e2a1751ddf1f30d5c79f80b4885f",
+  "ground_truth_files": [
+    "localstack/services/generic_proxy.py",
+    "localstack/services/kinesis/kinesis_listener.py",
+    "localstack/services/s3/s3_listener.py",
+    "requirements.txt",
+    "tests/integration/test_s3.py"
+  ],
+  "predicted_files": [
+    "localstack/services/s3/s3_listener.py",
+    "localstack/services/s3/multipart_content.py",
+    "localstack/services/generic_proxy.py",
+    "tests/integration/test_s3.py",
+    "tests/unit/test_s3.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/s3/s3_listener.py\",\n        \"localstack/services/s3/multipart_content.py\",\n        \"localstack/services/generic_proxy.py\",\n        \"tests/integration/test_s3.py\",\n        \"tests/unit/test_s3.py\"\n    ],\n    \"reasoning\": \"1. localstack/services/s3/s3_listener.py: This is the core file responsible for processing incoming S3 requests, including uploads. Presigned URL constraint enforcement logic (validating Content-MD5, Content-Type, etc.) should be added here to check headers and request content during upload. While explicit handler names were not found, this is the key file by size and function.\\n2. localstack/services/s3/multipart_content.py: Handles multipart uploads for S3. For enforcing constraints on multipart operations (e.g., Content-MD5 checks for each part), this module may also need updates.\\n3. localstack/services/generic_proxy.py: This file likely acts as a common request handler/router for AWS service APIs, including header parsing and validation before passing to service logic. Adding or updating constraint checks here ensures presigned URLs behave as expected for S3 uploads.\\n4. tests/integration/test_s3.py: Integration tests covering S3 upload flows must be updated or expanded to verify that Content-MD5 mismatch and other presigned constraints are correctly enforced or rejected in end-to-end scenarios.\\n5. tests/unit/test_s3.py: Unit tests should be updated to ensure the S3 listener and multipart logic correctly reject uploads that don't meet presigned URL constraints, providing coverage for all code paths affected by the fix.\"\n}",
+  "error": null
+}

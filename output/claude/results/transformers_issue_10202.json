@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/10202",
+  "repo_name": "transformers",
+  "title": "Fast Tokenizers instantiated via vocab/merge files do not respect skip_special_tokens=True",
+  "base_commit": "1c8c2d9ab34b8c8d326db9e0608f8e54cfccb885",
+  "ground_truth_files": [
+    "src/transformers/tokenization_utils_base.py"
+  ],
+  "predicted_files": [
+    "src/transformers/tokenization_utils_fast.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"src/transformers/tokenization_utils_fast.py\",\n        \"src/transformers/models/gpt2/tokenization_gpt2_fast.py\",\n        \"src/transformers/tokenization_utils_base.py\"\n    ],\n    \"reasoning\": \"1. The core of the issue is that Fast tokenizers instantiated via vocab/merge files do not respect skip_special_tokens=True when decoding\u2014this logic is almost always managed in the base class for all fast tokenizers, which is in tokenization_utils_fast.py. This file delegates to the underlying Rust tokenizers and translates arguments between the Python layer and the Rust backend, so most likely the fix must occur there, ensuring skip_special_tokens is properly honored in the decode path.\\n2. tokenization_gpt2_fast.py implements GPT2TokenizerFast and may override or customize decoding logic specific to GPT-2; it should be checked to ensure skip_special_tokens is forwarded or processed correctly.\\n3. tokenization_utils_base.py is the base class for both fast and slow tokenizers and often contains shared decoder logic; changes may be needed here to maintain consistency, especially if interplay exists with pre-processing special tokens.\\n\\nOther related files (like tokenization_gpt2.py for the slow version) do not appear relevant to the fast tokenizer path. The issue is not within model or generation code, based on the report and repo structure. \\nThe list is sorted by the likelihood and centrality of the necessary changes.\"\n}",
+  "error": null
+}

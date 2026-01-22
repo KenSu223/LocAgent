@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/localstack/localstack/issues/5516",
+  "repo_name": "localstack",
+  "title": "bug: JWT ID Token issued by cognito-idp can not be verified in v0.14.0 but can in 0.11.5",
+  "base_commit": "c07094dbf52c947e77d952825eb4daabf409655d",
+  "ground_truth_files": [],
+  "predicted_files": [
+    "localstack/services/edge.py",
+    "localstack/services/moto.py",
+    "tests/integration/test_security.py",
+    "localstack/aws/spec.py",
+    "localstack/services/generic_proxy.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['localstack/services/moto.py', 'localstack/services/generic_proxy.py', 'localstack/services/edge.py', 'localstack/aws/spec.py', 'tests/integration/test_security.py'], 'reasoning': \"1. localstack/services/moto.py: This is the main interface for Moto-backed AWS service emulation in LocalStack. Any Moto request patching, endpoint rewriting, or inconsistencies affecting JWT or JWKS endpoints from Cognito must be handled here.\\n2. localstack/services/generic_proxy.py: Handles proxying requests to backend services. Misrouting or missing handling of the JWKS endpoint, or Cognito-specific path handling, should be corrected here.\\n3. localstack/services/edge.py: Responsible for routing edge-service requests in LocalStack, which may be needed to properly expose '.well-known/jwks.json' or JWT endpoints for Cognito.\\n4. localstack/aws/spec.py: Contains AWS service specifications, used to match incoming requests to services. Changes to endpoint registration for Cognito or JWKS may require updates here.\\n5. tests/integration/test_security.py: While no Cognito/JWKS tests exist, this is the logical file for adding/adjusting integration tests to verify JWT/JWKS endpoint functionality.\"}",
+  "error": null
+}

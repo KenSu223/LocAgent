@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/9438",
+  "repo_name": "transformers",
+  "title": "Doc styling utils adds parasites new lines",
+  "base_commit": "02e05fb0a532e572b56ba75dad6ba3db625bbdeb",
+  "ground_truth_files": [
+    "docs/source/benchmarks.rst",
+    "utils/style_doc.py"
+  ],
+  "predicted_files": [
+    "utils/style_doc.py"
+  ],
+  "success": true,
+  "raw_output": "{\n    \"files_to_modify\": [\n        \"utils/style_doc.py\"\n    ],\n    \"reasoning\": \"The root cause of the 'parasite new lines' issue is in utils/style_doc.py, which contains direct logic (regex substitutions, manual line inserts, docstring rewriting) that adds unwanted new lines. The problem manifests when this script is run on files in src/transformers and docs/source, but those files do not need code changes\u2014rather, they are victims of the incorrect formatting. The most important and likely only file requiring a fix is utils/style_doc.py: specifically, inside the style_docstring function (lines 400-429) and related docstring processing logic, which can be tuned to properly handle new lines across platforms, especially on Windows. No helper modules, dependencies, or other files showed evidence of code having to be changed in this analysis.\"\n}",
+  "error": null
+}

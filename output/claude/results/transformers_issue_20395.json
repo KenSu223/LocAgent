@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/huggingface/transformers/issues/20395",
+  "repo_name": "transformers",
+  "title": "some tokenizer(s) don't save the updated attributes",
+  "base_commit": "0ee71188ff184ee5f8b70081665858301fe4afb1",
+  "ground_truth_files": [
+    "src/transformers/tokenization_utils_base.py"
+  ],
+  "predicted_files": [
+    "src/transformers/tokenization_utils_base.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/transformers/tokenization_utils_base.py', 'src/transformers/tokenization_utils_fast.py', 'src/transformers/tokenization_utils.py', 'src/transformers/models/gpt2/tokenization_gpt2_fast.py', 'src/transformers/models/gpt2/tokenization_gpt2.py'], 'reasoning': '1. src/transformers/tokenization_utils_base.py: This file defines the base class for all tokenizers and contains the key save/load logic for serialization of attributes. The method that persists tokenizer attributes must be fixed here to ensure updated attributes (like model_max_length) are correctly stored and restored.\\n2. src/transformers/tokenization_utils_fast.py: Implements base class for Fast tokenizers (inherited by GPT2TokenizerFast). Ensuring attribute persistence and correct inheritance from the base class may require changes here.\\n3. src/transformers/tokenization_utils.py: Implements base class for slow tokenizers (inherited by GPT2Tokenizer). Analogous changes may be necessary to synchronize logic with Fast Tokenizers and to save updated attributes.\\n4. src/transformers/models/gpt2/tokenization_gpt2_fast.py: This is the implementation of GPT2TokenizerFast, directly relevant to the reported issue. Any ad-hoc logic for attribute handling and custom overrides should be fixed here if present.\\n5. src/transformers/models/gpt2/tokenization_gpt2.py: Implements GPT2Tokenizer (not Fast version). As similar logic may affect slow tokenizers, this file should be checked for necessary fixes for attribute saving/loading.'}",
+  "error": null
+}
