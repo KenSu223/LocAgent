@@ -6,7 +6,7 @@ import logging.handlers
 import time
 import toml
 from queue import Empty
-from typing import List
+from typing import List, Optional, Set, Dict, Tuple
 from tqdm import tqdm
 from copy import deepcopy
 from datasets import load_dataset
@@ -146,6 +146,116 @@ def filter_dataset(dataset, filter_column: str, used_list: str):
                 logging.info(f'Retained {len(filtered_dataset)} tasks after filtering')
                 return filtered_dataset
     return dataset
+
+
+def filter_dataset_by_repos(dataset, repos_filter: List[str]):
+    """
+    Filter dataset to only include instances from specified repositories.
+    
+    Args:
+        dataset: The dataset to filter
+        repos_filter: List of repo names to include (e.g., ['scikit-learn', 'flask'])
+    
+    Returns:
+        Filtered dataset
+    """
+    if not repos_filter:
+        return dataset
+    
+    # Normalize filter terms
+    filter_terms = [r.lower().replace("-", "").replace("_", "") for r in repos_filter]
+    
+    def matches_filter(example):
+        # Extract repo name from instance_id (e.g., "scikit-learn__scikit-learn-12345" -> "scikit-learn")
+        instance_id = example.get('instance_id', '')
+        repo_name = instance_id.split('__')[0].lower().replace("-", "").replace("_", "")
+        
+        # Also check the 'repo' field if available
+        repo_field = example.get('repo', '')
+        if repo_field:
+            repo_field_name = repo_field.split('/')[-1].lower().replace("-", "").replace("_", "")
+        else:
+            repo_field_name = ""
+        
+        return any(
+            term in repo_name or repo_name in term or 
+            term in repo_field_name or repo_field_name in term
+            for term in filter_terms
+        )
+    
+    original_count = len(dataset)
+    filtered_dataset = dataset.filter(matches_filter)
+    logging.info(f'Filtered to {len(filtered_dataset)}/{original_count} instances matching repos: {repos_filter}')
+    
+    # Log matched repos
+    matched_repos = {}
+    for example in filtered_dataset:
+        instance_id = example.get('instance_id', '')
+        repo_name = instance_id.split('__')[0]
+        matched_repos[repo_name] = matched_repos.get(repo_name, 0) + 1
+    
+    for repo, count in sorted(matched_repos.items()):
+        logging.info(f'  {repo}: {count} instances')
+    
+    return filtered_dataset
+
+
+def is_valid_result(loc_result: Dict) -> bool:
+    """
+    Check if a localization result has valid (non-empty) predictions.
+    """
+    found_files = loc_result.get('found_files', [[]])
+    found_entities = loc_result.get('found_entities', [[]])
+    
+    # Check if we have non-empty results
+    has_files = found_files != [[]] and any(len(f) > 0 for f in found_files if isinstance(f, list))
+    has_entities = found_entities != [[]] and any(len(e) > 0 for e in found_entities if isinstance(e, list))
+    
+    return has_files or has_entities
+
+
+def load_existing_results(output_file: str, traj_file: str = None) -> Tuple[Dict[str, Dict], Set[str], Set[str]]:
+    """
+    Load existing results from output file and categorize them.
+    
+    Returns:
+        Tuple of (all_results_dict, completed_ids, empty_ids)
+    """
+    existing_results = {}
+    completed_ids = set()
+    empty_ids = set()
+    
+    if not os.path.exists(output_file):
+        return existing_results, completed_ids, empty_ids
+    
+    logging.info(f"Loading existing results from {output_file}...")
+    
+    locs = load_jsonl(output_file)
+    for loc in locs:
+        instance_id = loc.get('instance_id')
+        if instance_id:
+            existing_results[instance_id] = loc
+            if is_valid_result(loc):
+                completed_ids.add(instance_id)
+            else:
+                empty_ids.add(instance_id)
+    
+    logging.info(f"  Completed (with results): {len(completed_ids)}")
+    logging.info(f"  Empty (need retry): {len(empty_ids)}")
+    
+    return existing_results, completed_ids, empty_ids
+
+
+def write_valid_results_to_file(output_file: str, existing_results: Dict[str, Dict], completed_ids: Set[str]) -> None:
+    """
+    Write only valid/completed results to file (overwrite mode).
+    This sets up the file for incremental appending of new results.
+    """
+    logging.info(f"Writing {len(completed_ids)} valid existing results to output file...")
+    with open(output_file, 'w') as f:
+        for instance_id in completed_ids:
+            if instance_id in existing_results:
+                f.write(json.dumps(existing_results[instance_id]) + '\n')
 
 
 def get_task_instruction(instance: dict, task: str = 'auto_search', include_pr=False, include_hint=False):
@@ -590,6 +700,11 @@ def run_localize(rank, args, bug_queue, log_queue, output_file_lock, traj_file_l
 def localize(args):
     bench_data = load_benchmark_dataset(args.dataset, args.split)
     bench_tests = filter_dataset(bench_data, 'instance_id', args.used_list)
+    
+    # NEW: Filter by repository if specified
+    if args.repos:
+        bench_tests = filter_dataset_by_repos(bench_tests, args.repos)
+    
     if args.eval_n_limit:
         eval_n_limit = min(args.eval_n_limit, len(bench_tests))
         bench_tests = bench_tests.select(range(0, eval_n_limit))
@@ -599,37 +714,61 @@ def localize(args):
     queue = manager.Queue()
     output_file_lock, traj_file_lock = manager.Lock(), manager.Lock()
 
-    # collect processed instances
-    processed_instance = []
-    if os.path.exists(args.output_file):
-        traj_file = os.path.join(args.output_folder, 'loc_trajs.jsonl')
-        locs = load_jsonl(args.output_file)        
-        if args.rerun_empty_location:
-            traj_datas = load_jsonl(traj_file)
-            backup_loc_output = backup_file(args.output_file)
-            backup_traj_output = backup_file(traj_file)
-            clear_file(args.output_file)
-            clear_file(traj_file)
-            for loc in locs:
-                if loc['found_files'] != [[]]:
-                    append_to_jsonl(loc, args.output_file)
-                    processed_instance.append(loc['instance_id'])
-                    
-            for loc_traj in traj_datas:
-                if loc_traj['found_files'] != [[]]:
-                    append_to_jsonl(loc_traj, traj_file)
-        else:
-            processed_instance = [loc['instance_id'] for loc in locs]
+    # NEW: Load existing results and categorize them
+    traj_file = os.path.join(args.output_folder, 'loc_trajs.jsonl')
+    existing_results, completed_ids, empty_ids = load_existing_results(args.output_file, traj_file)
     
-    num_bugs = 0
+    # Determine which instances need to be run
+    instance_ids_in_dataset = set()
+    instances_to_run = []
+    
     for bug in bench_tests:
         instance_id = bug["instance_id"]
-        if instance_id in processed_instance:
-        # if instance_id in processed_instance or instance_id in filtered_instances:
-            print(f"instance {instance_id} has already been processed, skip.")
-        else:
-            queue.put(bug)
-            num_bugs += 1
+        instance_ids_in_dataset.add(instance_id)
+        
+        if instance_id in completed_ids:
+            continue  # Skip - already has valid results
+        
+        # Either not in file or empty/failed - needs to be processed
+        instances_to_run.append(bug)
+    
+    # Separate counts for logging
+    new_instances = [bug for bug in instances_to_run if bug["instance_id"] not in existing_results]
+    retry_instances = [bug for bug in instances_to_run if bug["instance_id"] in empty_ids]
+    
+    logging.info(f"Instances to process:")
+    logging.info(f"  New (not in output file): {len(new_instances)}")
+    logging.info(f"  Retry (empty/failed): {len(retry_instances)}")
+    logging.info(f"  Total to run: {len(instances_to_run)}")
+    logging.info(f"  Skipping (already completed): {len(completed_ids & instance_ids_in_dataset)}")
+    
+    if len(instances_to_run) == 0:
+        logging.info("All instances already completed!")
+        return
+    
+    # Write valid results to file first (overwrite mode), then append new results
+    write_valid_results_to_file(args.output_file, existing_results, completed_ids)
+    
+    # Also handle traj file similarly
+    if os.path.exists(traj_file):
+        traj_results = {}
+        traj_locs = load_jsonl(traj_file)
+        for loc in traj_locs:
+            instance_id = loc.get('instance_id')
+            if instance_id and instance_id in completed_ids:
+                traj_results[instance_id] = loc
+        
+        # Rewrite traj file with only valid results
+        with open(traj_file, 'w') as f:
+            for instance_id in completed_ids:
+                if instance_id in traj_results:
+                    f.write(json.dumps(traj_results[instance_id]) + '\n')
+    
+    # Add instances to queue
+    num_bugs = 0
+    for bug in instances_to_run:
+        queue.put(bug)
+        num_bugs += 1
 
     log_queue = manager.Queue()
     queue_listener = logging.handlers.QueueListener(log_queue, *logging.getLogger().handlers)
@@ -637,17 +776,10 @@ def localize(args):
     mp.spawn(
         run_localize,
         nprocs=min(num_bugs, args.num_processes) if args.num_processes > 0 else num_bugs,
-        args=(args, queue, log_queue, output_file_lock, traj_file_lock, set(processed_instance)),
+        args=(args, queue, log_queue, output_file_lock, traj_file_lock, completed_ids),
         join=True
     )
     queue_listener.stop()
-    
-    if args.rerun_empty_location:
-        try:
-            delete_file(backup_loc_output)
-            delete_file(backup_traj_output)
-        except:
-            return
 
 
 def merge(args):
@@ -693,6 +825,15 @@ def main():
     parser.add_argument("--eval_n_limit", type=int, default=0)
     parser.add_argument("--used_list", type=str, default='selected_ids')
     
+    # NEW: Add repos filter argument
+    parser.add_argument(
+        "--repos",
+        type=str,
+        nargs="+",
+        default=None,
+        help="Filter to specific repos (e.g., --repos scikit-learn flask pytorch)"
+    )
+    
     parser.add_argument("--output_folder", type=str, required=True)
     parser.add_argument("--output_file", type=str, default="loc_outputs.jsonl")
     parser.add_argument("--merge_file", type=str, default="merged_loc_outputs.jsonl")
@@ -723,7 +864,8 @@ def main():
     
     parser.add_argument("--log_level", type=str, default='INFO')
     parser.add_argument("--timeout", type=int, default=900)
-    parser.add_argument("--rerun_empty_location", action="store_true")
+    parser.add_argument("--rerun_empty_location", action="store_true",
+                        help="[DEPRECATED] Use --repos with the same repos to automatically retry empty results")
     args = parser.parse_args()
 
     args.output_file = os.path.join(args.output_folder, args.output_file)
