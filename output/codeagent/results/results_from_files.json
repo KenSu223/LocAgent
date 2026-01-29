@@ -1,0 +1,652 @@
+{
+  "metadata": {
+    "source": "aggregated_from_files"
+  },
+  "results": [
+    {
+      "issue_url": "https://github.com/pallets/flask/issues/1971",
+      "repo_name": "flask",
+      "title": "Implement RFC 7233",
+      "base_commit": "01081dbe6cdfa3fc43d8e1fff708d4ed95e1be7e",
+      "ground_truth_files": [
+        "CHANGES",
+        "flask/helpers.py",
+        "tests/test_helpers.py"
+      ],
+      "predicted_files": [
+        "flask/helpers.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\n        \"flask/helpers.py\"\n    ],\n    \"reasoning\": \"The send_file method, which is responsible for sending files to clients and managing features such as conditional responses, is implemented in flask/helpers.py (starting at line 430). To support RFC 7233 Range Requests (partial file responses), this method must be modified to inspect and respond to 'Range' headers as per the HTTP specification. Other files are not directly involved in this functionality, as send_file encapsulates core file-serving behavior in Flask.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/pallets/flask/issues/2264",
+      "repo_name": "flask",
+      "title": "Handle app factory in FLASK_APP",
+      "base_commit": "cb94f4c5d3d4e1797207fd03d20d06c7bc0d05b4",
+      "ground_truth_files": [
+        "flask/cli.py",
+        "tests/test_cli.py"
+      ],
+      "predicted_files": [
+        "flask/cli.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['flask/cli.py'], 'reasoning': \"The logic for detecting, parsing, and calling app factories (e.g., 'create_app') is handled in flask/cli.py via the find_best_app and call_factory functions. To support factory syntax with arbitrary argument lists, changes are required here to parse and pass those arguments (potentially with regex and literal_eval), as described in the issue. No equivalent logic was found elsewhere.\"}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/pallets/flask/issues/2813",
+      "repo_name": "flask",
+      "title": "Allow flexible routing with SERVER_NAME config",
+      "base_commit": "07c7d5730a2685ef2281cc635e289685e5c3d478",
+      "ground_truth_files": [
+        "CHANGES.rst",
+        "docs/config.rst",
+        "src/flask/app.py",
+        "tests/test_basic.py",
+        "tests/test_blueprints.py"
+      ],
+      "predicted_files": [
+        "src/flask/app.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['src/flask/app.py'], 'reasoning': 'The SERVER_NAME restriction is enforced only during URL adapter creation in Flask.create_url_adapter() inside src/flask/app.py. Modifying this method allows flexible routing as described in the issue, enabling the application to process requests even if Host differs from SERVER_NAME. No other file contains logic relevant to this specific routing/server name check.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/pallets/flask/issues/2823",
+      "repo_name": "flask",
+      "title": "Flask complains a .env file exists when not using python-dotenv, even though that .env is a directory",
+      "base_commit": "673e5af658cf029e82d87047dcb7ebee3d343d10",
+      "ground_truth_files": [
+        "flask/cli.py"
+      ],
+      "predicted_files": [
+        "flask/cli.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\"flask/cli.py\"],\n    \"reasoning\": \"The code responsible for checking the presence of a \\\".env\\\" file and displaying a tip about installing python-dotenv is most likely located in flask/cli.py. This file handles CLI startup logic and imports dotenv in a try/except block, indicating it handles optional support for environment files. The warning is triggered even when .env is a directory, suggesting that flask/cli.py incorrectly checks for the existence of \\\".env\\\" without verifying that it is a file and not a directory. Modifying flask/cli.py to ensure it only warns about .env files\u2014not directories\u2014will fix the reported issue.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/pallets/flask/issues/3555",
+      "repo_name": "flask",
+      "title": "Remove simplejson",
+      "base_commit": "024f0d384cf5bb65c76ac59f8ddce464b2dc2ca1",
+      "ground_truth_files": [
+        "CHANGES.rst",
+        "docs/api.rst",
+        "docs/installation.rst",
+        "src/flask/json/__init__.py",
+        "src/flask/json/tag.py",
+        "tests/test_helpers.py",
+        "tox.ini"
+      ],
+      "predicted_files": [
+        "src/flask/json/__init__.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['src/flask/json/__init__.py'], 'reasoning': \"This file contains outdated comments and docstrings referencing 'simplejson', such as in the JSONDecoder docstring and a comment for escaping slashes. There are no code imports or other references to 'simplejson', so only documentation/comments need updating to accurately reflect the current use of the builtin 'json' (via itsdangerous) and remove any misguiding reference to 'simplejson'.\"}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/pallets/flask/issues/3628",
+      "repo_name": "flask",
+      "title": "Returning Response and headers causes duplicate headers",
+      "base_commit": "6f2fdc5ac4ad869a21c4c0281d7fa1eb8aa5a689",
+      "ground_truth_files": [
+        "CHANGES.rst",
+        "src/flask/app.py",
+        "tests/test_basic.py"
+      ],
+      "predicted_files": [
+        "src/flask/helpers.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\"src/flask/helpers.py\"],\n    \"reasoning\": \"The issue arises when jsonify (or direct dict responses) and custom headers (specifically 'Content-Type') are both used, resulting in duplicate 'Content-Type' headers. This is caused by jsonify (likely defined in helpers.py) adding a 'Content-Type: application/json' header and then the custom headers being merged without replacing the previous value. The logic for make_response and jsonify handling, including header merging, will need to be updated in helpers.py to ensure that if the 'Content-Type' is explicitly set in user headers, it replaces the one set by jsonify, avoiding duplicates. Therefore, modifications are required in src/flask/helpers.py, where these utilities and their header-merging logic are implemented.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/pallets/flask/issues/4220",
+      "repo_name": "flask",
+      "title": "`template_filter` decorator typing does not support custom filters with multiple arguments",
+      "base_commit": "8e589daaf2cec6a10262b8ff88801127f2fa14fd",
+      "ground_truth_files": [
+        "CHANGES.rst",
+        "src/flask/typing.py"
+      ],
+      "predicted_files": [
+        "src/flask/app.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\"src/flask/app.py\"],\n    \"reasoning\": \"The core type used for template filters\u2014TemplateFilterCallable\u2014is already defined correctly in src/flask/typing.py as Callable[..., Any], allowing for multiple arguments. However, the typing restriction causing the mypy error is likely enforced in src/flask/app.py, where the template_filter decorator is implemented or used. The decorator's type hint for the filter argument probably restricts it to a function accepting a single argument (Callable[[Any], str]) instead of the more flexible TemplateFilterCallable. Modifying the type hints in src/flask/app.py to use TemplateFilterCallable will resolve this issue, allowing custom filters that take multiple arguments.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/pallets/flask/issues/4602",
+      "repo_name": "flask",
+      "title": "Flask.auto_find_instance_path() can return wrong path for namespace packages installed in development mode",
+      "base_commit": "fb89745408cc02515815c792355c7e883b2d08a4",
+      "ground_truth_files": [
+        "CHANGES.rst",
+        "src/flask/scaffold.py",
+        "tests/test_instance_config.py",
+        "tox.ini"
+      ],
+      "predicted_files": [
+        "src/flask/scaffold.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['src/flask/scaffold.py'], 'reasoning': 'The problematic logic for resolving the package path for namespace packages, and the function that calls it, are both found in src/flask/scaffold.py. Fixing the issue requires passing the full import name to _find_package_path and using it to correctly select the intended submodule location. No other files implement or call this logic.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/pallets/flask/issues/593",
+      "repo_name": "flask",
+      "title": "Nestable blueprints",
+      "base_commit": "85dce2c836fe03aefc07b7f4e0aec575e170f1cd",
+      "ground_truth_files": [
+        "CHANGES.rst",
+        "docs/blueprints.rst",
+        "src/flask/app.py",
+        "src/flask/blueprints.py",
+        "tests/test_blueprints.py"
+      ],
+      "predicted_files": [
+        "src/flask/app.py",
+        "src/flask/blueprints.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['src/flask/blueprints.py', 'src/flask/app.py'], 'reasoning': 'The Blueprint class implementation is in src/flask/blueprints.py, where the new register_blueprint method should be added. The blueprint registration logic lives in src/flask/app.py, which may need changes to handle nested blueprints during registration. These are the files where code changes are necessary to support nestable blueprints.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/pallets/flask/issues/602",
+      "repo_name": "flask",
+      "title": "Misspelling in docs @ flask.Flask.handle_exception",
+      "base_commit": "ee76129812419d473eb62434051e81d5855255b6",
+      "ground_truth_files": [
+        "flask/app.py"
+      ],
+      "predicted_files": [
+        "flask/app.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['flask/app.py'], 'reasoning': \"The misspelling 'occours' exists only in the docstring of the handle_exception method in flask/app.py, which documents Flask's default exception handling and is relevant for users and documentation generators. No other files contain this issue.\"}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/localstack/localstack/issues/11696",
+      "repo_name": "localstack",
+      "title": "bug: API Gateway does not persist correctly when you restart the localstack docker container",
+      "base_commit": "8c9d9b0475247f667a0f184f2fbc6d66b955749f",
+      "ground_truth_files": [
+        "localstack-core/localstack/services/apigateway/next_gen/execute_api/router.py",
+        "localstack-core/localstack/services/apigateway/next_gen/provider.py"
+      ],
+      "predicted_files": [
+        "localstack-core/localstack/services/apigateway/helpers.py",
+        "localstack-core/localstack/services/apigateway/models.py",
+        "localstack-core/localstack/services/apigateway/legacy/provider.py",
+        "localstack-core/localstack/services/apigateway/next_gen/provider.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack-core/localstack/services/apigateway/helpers.py\",\n        \"localstack-core/localstack/services/apigateway/models.py\",\n        \"localstack-core/localstack/services/apigateway/legacy/provider.py\",\n        \"localstack-core/localstack/services/apigateway/next_gen/provider.py\"\n    ],\n    \"reasoning\": \"The bug centers around LocalStack's API Gateway not persisting its deployed state across container restarts. The files above are core to the definition, storage, access, and creation of API Gateway resources (APIs, stages, deployments). The helpers.py handles store access and retrieval, models.py contains the underlying resource structures, while legacy/provider.py and next_gen/provider.py contain main logic for the respective API Gateway service handlers. Fixing persistence will require modifying these files to correctly save, restore, and reload API Gateway objects during container lifecycle events (shutdown/startup). While persistence implementation may need support in other generic LocalStack modules, these are the main service-specific files that must be addressed for correct API Gateway state restoration.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/localstack/localstack/issues/402",
+      "repo_name": "localstack",
+      "title": "Dynamodbstreams Use Kinesis Shard Identifiers",
+      "base_commit": "65b807e4e95fe6da3e30f13e4271dc9dcfaa334e",
+      "ground_truth_files": [
+        "localstack/services/dynamodbstreams/dynamodbstreams_api.py"
+      ],
+      "predicted_files": [
+        "localstack/services/dynamodbstreams/dynamodbstreams_api.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['localstack/services/dynamodbstreams/dynamodbstreams_api.py'], 'reasoning': 'This file contains the logic where DynamoDB Streams calls Kinesis methods and returns Kinesis shard identifiers directly as DynamoDB Streams shard IDs. This is incorrect, as DynamoDB Streams has different format and length constraints for ShardIds compared to Kinesis. The bug occurs in the DescribeStream and GetShardIterator logic where the Shards field is set based on Kinesis response. Only this file needs modification to generate correct DynamoDB Streams-style ShardIds.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/localstack/localstack/issues/4517",
+      "repo_name": "localstack",
+      "title": "bug: AWS::NoValue produces error when used in IAM policy template",
+      "base_commit": "9f1b9dbf60f406e8d6205402b8ac078195cd0c01",
+      "ground_truth_files": [
+        "localstack/services/cloudformation/models/cloudwatch.py",
+        "localstack/services/cloudformation/models/iam.py",
+        "tests/integration/cloudformation/test_cloudformation_iam.py",
+        "tests/integration/cloudformation/test_cloudformation_iam.snapshot.json",
+        "tests/integration/templates/iam_policy_attachments.yaml",
+        "tests/integration/templates/iam_role_policy.yaml"
+      ],
+      "predicted_files": [
+        "deployment_utils.py",
+        "localstack/services/cloudformation/deployment_utils.py",
+        "models/iam.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['localstack/services/cloudformation/deployment_utils.py'], 'reasoning': 'The recursive removal function remove_none_values in deployment_utils.py currently only removes AWS::NoValue placeholders from lists and dictionaries at one nesting level. To properly handle templates using AWS::NoValue in deeply nested arrays (like IAM PolicyDocument Resources), this function must be improved to recursively remove all occurrences. Policy creation in models/iam.py already uses this function, so fixing it here resolves the bug.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/localstack/localstack/issues/4987",
+      "repo_name": "localstack",
+      "title": "bug: The Content-MD5 you specified did not match what we received",
+      "base_commit": "2fe8440b619329891db150e45910e8aaad97b7ce",
+      "ground_truth_files": [
+        "localstack/services/s3/s3_listener.py",
+        "tests/integration/test_s3.py"
+      ],
+      "predicted_files": [
+        "localstack/services/edge.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/edge.py\"\n    ],\n    \"reasoning\": \"The edge.py file acts as the main ingress proxy and request router for all AWS API service calls in LocalStack, including S3. It handles incoming requests, modifies headers, and proxies requests to service backends such as Moto for S3. The debug logs from the issue show that the S3 requests are routed through edge.py. Content-MD5 mismatches often result from issues with request body encoding, header modification, or proxying errors\u2014exactly the type of logic that edge.py would contain. Since none of the S3 service files contain MD5 or related validation code and the error only happens with new LocalStack versions (likely after a change in edge proxy logic), edge.py is the file to modify to inspect, correct, or rewrite Content-MD5 header handling and ensure compatibility with S3 expectations.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/localstack/localstack/issues/544",
+      "repo_name": "localstack",
+      "title": "S3 object metadata not saved when uploaded with presigned url",
+      "base_commit": "6c8f52d42563c1207a8cb3fbbfccb6d4af2a0670",
+      "ground_truth_files": [
+        "localstack/services/s3/s3_listener.py",
+        "tests/integration/test_s3.py"
+      ],
+      "predicted_files": [
+        "localstack/services/s3/s3_listener.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\n        \"localstack/services/s3/s3_listener.py\"\n    ],\n    \"reasoning\": \"The issue is that metadata passed as custom headers (x-amz-meta-*) during S3 presigned URL PUTs is not saved or returned by localstack. The core S3 request handling is implemented in s3_listener.py, which would be responsible for parsing PUT requests, extracting headers, storing metadata along with objects, and returning metadata in headObject responses. Missing or incorrect metadata handling needs to be fixed in this file so that it processes x-amz-meta-* headers from PUT requests and attaches them to objects appropriately.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/localstack/localstack/issues/894",
+      "repo_name": "localstack",
+      "title": "ERROR:localstack.services.generic_proxy: Error forwarding request:",
+      "base_commit": "737ca72b7bce6e377dd6876eacee63338fa8c30c",
+      "ground_truth_files": [
+        "README.md",
+        "localstack/config.py",
+        "localstack/services/kinesis/kinesis_starter.py"
+      ],
+      "predicted_files": [
+        "localstack/services/generic_proxy.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['localstack/services/generic_proxy.py'], 'reasoning': \"This file contains the core logic for forwarding proxy requests to backend services using HTTP, which is where connection errors occur and are handled. The exact error reported occurs due to failed connections when proxying requests, as shown in this file's code and the stack trace. Improvements in error handling, diagnostics, or retry logic should be made here to resolve the reported issue.\"}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/10251",
+      "repo_name": "scikit-learn",
+      "title": "Extending Criterion",
+      "base_commit": "61e722aa126207efcdbc1ddcd4453854ad44ea09",
+      "ground_truth_files": [
+        "sklearn/tree/_criterion.pxd",
+        "sklearn/tree/_criterion.pyx"
+      ],
+      "predicted_files": [
+        "sklearn/tree/_criterion.pxd",
+        "sklearn/tree/_criterion.pyx",
+        "sklearn/tree/tree.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/tree/_criterion.pxd\",\n        \"sklearn/tree/_criterion.pyx\",\n        \"sklearn/tree/tree.py\"\n    ],\n    \"reasoning\": \"To make Criterion easier to extend (in Cython and possibly Python) and to allow passing custom impurity functions to decision trees, changes are needed in these files: (1) _criterion.pxd: to export Criterion and potentially related classes/methods as cpdef (Cython-public), so they can be subclassed easily or from Python; (2) _criterion.pyx: to make key methods of the Criterion class overridable (change from cdef to cpdef for node_impurity, children_impurity, etc.) and clarify/document initialization; (3) tree.py: to relax or refactor the API argument checks for the criterion parameter, enabling users to pass custom Criterion objects or callables. These changes together address subclassing, usage, and extensibility as requested in the issue.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/16730",
+      "repo_name": "scikit-learn",
+      "title": "BUG: MLE for PCA mis-estimates rank",
+      "base_commit": "eaf0a044fdc084ebeeb9bbfbcf42e6df2b1491bb",
+      "ground_truth_files": [
+        "doc/whats_new/v0.23.rst",
+        "sklearn/decomposition/_pca.py",
+        "sklearn/decomposition/tests/test_pca.py"
+      ],
+      "predicted_files": [
+        "sklearn/decomposition/_pca.py",
+        "sklearn/decomposition/tests/test_pca.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['sklearn/decomposition/_pca.py', 'sklearn/decomposition/tests/test_pca.py'], 'reasoning': \"The bug arises in the logic handling MLE rank estimation within PCA, implemented in sklearn/decomposition/_pca.py (likely around the use of _infer_dimension). Tests for PCA's n_components_ (including 'mle' mode) are in sklearn/decomposition/tests/test_pca.py, which should also be updated to verify the fix and correct behavior.\"}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/19248",
+      "repo_name": "scikit-learn",
+      "title": "Birch should be called BIRCH",
+      "base_commit": "23d8761615d0417eef5f52cc796518e44d41ca2a",
+      "ground_truth_files": [
+        "doc/modules/clustering.rst",
+        "examples/cluster/plot_birch_vs_minibatchkmeans.py",
+        "examples/cluster/plot_cluster_comparison.py",
+        "sklearn/cluster/_birch.py"
+      ],
+      "predicted_files": [
+        "sklearn/cluster/_birch.py",
+        "examples/cluster/plot_birch_vs_minibatchkmeans.py",
+        "examples/cluster/plot_cluster_comparison.py",
+        "sklearn/cluster/tests/test_birch.py",
+        "sklearn/cluster/__init__.py",
+        "sklearn/utils/tests/test_estimator_html_repr.py",
+        "sklearn/tests/test_docstring_parameters.py",
+        "maint_tools/test_docstrings.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/cluster/_birch.py\",\n        \"examples/cluster/plot_birch_vs_minibatchkmeans.py\",\n        \"examples/cluster/plot_cluster_comparison.py\",\n        \"sklearn/cluster/tests/test_birch.py\",\n        \"sklearn/cluster/__init__.py\",\n        \"sklearn/utils/tests/test_estimator_html_repr.py\",\n        \"sklearn/tests/test_docstring_parameters.py\",\n        \"maint_tools/test_docstrings.py\"\n    ],\n    \"reasoning\": \"These files reference 'Birch' in user-facing docstrings, comments, print statements, plot titles, error messages, or documentation. They should refer to the algorithm as 'BIRCH' per academic convention, while the class name remains 'Birch' for import and usage.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/2185",
+      "repo_name": "scikit-learn",
+      "title": "MinibatchKMeans bad center reallocation causes duplicate centers",
+      "base_commit": "14d03f60ed366df942be09ee4bc394a69958e09c",
+      "ground_truth_files": [
+        "sklearn/cluster/k_means_.py",
+        "sklearn/cluster/tests/test_k_means.py",
+        "sklearn/utils/setup.py",
+        "sklearn/utils/tests/test_extmath.py"
+      ],
+      "predicted_files": [
+        "k_means_.py",
+        "sklearn/cluster/k_means_.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['sklearn/cluster/k_means_.py'], 'reasoning': 'This file contains the implementation of the MiniBatchKMeans algorithm and handles cluster center reallocation. The current heuristic allows duplicate cluster centers to be assigned during bad center reallocation, so modifying this logic in k_means_.py will fix the bug.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/2372",
+      "repo_name": "scikit-learn",
+      "title": "StratifiedKFold should do its best to preserve the dataset dependency structure",
+      "base_commit": "130601e076ec5ca8298b95c3d02122ac5d8cf8eb",
+      "ground_truth_files": [
+        "doc/modules/cross_validation.rst",
+        "doc/tutorial/statistical_inference/model_selection.rst",
+        "doc/whats_new.rst",
+        "sklearn/cross_validation.py",
+        "sklearn/feature_selection/tests/test_rfe.py",
+        "sklearn/tests/test_cross_validation.py",
+        "sklearn/tests/test_naive_bayes.py"
+      ],
+      "predicted_files": [
+        "sklearn/cross_validation.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['sklearn/cross_validation.py'], 'reasoning': 'This file contains the implementation of StratifiedKFold and its index-splitting logic that currently risks breaking dependency structure. To fix the issue and refactor the fold logic, all changes should be made here.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/25525",
+      "repo_name": "scikit-learn",
+      "title": "Extend SequentialFeatureSelector example to demonstrate how to use negative tol",
+      "base_commit": "559609fe98ec2145788133687e64a6e87766bc77",
+      "ground_truth_files": [
+        "examples/feature_selection/plot_select_from_model_diabetes.py"
+      ],
+      "predicted_files": [
+        "examples/feature_selection/plot_select_from_model_diabetes.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['examples/feature_selection/plot_select_from_model_diabetes.py'], 'reasoning': 'The diabetes example script demonstrates SequentialFeatureSelector with forward and backward selection, but does not include usage of the `tol` parameter, especially a negative value as described in the issue. To resolve the issue, this example should be expanded to show how to use a negative tolerance. The corresponding test is already present in the test suite, so no change is needed there.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/26590",
+      "repo_name": "scikit-learn",
+      "title": "KNNImputer add_indicator fails to persist where missing data had been present in training",
+      "base_commit": "e04b8e70e60df88751af5cd667cafb66dc32b397",
+      "ground_truth_files": [
+        "doc/whats_new/v1.3.rst",
+        "sklearn/impute/_knn.py",
+        "sklearn/impute/tests/test_common.py"
+      ],
+      "predicted_files": [
+        "sklearn/impute/_knn.py",
+        "sklearn/impute/_base.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\n        \"sklearn/impute/_knn.py\",\n        \"sklearn/impute/_base.py\"\n    ],\n    \"reasoning\": \"The main implementation of KNNImputer is in sklearn/impute/_knn.py, where the logic for adding missing value indicator columns during transform is handled (as KNNImputer inherits from _BaseImputer). However, the code for managing the indicator columns and their persistence across fit/transform (especially 'add_indicator') is abstracted in _BaseImputer, which resides in sklearn/impute/_base.py. Both files need changes: _knn.py to ensure KNNImputer's transform method always includes persistent indicator columns if missing values were present on fit, and _base.py to ensure the correct handling of the indicator logic and column management across fit/transform cycles.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/27682",
+      "repo_name": "scikit-learn",
+      "title": "MAINT Directly `cimport` interfaces from `std::algorithm`",
+      "base_commit": "3d19272be75fe32edd4cf01cb2eeac2281305e42",
+      "ground_truth_files": [
+        "sklearn/metrics/_pairwise_distances_reduction/_middle_term_computer.pyx.tp",
+        "sklearn/metrics/_pairwise_distances_reduction/_radius_neighbors.pyx.tp"
+      ],
+      "predicted_files": [
+        "sklearn/metrics/_pairwise_distances_reduction/_radius_neighbors.py",
+        "sklearn/metrics/_pairwise_distances_reduction/_middle_term_computer.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['sklearn/metrics/_pairwise_distances_reduction/_radius_neighbors.pyx.tp', 'sklearn/metrics/_pairwise_distances_reduction/_middle_term_computer.pyx.tp'], 'reasoning': 'Both files manually bind C++ standard library functions `move` and `fill` using the old `cdef extern from <algorithm>` syntax. Cython 3 now supports direct cimporting from `libcpp.algorithm`, so these files should switch to the new idiom for better compatibility and maintainability as described in the issue.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/29294",
+      "repo_name": "scikit-learn",
+      "title": "ConvergenceWarnings cannot be turned off",
+      "base_commit": "2707099b23a0a8580731553629566c1182d26f48",
+      "ground_truth_files": [
+        "sklearn/utils/parallel.py",
+        "sklearn/utils/tests/test_parallel.py"
+      ],
+      "predicted_files": [
+        "sklearn/covariance/_graph_lasso.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['sklearn/covariance/_graph_lasso.py'], 'reasoning': 'This file contains the implementation of GraphicalLassoCV and internally suppresses ConvergenceWarnings using \\'warnings.simplefilter(\"ignore\", ConvergenceWarning)\\', preventing users from turning off warnings globally or capturing them. The suppression should be made optional or controlled to respect user warning filters.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/3689",
+      "repo_name": "scikit-learn",
+      "title": "using sparse matrix in fit_params",
+      "base_commit": "439c19596a248a31cd1aa8220f54a622a0322160",
+      "ground_truth_files": [
+        "sklearn/cross_validation.py",
+        "sklearn/tests/test_cross_validation.py"
+      ],
+      "predicted_files": [
+        "sklearn/cross_validation.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\"sklearn/cross_validation.py\"],\n    \"reasoning\": \"The issue arises from code in sklearn/cross_validation.py where fit_params values (such as a sparse matrix) are assumed to support len(), which raises a TypeError for sparse matrices from scipy. The problem is local to this file in how fit_params are processed before fitting, specifically in the block where it checks 'hasattr(v, __len__) and len(v) == n_samples'. To fix this, one must update the logic to check for sparse matrices and use a different shape or property (e.g., v.shape[0]) instead of len(v), thus only sklearn/cross_validation.py requires modification.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/scikit-learn/scikit-learn/issues/4744",
+      "repo_name": "scikit-learn",
+      "title": "Bug with using TreeClassifier with OOB score and sparse matrices",
+      "base_commit": "abb31d0a7ca769a1e6406553a58a7fb0bd3b259a",
+      "ground_truth_files": [
+        "doc/whats_new.rst",
+        "sklearn/ensemble/forest.py",
+        "sklearn/ensemble/tests/test_forest.py"
+      ],
+      "predicted_files": [
+        "sklearn/ensemble/tests/test_forest.py",
+        "sklearn/ensemble/forest.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['sklearn/ensemble/forest.py', 'sklearn/ensemble/tests/test_forest.py'], 'reasoning': 'sklearn/ensemble/forest.py must be modified to change check_input to True during OOB score prediction with sparse matrices. sklearn/ensemble/tests/test_forest.py should be updated or extended to include a test for ExtraTreesClassifier with OOB score and sparse matrices to catch this bug in the future.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/huggingface/transformers/issues/15640",
+      "repo_name": "transformers",
+      "title": "Add support for ONNX-TensorRT conversion for GPT-J6B (and possible bug in rotary embedding)",
+      "base_commit": "147c8166852db64de12b851b8307f44c9e8fe0dd",
+      "ground_truth_files": [
+        "src/transformers/models/gptj/modeling_gptj.py"
+      ],
+      "predicted_files": [
+        "src/transformers/models/gptj/modeling_gptj.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['src/transformers/models/gptj/modeling_gptj.py'], 'reasoning': \"The file 'src/transformers/models/gptj/modeling_gptj.py' contains the rotary positional embedding logic and the problematic usage of torch.repeat_interleave that causes ONNX Sequence ops to be exported. Modifying this file will fix the ONNX-TensorRT compatibility issue for GPT-J6B, and allow for clarification/correction of the rotary embedding implementation. No other files involve rotary embedding or GPT-J ONNX export issues.\"}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/huggingface/transformers/issues/26809",
+      "repo_name": "transformers",
+      "title": "Add Mistral Models to Flax",
+      "base_commit": "da1d0d404f05523d37b37207a4c1ff419cc1f47f",
+      "ground_truth_files": [
+        "docs/source/en/index.md",
+        "docs/source/en/model_doc/llama.md",
+        "src/transformers/__init__.py",
+        "src/transformers/modeling_flax_utils.py",
+        "src/transformers/models/auto/modeling_flax_auto.py",
+        "src/transformers/models/bloom/modeling_bloom.py",
+        "src/transformers/models/fuyu/image_processing_fuyu.py",
+        "src/transformers/models/llama/__init__.py",
+        "src/transformers/models/mpt/modeling_mpt.py",
+        "src/transformers/utils/dummy_flax_objects.py",
+        "tests/models/llama/test_modeling_llama.py",
+        "tests/models/mistral/test_modeling_mistral.py",
+        "tests/models/persimmon/test_modeling_persimmon.py",
+        "tests/models/phi/test_modeling_phi.py",
+        "utils/check_docstrings.py"
+      ],
+      "predicted_files": [
+        "modeling_flax_mistral.py",
+        "src/transformers/__init__.py",
+        "src/transformers/models/__init__.py",
+        "src/transformers/models/mistral/modeling_flax_mistral.py",
+        "src/transformers/models/mistral/__init__.py",
+        "__init__.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['src/transformers/models/mistral/modeling_flax_mistral.py', 'src/transformers/models/mistral/__init__.py', 'src/transformers/__init__.py', 'src/transformers/models/__init__.py'], 'reasoning': \"To add Mistral support in Flax, you need to implement the model logic in 'modeling_flax_mistral.py', update the models/mistral __init__.py to expose the Flax model, and update global __init__.py files to register the Flax Mistral model for import and usage following the conventions used for other models.\"}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/huggingface/transformers/issues/30",
+      "repo_name": "transformers",
+      "title": "[Feature request] Add example of finetuning the pretrained models on custom corpus",
+      "base_commit": "d2871b29754abd0f72cf42c299bb1c041519f7bc",
+      "ground_truth_files": [
+        "src/transformers/modeling_utils.py",
+        "src/transformers/trainer.py",
+        "src/transformers/training_args.py"
+      ],
+      "predicted_files": [
+        "examples/pytorch/language-modeling/README.md",
+        "examples/pytorch/language-modeling/run_plm.py"
+      ],
+      "success": true,
+      "raw_output": "{\n    \"files_to_modify\": [\n        \"examples/pytorch/language-modeling/README.md\",\n        \"examples/pytorch/language-modeling/run_plm.py\"\n    ],\n    \"reasoning\": \"The README.md already has examples for fine-tuning pretrained models on a custom corpus for causal (CLM, e.g. GPT2) and masked language modeling (MLM, e.g. BERT/RoBERTa), but does not provide an equivalent example for permutation language modeling (PLM, e.g. XLNet). It should be updated with a clear example and instructions for using custom training/validation files with XLNet. The run_plm.py script should be reviewed and potentially extended to ensure it supports loading custom corpus files via arguments like --train_file and --validation_file, as done in other scripts. Without this, users cannot easily fine-tune XLNet models on their own data, so changes may be needed both in its argument parsing logic and the documentation.\"\n}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/huggingface/transformers/issues/34390",
+      "repo_name": "transformers",
+      "title": "[mask2former] torch.export error for Mask2Former",
+      "base_commit": "9bee9ff5db6e68fb31065898d7e924d07c1eb9c1",
+      "ground_truth_files": [
+        "src/transformers/models/mask2former/modeling_mask2former.py",
+        "tests/models/mask2former/test_modeling_mask2former.py"
+      ],
+      "predicted_files": [
+        "src/transformers/models/mask2former/modeling_mask2former.py",
+        "modeling_mask2former.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['src/transformers/models/mask2former/modeling_mask2former.py'], 'reasoning': 'The error originates from dynamic/tensor-dependent shape computations and masking logic located in the forward methods inside modeling_mask2former.py, causing symbolic tracing (torch.export) to fail. Modifications are needed here to ensure all shape and mask operations are compatible with torch.export.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/huggingface/transformers/issues/3785",
+      "repo_name": "transformers",
+      "title": "How to fine tune EncoderDecoder model for training a new corpus of data ?",
+      "base_commit": "41750a6cff55e401364568868d619747de3db037",
+      "ground_truth_files": [
+        "docs/source/index.rst",
+        "src/transformers/__init__.py",
+        "src/transformers/configuration_auto.py",
+        "src/transformers/modeling_auto.py",
+        "src/transformers/modeling_bert.py",
+        "src/transformers/modeling_encoder_decoder.py",
+        "src/transformers/modeling_utils.py",
+        "src/transformers/utils_encoder_decoder.py"
+      ],
+      "predicted_files": [],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['docs/source/examples.md', 'docs/source/usage.rst'], 'reasoning': 'EncoderDecoder model fine-tuning is currently undocumented in both the examples and usage documentation files. Modifying these files to include fine-tuning instructions will provide the needed documentation for users.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/huggingface/transformers/issues/8171",
+      "repo_name": "transformers",
+      "title": "Need suggestion on contributing TFDPR",
+      "base_commit": "eb3bd73ce35bfef56eeb722d697f2d39a06a8f8d",
+      "ground_truth_files": [
+        "docs/source/model_doc/dpr.rst",
+        "src/transformers/__init__.py",
+        "src/transformers/convert_pytorch_checkpoint_to_tf2.py",
+        "src/transformers/modeling_tf_auto.py",
+        "src/transformers/utils/dummy_pt_objects.py",
+        "src/transformers/utils/dummy_tf_objects.py",
+        "tests/test_modeling_dpr.py",
+        "utils/check_repo.py"
+      ],
+      "predicted_files": [
+        "modeling_tf_dpr.py",
+        "src/transformers/__init__.py",
+        "dummy_tf_objects.py",
+        "src/transformers/modeling_tf_dpr.py",
+        "src/transformers/utils/dummy_tf_objects.py",
+        "__init__.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['src/transformers/modeling_tf_dpr.py', 'src/transformers/__init__.py', 'src/transformers/utils/dummy_tf_objects.py', 'docs/source/model_doc/dpr.rst'], 'reasoning': 'To support TFDPR, you need to create modeling_tf_dpr.py for the model implementation, edit __init__.py to register/import the model, update dummy_tf_objects.py to provide TF dummy stubs, and update docs/source/model_doc/dpr.rst for documentation. These changes cover the necessary code and doc integration for a first-class TFDPR addition.'}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/huggingface/transformers/issues/9",
+      "repo_name": "transformers",
+      "title": "Crash at the end of training",
+      "base_commit": "9fef668338b15e508bac99598dd139546fece00b",
+      "ground_truth_files": [
+        "tests/big_bird/test_modeling_big_bird.py"
+      ],
+      "predicted_files": [
+        "answering/run_squad.py",
+        "run_squad.py",
+        "run_qa.py",
+        "answering/run_qa.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['examples/pytorch/question-answering/run_qa.py', 'examples/legacy/question-answering/run_squad.py'], 'reasoning': \"The crash at the end of training likely occurs during the post-training steps such as metric/logging, checkpointing, model card creation, or uploading. These operations are handled in the run_qa.py and run_squad.py scripts, which contain the training loop and finalization logic. Modifications here can add error handling, fix logic errors, or diagnose file-system/connection issues that occur at job completion. Focusing on these files will address bugs that happen after training finishes, as described in the user's issue.\"}",
+      "error": null
+    },
+    {
+      "issue_url": "https://github.com/huggingface/transformers/issues/9954",
+      "repo_name": "transformers",
+      "title": "[Good first issue] LXMERT TensorFlow Integration tests",
+      "base_commit": "626a0a01471accc32ded29ccca3ed93c4995fcd6",
+      "ground_truth_files": [
+        "tests/test_modeling_tf_lxmert.py"
+      ],
+      "predicted_files": [
+        "tests/test_modeling_tf_bert.py",
+        "tests/test_modeling_tf_lxmert.py"
+      ],
+      "success": true,
+      "raw_output": "{'files_to_modify': ['tests/test_modeling_tf_lxmert.py'], 'reasoning': 'Integration tests for the TensorFlow LXMERT model are missing and should be added to tests/test_modeling_tf_lxmert.py, following the example from tests/test_modeling_tf_bert.py. No other files are required for this issue.'}",
+      "error": null
+    }
+  ]
+}
