@@ -242,6 +242,37 @@ def parse_node_id(nid: str):
     return nfile, nname
 
 
+def _get_module_corpus_size(search_scope: str) -> int:
+    entity_searcher = get_graph_entity_searcher()
+    graph = get_graph()
+    count = 0
+    for nid in graph:
+        if is_test_file(nid):
+            continue
+        ndata = entity_searcher.get_node_data([nid])[0]
+        if search_scope == 'all' or ndata['type'] == search_scope:
+            count += 1
+    return count
+
+
+def _get_bm25_corpus_size(retriever, persist_path: Optional[str] = None) -> Optional[int]:
+    if persist_path:
+        corpus_path = os.path.join(persist_path, "corpus.jsonl")
+        if os.path.exists(corpus_path):
+            with open(corpus_path, "r") as f:
+                return sum(1 for line in f if line.strip())
+    for attr in ("corpus", "_corpus", "nodes", "_nodes", "documents", "_documents"):
+        if hasattr(retriever, attr):
+            value = getattr(retriever, attr)
+            if isinstance(value, (list, tuple)):
+                return len(value)
+    if hasattr(retriever, "_index") and hasattr(retriever._index, "corpus"):
+        return len(retriever._index.corpus)
+    if hasattr(retriever, "_bm25") and hasattr(retriever._bm25, "corpus"):
+        return len(retriever._bm25.corpus)
+    return None
+
+
 def search_entity_in_global_dict(term: str, include_files: Optional[List[str]] = None, prefix_term=None):
     searcher = get_graph_entity_searcher()
     
@@ -718,13 +749,19 @@ def bm25_module_retrieve(
         similarity_top_k: int = 10,
         # sort_by_type = False
 ):
+    corpus_size = _get_module_corpus_size(search_scope)
+    if corpus_size == 0:
+        logging.warning("BM25 module retrieval skipped: empty corpus for search scope '%s'.", search_scope)
+        return []
+    if similarity_top_k > corpus_size:
+        similarity_top_k = corpus_size
     retriever = build_module_retriever(entity_searcher=get_graph_entity_searcher(),
                                        search_scope=search_scope,
                                        similarity_top_k=similarity_top_k)
     try:
         retrieved_nodes = retriever.retrieve(query)
-    except IndexError as e:
-        logging.warning(f'{e}. Probably because the query `{query}` is too short.')
+    except (IndexError, ValueError) as e:
+        logging.warning(f'{e}. Probably because the query `{query}` is too short or the corpus is too small.')
         return []
 
     filter_nodes = []
@@ -776,9 +813,22 @@ def bm25_content_retrieve(
         retriever = build_code_retriever(absolute_repo_dir, persist_path=persist_path,
                                          similarity_top_k=similarity_top_k)
 
+    corpus_size = _get_bm25_corpus_size(retriever, persist_path=persist_path)
+    if corpus_size == 0:
+        logging.warning("BM25 content retrieval skipped: empty corpus for instance %s.", instance["instance_id"])
+        return []
+    if corpus_size is not None and similarity_top_k > corpus_size:
+        similarity_top_k = corpus_size
+        if hasattr(retriever, "similarity_top_k"):
+            retriever.similarity_top_k = similarity_top_k
+
     # similarity: {score}
     cur_query_results = []
-    retrieved_nodes = retriever.retrieve(query)
+    try:
+        retrieved_nodes = retriever.retrieve(query)
+    except ValueError as e:
+        logging.warning(f'{e}. Probably because the corpus is too small for query `{query}`.')
+        return []
     for node in retrieved_nodes:
         file = node.metadata['file_path']
         # print(node.metadata)

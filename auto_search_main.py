@@ -1,3 +1,13 @@
+"""
+export GRAPH_INDEX_DIR=/Users/kensu/Downloads/loc_agent/LocAgent/index_data/mulocbench/graph_index_v2.3
+export BM25_INDEX_DIR=/Users/kensu/Downloads/loc_agent/LocAgent/index_data/mulocbench/BM25_index
+
+# For azure/gpt-5.2
+export AZURE_API_KEY_GPT52="your-key"
+export AZURE_API_BASE_GPT52="https://your-endpoint.openai.azure.com"
+"""
+
+
 import argparse
 import os
 import json
@@ -58,13 +68,13 @@ def load_benchmark_dataset(dataset_name: str, split: str):
 
 
 def throttled_completion(**litellm_kwargs):
-    sleep(1)
+    sleep(5)
     return litellm.completion(**litellm_kwargs)
 
 
 def completion_with_rate_limit_retry(
-    retry_sleep: int = 60,
-    max_retries: int = 3,
+    retry_sleep: int = 20,
+    max_retries: int = 2,
     **litellm_kwargs,
 ):
     for attempt in range(max_retries):
@@ -148,6 +158,48 @@ def filter_dataset(dataset, filter_column: str, used_list: str):
     return dataset
 
 
+def extract_repo_from_instance_id(instance_id: str) -> str:
+    """
+    Extract repo name from instance_id.
+    Common formats:
+      - "owner__repo__issue_number" (e.g., "pallets__flask__4992")
+      - "repo__issue_number" (e.g., "flask__4992")
+    Returns normalized repo name (lowercase, hyphens replaced with underscores).
+    """
+    parts = instance_id.split('__')
+    if len(parts) >= 2:
+        # Could be owner__repo__number or repo__number
+        # Check if second part looks like a number
+        if len(parts) >= 3 and parts[2].isdigit():
+            repo_name = parts[1]  # owner__repo__number format
+        elif parts[1].isdigit():
+            repo_name = parts[0]  # repo__number format
+        else:
+            repo_name = parts[1]  # Assume owner__repo format
+    else:
+        repo_name = parts[0]
+    
+    return repo_name.lower().replace('-', '_')
+
+
+def normalize_repo_name(name: str) -> str:
+    """Normalize repo name for comparison."""
+    return name.lower().replace('-', '_').replace(' ', '_')
+
+
+def repo_matches(repo_name: str, filter_terms: List[str]) -> bool:
+    """Check if repo_name matches any of the filter terms."""
+    repo_normalized = normalize_repo_name(repo_name)
+    for term in filter_terms:
+        term_normalized = normalize_repo_name(term)
+        # Exact match or substring match
+        if term_normalized == repo_normalized:
+            return True
+        if term_normalized in repo_normalized or repo_normalized in term_normalized:
+            return True
+    return False
+
+
 def filter_dataset_by_repos(dataset, repos_filter: List[str]):
     """
     Filter dataset to only include instances from specified repositories.
@@ -162,37 +214,31 @@ def filter_dataset_by_repos(dataset, repos_filter: List[str]):
     if not repos_filter:
         return dataset
     
-    # Normalize filter terms
-    filter_terms = [r.lower().replace("-", "").replace("_", "") for r in repos_filter]
+    filter_terms = repos_filter
     
     def matches_filter(example):
-        # Extract repo name from instance_id (e.g., "scikit-learn__scikit-learn-12345" -> "scikit-learn")
         instance_id = example.get('instance_id', '')
-        repo_name = instance_id.split('__')[0].lower().replace("-", "").replace("_", "")
-        
-        # Also check the 'repo' field if available
         repo_field = example.get('repo', '')
         if repo_field:
-            repo_field_name = repo_field.split('/')[-1].lower().replace("-", "").replace("_", "")
+            repo_name = repo_field.split('/')[-1]
         else:
-            repo_field_name = ""
+            repo_name = extract_repo_from_instance_id(instance_id)
         
-        return any(
-            term in repo_name or repo_name in term or 
-            term in repo_field_name or repo_field_name in term
-            for term in filter_terms
-        )
+        return repo_matches(repo_name, filter_terms)
     
     original_count = len(dataset)
-    filtered_dataset = dataset.filter(matches_filter)
-    logging.info(f'Filtered to {len(filtered_dataset)}/{original_count} instances matching repos: {repos_filter}')
-    
-    # Log matched repos
+    matched_indices = []
     matched_repos = {}
-    for example in filtered_dataset:
+    for idx, example in enumerate(dataset):
+        if not matches_filter(example):
+            continue
+        matched_indices.append(idx)
         instance_id = example.get('instance_id', '')
-        repo_name = instance_id.split('__')[0]
+        repo_name = extract_repo_from_instance_id(instance_id)
         matched_repos[repo_name] = matched_repos.get(repo_name, 0) + 1
+    
+    filtered_dataset = dataset.select(matched_indices)
+    logging.info(f'Filtered to {len(filtered_dataset)}/{original_count} instances matching repos: {repos_filter}')
     
     for repo, count in sorted(matched_repos.items()):
         logging.info(f'  {repo}: {count} instances')
@@ -304,7 +350,7 @@ def auto_search_process(result_queue,
                         tools = None,
                         traj_data=None,
                         temp=1.0,
-                        max_iteration_num=5,
+                        max_iteration_num=20,
                         use_function_calling=True):
     # Configure Azure endpoint if needed
     azure_config = configure_azure_endpoint(model_name)
