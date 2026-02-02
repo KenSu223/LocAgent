@@ -1,5 +1,6 @@
 import argparse
 import sys
+import json
 
 import pandas as pd
 
@@ -28,6 +29,16 @@ def main() -> None:
         default=None,
         help="Optional path to write evaluation_scores.csv.",
     )
+    parser.add_argument(
+        "--only_present",
+        action="store_true",
+        help="Evaluate only instance_ids present in the localization output file.",
+    )
+    parser.add_argument(
+        "--skip_empty",
+        action="store_true",
+        help="When used with --only_present, ignore entries with empty found_files.",
+    )
     args = parser.parse_args()
 
     level2key_dict = {
@@ -36,7 +47,26 @@ def main() -> None:
         "function": "found_entities",
     }
 
-    results = eval_w_file(args.gt_file, args.loc_file, level2key_dict)
+    selected_list = None
+    if args.only_present:
+        selected_list = []
+        with open(args.loc_file, "r", encoding="utf-8") as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                record = json.loads(line)
+                if args.skip_empty:
+                    found_files = record.get("found_files", [])
+                    if found_files == [[]] or found_files == []:
+                        continue
+                selected_list.append(record["instance_id"])
+
+    results = eval_w_file(
+        args.gt_file,
+        args.loc_file,
+        level2key_dict,
+        selected_list=selected_list,
+    )
     print("\n" + "=" * 80)
     print("EVALUATION RESULTS")
     print("=" * 80)
