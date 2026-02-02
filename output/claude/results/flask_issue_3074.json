@@ -9,9 +9,12 @@
     "tests/test_helpers.py"
   ],
   "predicted_files": [
-    "flask/helpers.py"
+    "flask/helpers.py",
+    "CHANGES.rst",
+    "tests/test_helpers.py"
   ],
   "success": true,
-  "raw_output": "{'files_to_modify': ['werkzeug/utils.py', 'werkzeug/http.py', 'werkzeug/wsgi.py', 'flask/helpers.py', 'flask/__init__.py'], 'reasoning': \"1. werkzeug/utils.py: Handles file sending utilities, most likely where the filename* quoting and Content-Disposition header is implemented; the main place to fix encoding for reserved characters. 2. werkzeug/http.py: May contain code for header construction and utility functions for encoding and header field quoting. 3. werkzeug/wsgi.py: Could play a role in lower-level WSGI header formation or file response logic. 4. flask/helpers.py: If Flask wraps Werkzeug's utilities or exposes them here, changes may be needed for any wrapper logic. 5. flask/__init__.py: May need changes only if import paths are updated or new helper exposure/testing is provided. Most changes should occur in Werkzeug; Flask needs fixes only if any wrapper or import logic is touched.\"}",
-  "error": null
+  "raw_output": "Issue 3074 reports that send_file doesn't properly URL-encode special characters like ':/' in unicode attachment filenames. The fix is in the send_file function in helpers.py. Predicted files: (1) flask/helpers.py - contains send_file() with attachment filename handling. (2) CHANGES.rst - changelog entry for the bug fix. (3) tests/test_helpers.py - helpers tests covering send_file behavior. Exploration: Matched flask/helpers.py -> tests/test_helpers.py.",
+  "error": null,
+  "elapsed_seconds": 169.5
 }

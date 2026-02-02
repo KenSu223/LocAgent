@@ -1,0 +1,18 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/5160",
+  "repo_name": "flask",
+  "title": "Switch to importlib breaks scripts with `app.run()`",
+  "base_commit": "c8cf4694c60f0d81809468a1b45ec730496cc546",
+  "ground_truth_files": [
+    "CHANGES.rst",
+    "src/flask/helpers.py",
+    "src/flask/scaffold.py"
+  ],
+  "predicted_files": [
+    "flask/app.py",
+    "flask/cli.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['src/flask/scaffold.py', 'src/flask/app.py', 'src/flask/helpers.py', 'src/flask/__main__.py', 'tests/test_instance_config.py'], 'reasoning': '1. src/flask/scaffold.py: This file directly contains package discovery logic (including the problematic function using importlib.util.find_spec), as shown in the traceback and indicated by recent changes.\\n2. src/flask/app.py: Flask application creation and instance path logic calls into scaffold.py; modifications may be needed to handle __main__ properly and propagate any package fix.\\n3. src/flask/helpers.py: The knowledge graph maps find_package here; potential re-exports, helpers, or indirections may also require updates.\\n4. src/flask/__main__.py: Handles script entrypoint logic; may need changes to ensure scripts using app.run() are resilient to importlib changes.\\n5. tests/test_instance_config.py: Important for verifying fixes; should add/adjust regression or unit tests to demonstrate resolution of the issue.'}",
+  "error": null
+}

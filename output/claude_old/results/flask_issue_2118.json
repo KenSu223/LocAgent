@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2118",
+  "repo_name": "flask",
+  "title": "config.from_pyfile crashes on Python 3 when source isn't encoded in default encoding",
+  "base_commit": "8cd0b03beeac4a41c398ea365475c651c484a9ee",
+  "ground_truth_files": [
+    "CHANGES",
+    "flask/config.py",
+    "tests/test_config.py"
+  ],
+  "predicted_files": [
+    "flask/config.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/config.py', 'tests/test_config.py'], 'reasoning': '1. flask/config.py: This is where the Config.from_pyfile method is implemented. The core issue arises from reading config files with incompatible encoding; the function must be updated to read files in binary mode or handle encoding explicitly to be robust on Python 3.\\n2. tests/test_config.py: Contains tests for from_pyfile, including edge cases with file reading that could trigger encoding-related errors. The tests should be reviewed and potentially updated to reflect the fixed behavior and to ensure coverage.\\nOther files are not directly involved in this functionality based on the codebase and KG search.'}",
+  "error": null
+}

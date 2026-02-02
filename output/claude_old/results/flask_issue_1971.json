@@ -1,0 +1,17 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/1971",
+  "repo_name": "flask",
+  "title": "Implement RFC 7233",
+  "base_commit": "01081dbe6cdfa3fc43d8e1fff708d4ed95e1be7e",
+  "ground_truth_files": [
+    "CHANGES",
+    "flask/helpers.py",
+    "tests/test_helpers.py"
+  ],
+  "predicted_files": [
+    "flask/helpers.py"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['flask/helpers.py', 'flask/wrappers.py', 'flask/app.py', 'flask/__init__.py', 'docs/api.rst'], 'reasoning': \"1. flask/helpers.py: The most expected location for the send_file helper, where RFC 7233 logic should be implemented or exposed (even if not found, best practice).\\n2. flask/wrappers.py: Likely contains request/response wrappers needing updates for Range parsing and header handling.\\n3. flask/app.py: May route or enable file serving, so may need to pass new arguments or update usage.\\n4. flask/__init__.py: If APIs are exposed here, documentation and indirection may need changes for new arguments or features.\\n5. docs/api.rst: To document the new Range request support and any new parameters added.\\nFiles are listed in contribution order, assuming the implementation follows Flask's normal structure; actual lines will depend on codebase details.\"}",
+  "error": null
+}

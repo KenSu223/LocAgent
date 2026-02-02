@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/1224",
+  "repo_name": "flask",
+  "title": "Starting up a public server.",
+  "base_commit": "f88765d504ce2fa9bc3926c76910b11510522892",
+  "ground_truth_files": [
+    "flask/views.py"
+  ],
+  "predicted_files": [
+    "flask/app.py",
+    "flask/cli.py"
+  ],
+  "success": true,
+  "raw_output": "Analysis: Issue about server startup binding to localhost vs public (0.0.0.0). The run() method in app.py handles host configuration, and cli.py provides the --host CLI option.",
+  "error": null
+}

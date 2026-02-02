@@ -1,0 +1,16 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/266",
+  "repo_name": "flask",
+  "title": "Blueprint template lookup not documented enough",
+  "base_commit": "e4c712ffd2682f963906e1d0d27e67b7f83d95ce",
+  "ground_truth_files": [
+    "docs/blueprints.rst"
+  ],
+  "predicted_files": [
+    "docs/blueprints.rst",
+    "docs/patterns/index.rst"
+  ],
+  "success": true,
+  "raw_output": "{'files_to_modify': ['docs/blueprints.rst', 'docs/templating.rst', 'flask/blueprints.py', 'flask/templating.py', 'flask/app.py'], 'reasoning': \"1. docs/blueprints.rst: Main documentation for blueprints; should clearly explain how the new template lookup works for blueprints, including the use of the template_folder argument and that the templates folder is added to the search path.\\n2. docs/templating.rst: Main template documentation; should detail the new blueprint template lookup scheme, making it clear how blueprint templates folders are integrated into the app's template search path instead of previous name-based hacks.\\n3. flask/blueprints.py: Docstrings and comments (especially for Blueprint and BlueprintSetupState) should be updated to explain the behavior of template_folder and how registration impacts the template search path.\\n4. flask/templating.py: Docstrings and comments (not functional code) in Environment and DispatchingJinjaLoader should clarify how templates are located, especially regarding blueprints and the search path.\\n5. flask/app.py: Minor clarification may be needed in comments or docstrings about how the app integrates blueprints and sets up template lookup (since it imports and wires up these classes).\"}",
+  "error": null
+}

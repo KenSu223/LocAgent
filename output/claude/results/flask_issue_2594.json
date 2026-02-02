@@ -9,9 +9,12 @@
     "tests/test_cli.py"
   ],
   "predicted_files": [
-    "flask/cli.py"
+    "flask/cli.py",
+    "CHANGES",
+    "tests/test_cli.py"
   ],
   "success": true,
-  "raw_output": "{\n    \"files_to_modify\": [\n        \"flask/cli.py\",\n        \"flask/app.py\",\n        \"docs/cli.rst\",\n        \"tests/test_cli.py\"\n    ],\n    \"reasoning\": \"1. flask/cli.py: This is the key file that implements CLI command parsing and dispatch. To enable --ssl_context, its option parsing for 'flask run' must be modified to accept this argument and pass it to Flask.run(). The lack of direct string matches suggests indirect decoration or dynamic registration, but it remains the canonical CLI module.\\n2. flask/app.py: The Flask.run() method resides here. It already accepts 'ssl_context', but modifications may be required to ensure the parameter can be consumed if passed indirectly from the CLI or to update signatures or help text.\\n3. docs/cli.rst: Documentation needs updating to mention the new --ssl_context flag and any resulting usage patterns for HTTPS with 'flask run'.\\n4. tests/test_cli.py: Tests validating CLI behavior must be updated/created to verify that 'flask run --ssl_context=adhoc' works and errors if an invalid value is provided.\\n\\nIf further indirection is discovered (e.g., in __main__.py or helpers), those could be added, but based on repo conventions and the issue scope, these four files should be targeted.\"\n}",
-  "error": null
+  "raw_output": "Issue 2594 requests adding ssl_context option to the 'flask run' command to enable HTTPS during development. The fix involves adding a --cert/--key option to the run command in cli.py. Predicted files: (1) flask/cli.py - the CLI module where the run command is defined. (2) CHANGES - changelog entry for the new feature. (3) tests/test_cli.py - CLI tests. Exploration: Matched flask/cli.py -> tests/test_cli.py for test coverage.",
+  "error": null,
+  "elapsed_seconds": 333.8
 }
