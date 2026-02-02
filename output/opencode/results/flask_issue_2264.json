@@ -1,0 +1,15 @@
+{
+  "issue_url": "https://github.com/pallets/flask/issues/2264",
+  "repo_name": "flask",
+  "title": "Handle app factory in FLASK_APP",
+  "base_commit": "cb94f4c5d3d4e1797207fd03d20d06c7bc0d05b4",
+  "ground_truth_files": [
+    "flask/cli.py",
+    "tests/test_cli.py"
+  ],
+  "predicted_files": [],
+  "success": false,
+  "raw_output": "",
+  "error": "Command '['/home/ubuntu/.opencode/bin/opencode', 'run', '--format', 'json', '-m', 'azure/gpt-5.2', 'You are a file localization agent. Given a GitHub issue (title and body), your task is to explore the repository and identify which source files need to be modified to resolve the issue.\\n\\nInstructions:\\n1. Read the issue carefully to understand the bug or feature request.\\n2. Explore the repository structure using shell commands (find, ls, grep, etc.).\\n3. Search for relevant code: function names, class names, error messages, or keywords mentioned in the issue.\\n4. Narrow down to the specific files that would need changes.\\n5. After your investigation, output your answer as a JSON object with exactly this format:\\n\\n{\"files_to_modify\": [\"path/to/file1.py\", \"path/to/file2.py\"]}\\n\\nRules:\\n- You MUST list between 1 and 10 files. Aim for around 5 files in most cases.\\n- Think broadly: include source files, test files, documentation files, and config files that would need changes.\\n- List files in order of importance (most important first).\\n- Use paths relative to the repository root.\\n- Only include files that actually exist in the repository.\\n- Your final message MUST contain the JSON object above and nothing else.\\n\\n\\n## Issue Title\\nHandle app factory in FLASK_APP\\n\\n## Issue Body\\n`FLASK_APP=myproject.app:create_app(\\'dev\\')`\\r\\n[\\r\\nGunicorn does this with `eval`](https://github.com/benoitc/gunicorn/blob/fbd151e9841e2c87a18512d71475bcff863a5171/gunicorn/util.py#L364), which I\\'m not super happy with. Instead, we could use `literal_eval` to allow a simple list of arguments. The line should never be so complicated that `eval` would be necessary anyway.\\r\\n\\r\\n~~~python\\r\\n# might need to fix this regex\\r\\nm = re.search(r\\'(\\\\w+)(\\\\(.*\\\\))\\', app_obj)\\r\\n\\r\\nif m:\\r\\n    app = getattr(mod, m.group(1))(*literal_eval(m.group(2)))\\r\\n~~~']' timed out after 900 seconds",
+  "elapsed_seconds": 900.1
+}

@@ -1,0 +1,15 @@
+{
+  "total_samples": 23,
+  "successful_runs": 23,
+  "failed_runs": 2,
+  "metrics": {
+    "acc@1": 0.2174,
+    "acc@5": 0.3913,
+    "recall@1": 0.4149,
+    "recall@5": 0.7128
+  },
+  "raw_counts": {
+    "acc@1_correct": 5,
+    "acc@5_correct": 9
+  }
+}
