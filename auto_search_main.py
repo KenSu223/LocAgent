@@ -11,6 +11,10 @@ from tqdm import tqdm
 from copy import deepcopy
 from datasets import load_dataset
 
+# Disable internal retries as early as possible.
+os.environ.setdefault("OPENAI_MAX_RETRIES", "0")
+os.environ.setdefault("LITELLM_MAX_RETRIES", "0")
+
 from util.runtime.execute_ipython import execute_ipython
 from util.runtime import function_calling
 from util.actions.action_parser import ResponseParser
@@ -50,6 +54,17 @@ from util.runtime.fn_call_converter import (
 # litellm.set_verbose=True
 # os.environ['LITELLM_LOG'] = 'DEBUG
 
+# Disable internal OpenAI/LiteLLM retries so our retry logic controls backoff.
+try:
+    if hasattr(litellm, "set_max_retries"):
+        litellm.set_max_retries(0)
+    if hasattr(litellm, "num_retries"):
+        litellm.num_retries = 0
+    if hasattr(litellm, "max_retries"):
+        litellm.max_retries = 0
+except Exception:
+    pass
+
 
 def load_benchmark_dataset(dataset_name: str, split: str):
     if os.path.isfile(dataset_name):
@@ -58,19 +73,45 @@ def load_benchmark_dataset(dataset_name: str, split: str):
 
 
 def throttled_completion(**litellm_kwargs):
-    sleep(1)
+    sleep(60)
+    litellm_kwargs = dict(litellm_kwargs)
+    litellm_kwargs.setdefault("num_retries", 0)
+    litellm_kwargs.setdefault("max_retries", 0)
     return litellm.completion(**litellm_kwargs)
 
 
+def throttled_openai_completion(client, **openai_kwargs):
+    sleep(60)
+    return client.chat.completions.create(**openai_kwargs)
+
+
 def completion_with_rate_limit_retry(
-    retry_sleep: int = 60,
-    max_retries: int = 3,
+    retry_sleep: int = 30,
+    max_retries: int = 2,
     **litellm_kwargs,
 ):
+    litellm_kwargs = dict(litellm_kwargs)
+    litellm_kwargs.setdefault("num_retries", 0)
+    litellm_kwargs.setdefault("max_retries", 0)
     for attempt in range(max_retries):
         try:
             return throttled_completion(**litellm_kwargs)
         except litellm.exceptions.RateLimitError:
+            if attempt == max_retries - 1:
+                raise
+            sleep(retry_sleep)
+
+
+def completion_with_rate_limit_retry_openai(
+    client,
+    retry_sleep: int = 30,
+    max_retries: int = 2,
+    **openai_kwargs,
+):
+    for attempt in range(max_retries):
+        try:
+            return throttled_openai_completion(client, **openai_kwargs)
+        except openai.RateLimitError:
             if attempt == max_retries - 1:
                 raise
             sleep(retry_sleep)
@@ -125,6 +166,15 @@ def configure_azure_endpoint(model_name: str):
         config['api_base'] = _normalize_azure_base(config['api_base'])
         os.environ['AZURE_API_KEY'] = config['api_key']
         os.environ['AZURE_API_BASE'] = config['api_base']
+        try:
+            config['client'] = openai.AzureOpenAI(
+                api_key=config['api_key'],
+                azure_endpoint=config['api_base'],
+                api_version=config['api_version'],
+                max_retries=0,
+            )
+        except Exception:
+            config['client'] = None
         return config
     return None
 
@@ -241,14 +291,22 @@ def auto_search_process(result_queue,
             # Prepare litellm kwargs
             # For Azure models, use the deployment name in the model string
             if azure_config:
-                model_for_litellm = f"azure/{azure_config['deployment_name']}"
-                litellm_kwargs = {
-                    'model': model_for_litellm,
-                    'messages': messages,
-                    'temperature': temp,
-                    'api_key': azure_config['api_key'],
-                    'api_base': azure_config['api_base'],
-                }
+                use_openai_client = azure_config.get('client')
+                if use_openai_client is None:
+                    model_for_litellm = f"azure/{azure_config['deployment_name']}"
+                    litellm_kwargs = {
+                        'model': model_for_litellm,
+                        'messages': messages,
+                        'temperature': temp,
+                        'api_key': azure_config['api_key'],
+                        'api_base': azure_config['api_base'],
+                    }
+                else:
+                    openai_kwargs = {
+                        'model': azure_config['deployment_name'],
+                        'messages': messages,
+                        'temperature': temp,
+                    }
             else:
                 litellm_kwargs = {
                     'model': model_name,
@@ -267,11 +325,25 @@ def auto_search_process(result_queue,
                 })
                 response = completion_with_rate_limit_retry(**litellm_kwargs)
             elif tools:
-                litellm_kwargs['tools'] = tools
-                response = completion_with_rate_limit_retry(**litellm_kwargs)
+                if azure_config and use_openai_client is not None:
+                    openai_kwargs['tools'] = tools
+                    response = completion_with_rate_limit_retry_openai(
+                        use_openai_client,
+                        **openai_kwargs,
+                    )
+                else:
+                    litellm_kwargs['tools'] = tools
+                    response = completion_with_rate_limit_retry(**litellm_kwargs)
             else:
-                litellm_kwargs['stop'] = ['</execute_ipython>']
-                response = completion_with_rate_limit_retry(**litellm_kwargs)
+                if azure_config and use_openai_client is not None:
+                    openai_kwargs['stop'] = ['</execute_ipython>']
+                    response = completion_with_rate_limit_retry_openai(
+                        use_openai_client,
+                        **openai_kwargs,
+                    )
+                else:
+                    litellm_kwargs['stop'] = ['</execute_ipython>']
+                    response = completion_with_rate_limit_retry(**litellm_kwargs)
         except litellm.BadRequestError as e:
             # If there's an error, send the error info back to the parent process
             result_queue.put({'error': str(e), 'type': 'BadRequestError'})

@@ -35,26 +35,30 @@ print(VERSION)
 PY
 )"
 
-python dependency_graph/batch_build_graph.py \
-  --dataset "$SUBSET_DATASET" \
-  --split train \
-  --num_processes "$NUM_PROCESSES" \
-  --download_repo \
-  --repo_path playground/build_graph \
-  --index_dir index_data \
-  --instance_id_path "$INSTANCE_IDS"
+# python dependency_graph/batch_build_graph.py \
+#   --dataset "$SUBSET_DATASET" \
+#   --split train \
+#   --num_processes "$NUM_PROCESSES" \
+#   --download_repo \
+#   --repo_path playground/build_graph \
+#   --index_dir index_data \
+#   --instance_id_path "$INSTANCE_IDS"
 
-python build_bm25_index.py \
-  --dataset "$SUBSET_DATASET" \
-  --split train \
-  --num_processes "$NUM_PROCESSES" \
-  --download_repo \
-  --repo_path playground/build_graph \
-  --index_dir index_data \
-  --instance_id_path "$INSTANCE_IDS"
+# python build_bm25_index.py \
+#   --dataset "$SUBSET_DATASET" \
+#   --split train \
+#   --num_processes "$NUM_PROCESSES" \
+#   --download_repo \
+#   --repo_path playground/build_graph \
+#   --index_dir index_data \
+#   --instance_id_path "$INSTANCE_IDS"
 
-export GRAPH_INDEX_DIR="index_data/${DATASET_NAME}/graph_index_${GRAPH_VERSION}"
-export BM25_INDEX_DIR="index_data/${DATASET_NAME}/BM25_index"
+if [ -z "${GRAPH_INDEX_DIR:-}" ]; then
+  export GRAPH_INDEX_DIR="index_data/${DATASET_NAME}/graph_index_${GRAPH_VERSION}"
+fi
+if [ -z "${BM25_INDEX_DIR:-}" ]; then
+  export BM25_INDEX_DIR="index_data/${DATASET_NAME}/BM25_index"
+fi
 
 python auto_search_main.py \
   --dataset "$SUBSET_DATASET" \

@@ -10,13 +10,13 @@
     "output_folder": "evaluation_results/mulocbench_subset/location",
     "output_file": "evaluation_results/mulocbench_subset/location/loc_outputs.jsonl",
     "merge_file": "merged_loc_outputs.jsonl",
-    "model": "azure/gpt-4.1",
+    "model": "azure/gpt-5.2",
     "use_function_calling": true,
     "simple_desc": true,
     "max_attempt_num": 1,
     "num_samples": 1,
     "num_processes": 1,
     "log_level": "INFO",
-    "timeout": 300,
+    "timeout": 900,
     "rerun_empty_location": false
 }

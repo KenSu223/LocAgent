@@ -1,3 +1,18 @@
+"""
+Usage:
+python scripts/evaluate_mulocbench.py \
+  --loc_file evaluation_results/mulocbench_subset/location/loc_outputs.jsonl \
+  --gt_file evaluation_results/mulocbench_subset/gt_location.jsonl \
+  --output_csv evaluation_results/mulocbench_subset/evaluation_scores.csv \
+  --repo flask \
+  --only_present \
+  --skip_empty
+
+  Make sure GT locations match with the target repo for evalution
+
+"""
+
+
 import argparse
 import sys
 import json
@@ -39,6 +54,18 @@ def main() -> None:
         action="store_true",
         help="When used with --only_present, ignore entries with empty found_files.",
     )
+    parser.add_argument(
+        "--repo",
+        type=str,
+        default=None,
+        help="Evaluate only a single repo (e.g., 'pallets/flask' or 'flask').",
+    )
+    parser.add_argument(
+        "--repos",
+        type=str,
+        default=None,
+        help="Comma-separated repo list (e.g., 'pallets/flask,flask,psf/requests').",
+    )
     args = parser.parse_args()
 
     level2key_dict = {
@@ -48,8 +75,34 @@ def main() -> None:
     }
 
     selected_list = None
+    repo_filter = None
+    if args.repo or args.repos:
+        repo_filter = set()
+        repo_short_filter = set()
+        if args.repo:
+            repo_value = args.repo.strip()
+            repo_filter.add(repo_value)
+            if "/" not in repo_value:
+                repo_short_filter.add(repo_value)
+        if args.repos:
+            for repo_value in [r.strip() for r in args.repos.split(",") if r.strip()]:
+                repo_filter.add(repo_value)
+                if "/" not in repo_value:
+                    repo_short_filter.add(repo_value)
+        repo_selected = []
+        with open(args.gt_file, "r", encoding="utf-8") as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                record = json.loads(line)
+                repo_full = record.get("repo")
+                repo_short = repo_full.split("/")[-1] if repo_full else None
+                if repo_full in repo_filter or repo_short in repo_short_filter:
+                    repo_selected.append(record["instance_id"])
+        selected_list = repo_selected
+
     if args.only_present:
-        selected_list = []
+        present_list = []
         with open(args.loc_file, "r", encoding="utf-8") as f:
             for line in f:
                 if not line.strip():
@@ -59,7 +112,12 @@ def main() -> None:
                     found_files = record.get("found_files", [])
                     if found_files == [[]] or found_files == []:
                         continue
-                selected_list.append(record["instance_id"])
+                present_list.append(record["instance_id"])
+        if selected_list is None:
+            selected_list = present_list
+        else:
+            selected_set = set(selected_list)
+            selected_list = [instance_id for instance_id in present_list if instance_id in selected_set]
 
     results = eval_w_file(
         args.gt_file,
