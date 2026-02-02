@@ -362,8 +362,8 @@ def main():
         "--metrics",
         type=str,
         nargs="+",
-        default=["acc"],
-        help="Metrics to compute (default: acc). Options: acc, ndcg, precision, recall"
+        default=["acc", "recall", "precision"],
+        help="Metrics to compute (default: acc recall precision). Options: acc, ndcg, precision, recall"
     )
     parser.add_argument(
         "--include_empty",
