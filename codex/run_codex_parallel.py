@@ -1,63 +1,77 @@
 #!/usr/bin/env python3
 """
-Preparation steps:
-
-Create config files:
-mkdir -p ~/.codex
-nano ~/.codex/config.toml
-
-export AZURE_OPENAI_API_KEY="your-azure-api-key"
-
-Use codex exec --sandbox danger-full-access "What files are in this directory?" to test
-
 Evaluate OpenAI Codex CLI agent on MULocBench/LocBench.
-Uses `codex exec` non-interactive mode with verbose logging.
+Parallel processing with round-robin across multiple Azure endpoints.
 
-configuration at: ~/.codex/config.toml
-
-python codex/codex_run.py \
+python codex/run_codex_parallel.py \
     --dataset_path /home/tsu25/LocAgent/evaluation/mulocbench_2/mulocbench.jsonl \
-    --output_dir results/codex_agent \
+    --output_dir results/codex_agent_parallel \
     --repos_dir /home/tsu25/LocAgent/mulocbench_repos \
-    --repos flask \
-    --num_samples 1 \
+    --repos transformers \
     --model gpt-5.2 \
     --timeout 300 \
     --max_retries 3 \
     --retry_delay 30 \
-    -v
-
-python codex/codex_run.py \
-    --dataset_path /home/tsu25/LocAgent/evaluation/mulocbench_2/mulocbench.jsonl \
-    --output_dir results/codex_agent \
-    --repos_dir /home/tsu25/LocAgent/mulocbench_repos \
-    --repos scikit-learn flask requests transformers pandas pytorch \
-    --model gpt-5.2 \
-    --timeout 300 \
-    --max_retries 3 \
-    --retry_delay 30 \
+    --endpoints_file /home/tsu25/LocAgent/codex/azure_endpoints.json \
+    --workers 2 \
+    --num_samples 2 \
     -v
 """
 
-#!/usr/bin/env python3
-"""
-Evaluate OpenAI Codex CLI agent on MULocBench/LocBench.
-Uses `codex exec` non-interactive mode with verbose logging.
-"""
 
 import json
 import subprocess
 import os
 import re
 import logging
+import threading
+import queue
 from datetime import datetime
-from typing import List, Tuple, Dict, Any
+from typing import List, Tuple, Dict, Any, Optional
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 import argparse
 
 
+class EndpointPool:
+    """Thread-safe round-robin endpoint pool."""
+    
+    def __init__(self, endpoints: List[Dict[str, str]]):
+        self.endpoints = endpoints
+        self.index = 0
+        self.lock = threading.Lock()
+    
+    def get_endpoint(self) -> Dict[str, str]:
+        """Get next endpoint in round-robin fashion (thread-safe)."""
+        with self.lock:
+            endpoint = self.endpoints[self.index]
+            self.index = (self.index + 1) % len(self.endpoints)
+            return endpoint
+
+
+class ResultWriter:
+    """Thread-safe result writer."""
+    
+    def __init__(self, output_path: str, initial_results: List[dict] = None):
+        self.output_path = output_path
+        self.results = initial_results or []
+        self.lock = threading.Lock()
+    
+    def add_result(self, result: dict):
+        """Add a result and save to file (thread-safe)."""
+        with self.lock:
+            self.results.append(result)
+            with open(self.output_path, 'w') as f:
+                for r in self.results:
+                    f.write(json.dumps(r) + '\n')
+    
+    def get_results(self) -> List[dict]:
+        with self.lock:
+            return self.results.copy()
+
+
 def setup_logging(output_dir: str, verbose: bool = True) -> logging.Logger:
-    """Setup logging to both file and console."""
+    """Setup logging to both file and console (thread-safe)."""
     os.makedirs(output_dir, exist_ok=True)
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -66,6 +80,9 @@ def setup_logging(output_dir: str, verbose: bool = True) -> logging.Logger:
     # Create logger
     logger = logging.getLogger("codex_eval")
     logger.setLevel(logging.DEBUG)
+    
+    # Clear existing handlers
+    logger.handlers = []
     
     # File handler - always verbose
     fh = logging.FileHandler(log_file)
@@ -76,7 +93,7 @@ def setup_logging(output_dir: str, verbose: bool = True) -> logging.Logger:
     # Console handler
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG if verbose else logging.INFO)
-    ch.setFormatter(logging.Formatter('%(message)s'))
+    ch.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
     logger.addHandler(ch)
     
     logger.info(f"Logging to: {log_file}")
@@ -84,23 +101,55 @@ def setup_logging(output_dir: str, verbose: bool = True) -> logging.Logger:
 
 
 def clone_repo_at_commit(repo: str, commit: str, target_dir: str, logger: logging.Logger) -> bool:
-    """Clone repo and checkout specific commit."""
-    try:
-        if not os.path.exists(target_dir):
-            logger.info(f"  Cloning {repo}...")
-            subprocess.run(
-                ["git", "clone", "--quiet", f"https://github.com/{repo}.git", target_dir],
-                check=True, capture_output=True, timeout=120
-            )
+    """Clone a repo and checkout specific commit."""
+    if os.path.exists(target_dir):
+        # Already exists, just checkout the commit
         logger.info(f"  Checking out {commit[:8]}...")
-        subprocess.run(
-            ["git", "checkout", "--quiet", commit],
-            cwd=target_dir, check=True, capture_output=True
-        )
-        return True
-    except Exception as e:
-        logger.error(f"  Failed to setup repo: {e}")
-        return False
+        try:
+            subprocess.run(
+                ["git", "fetch", "--all"],
+                cwd=target_dir,
+                capture_output=True,
+                timeout=120
+            )
+            subprocess.run(
+                ["git", "checkout", commit, "-f"],
+                cwd=target_dir,
+                capture_output=True,
+                check=True,
+                timeout=60
+            )
+            subprocess.run(
+                ["git", "clean", "-fdx"],
+                cwd=target_dir,
+                capture_output=True,
+                timeout=60
+            )
+            return True
+        except Exception as e:
+            logger.error(f"  Failed to checkout: {e}")
+            return False
+    else:
+        # Clone fresh
+        logger.info(f"  Cloning {repo}...")
+        try:
+            subprocess.run(
+                ["git", "clone", f"https://github.com/{repo}.git", target_dir],
+                capture_output=True,
+                check=True,
+                timeout=300
+            )
+            subprocess.run(
+                ["git", "checkout", commit, "-f"],
+                cwd=target_dir,
+                capture_output=True,
+                check=True,
+                timeout=60
+            )
+            return True
+        except Exception as e:
+            logger.error(f"  Failed to clone: {e}")
+            return False
 
 
 def build_prompt(problem_statement: str) -> str:
@@ -129,71 +178,60 @@ FUNCTIONS:
 Your answer should include about 5 files. Be specific and precise."""
 
 
-def parse_structured_response(text: str) -> Tuple[List[str], List[str], List[str]]:
-    """Parse structured FILES/FUNCTIONS format from assistant text."""
-    found_files = []
-    found_modules = []
-    found_entities = []
-    
-    lines = text.split('\n')
-    in_files = False
-    in_functions = False
-    
-    for line in lines:
-        line = line.strip()
-        if line.upper().startswith('FILES:'):
-            in_files, in_functions = True, False
-            continue
-        if line.upper().startswith('FUNCTIONS:'):
-            in_files, in_functions = False, True
-            continue
-        
-        if line.startswith('- ') or line.startswith('* '):
-            line = line[2:].strip()
-        line = line.strip('`')
-        
-        if in_files and line and (line.endswith('.py') or '/' in line):
-            if line not in found_files:
-                found_files.append(line)
-        
-        if in_functions and line and ':' in line:
-            parts = line.split(':', 1)
-            file_path, func_part = parts[0], parts[1]
-            entity = f"{file_path}:{func_part}"
-            
-            if entity not in found_entities:
-                found_entities.append(entity)
-            if file_path not in found_files:
-                found_files.append(file_path)
-            
-            # Extract module
-            if '.' in func_part:
-                class_name = func_part.split('.')[0]
-                module_loc = f"{file_path}:{class_name}"
-            else:
-                module_loc = entity
-            if module_loc not in found_modules:
-                found_modules.append(module_loc)
-    
-    return found_files, found_modules, found_entities
+def is_rate_limit_error(response: str) -> bool:
+    """Check if response indicates a rate limit error."""
+    rate_limit_indicators = [
+        "rate limit",
+        "rate_limit",
+        "429",
+        "too many requests",
+        "quota exceeded",
+        "tokens per min",
+        "TPM",
+        "RPM"
+    ]
+    response_lower = response.lower()
+    return any(indicator.lower() in response_lower for indicator in rate_limit_indicators)
+
+
+def is_retriable_error(response: str) -> bool:
+    """Check if error is retriable."""
+    retriable_indicators = [
+        "rate limit",
+        "429",
+        "500",
+        "502",
+        "503",
+        "504",
+        "timeout",
+        "timed out",
+        "connection reset",
+        "stream disconnected",
+        "response.failed"
+    ]
+    response_lower = response.lower()
+    return any(indicator.lower() in response_lower for indicator in retriable_indicators)
 
 
 def parse_codex_response(response: str, logger: logging.Logger) -> Tuple[List[str], List[str], List[str]]:
-    """Parse Codex response to extract files, modules, and entities."""
+    """Parse Codex CLI JSONL response to extract found files and entities."""
     found_files = []
     found_modules = []
     found_entities = []
     
-    # Try to parse JSONL events
+    logger.info(f"  Parsing response...")
+    
+    # Parse JSONL events
     for line in response.strip().split('\n'):
+        if not line.strip():
+            continue
         try:
             event = json.loads(line)
             event_type = event.get('type', '')
             
-            # Log reasoning steps
             if event_type == 'item.completed':
                 item = event.get('item', {})
-                item_type = item.get('type', item.get('item_type', ''))
+                item_type = item.get('type', '')
                 
                 if item_type == 'reasoning':
                     reasoning_text = item.get('text', '')
@@ -220,27 +258,39 @@ def parse_codex_response(response: str, logger: logging.Logger) -> Tuple[List[st
                     text = item.get('text', '')
                     logger.debug(f"    [ASSISTANT] {text[:500]}...")
                     
-                    # Parse structured output from assistant
-                    parsed_files, parsed_modules, parsed_entities = parse_structured_response(text)
-                    for f in parsed_files:
-                        if f not in found_files:
-                            found_files.append(f)
-                            logger.debug(f"    [FOUND FILE from response] {f}")
-                    for m in parsed_modules:
-                        if m not in found_modules:
-                            found_modules.append(m)
-                    for e in parsed_entities:
-                        if e not in found_entities:
-                            found_entities.append(e)
-                            logger.debug(f"    [FOUND ENTITY from response] {e}")
+                    # Parse FILES section
+                    files_match = re.search(r'FILES:\s*\n((?:[-*]\s*[^\n]+\n?)+)', text, re.IGNORECASE)
+                    if files_match:
+                        files_section = files_match.group(1)
+                        for line in files_section.strip().split('\n'):
+                            line = line.strip()
+                            if line.startswith(('-', '*')):
+                                fpath = line.lstrip('-* `').rstrip('`').strip()
+                                if fpath and fpath not in found_files:
+                                    found_files.append(fpath)
+                                    logger.debug(f"    [FOUND FILE from response] {fpath}")
+                    
+                    # Parse FUNCTIONS section
+                    funcs_match = re.search(r'FUNCTIONS:\s*\n((?:[-*]\s*[^\n]+\n?)+)', text, re.IGNORECASE)
+                    if funcs_match:
+                        funcs_section = funcs_match.group(1)
+                        for line in funcs_section.strip().split('\n'):
+                            line = line.strip()
+                            if line.startswith(('-', '*')):
+                                entity = line.lstrip('-* `').rstrip('`').strip()
+                                if entity and ':' in entity and entity not in found_entities:
+                                    found_entities.append(entity)
+                                    logger.debug(f"    [FOUND ENTITY from response] {entity}")
             
             elif event_type == 'error':
-                logger.warning(f"    [ERROR] {event.get('message', '')}")
+                error_msg = event.get('message', '')
+                logger.warning(f"    [ERROR] {error_msg}")
             
             elif event_type == 'turn.failed':
-                error_msg = event.get('error', {}).get('message', '')
+                error = event.get('error', {})
+                error_msg = error.get('message', str(error))
                 logger.warning(f"    [TURN FAILED] {error_msg}")
-                    
+                
         except json.JSONDecodeError:
             continue
     
@@ -274,50 +324,10 @@ def parse_codex_response(response: str, logger: logging.Logger) -> Tuple[List[st
             found_files.append(fpath)
             logger.debug(f"    [FOUND FILE from fallback] {fpath}")
     
-    # Generate modules from found files if empty
-    if not found_modules:
-        for f in found_files:
-            if f not in found_modules:
-                found_modules.append(f)
+    # Modules are same as files for now
+    found_modules = found_files.copy()
     
     return found_files, found_modules, found_entities
-
-
-def is_rate_limit_error(response: str) -> bool:
-    """Check if response contains rate limit error."""
-    rate_limit_indicators = [
-        "rate limit",
-        "rate_limit",
-        "429",
-        "too many requests",
-        "quota exceeded",
-        "tokens per minute",
-        "requests per minute",
-        "TPM",
-        "RPM"
-    ]
-    response_lower = response.lower()
-    return any(indicator.lower() in response_lower for indicator in rate_limit_indicators)
-
-
-def is_retriable_error(response: str) -> bool:
-    """Check if error is retriable (rate limit, timeout, temporary failure)."""
-    retriable_indicators = [
-        "rate limit",
-        "429",
-        "500",
-        "502",
-        "503",
-        "504",
-        "timeout",
-        "connection",
-        "disconnected",
-        "stream disconnected",
-        "temporary",
-        "retry"
-    ]
-    response_lower = response.lower()
-    return any(indicator.lower() in response_lower for indicator in retriable_indicators)
 
 
 def run_codex_agent(
@@ -326,6 +336,7 @@ def run_codex_agent(
     model: str,
     timeout: int,
     logger: logging.Logger,
+    endpoint: Dict[str, str],
     max_retries: int = 3,
     retry_delay: int = 60
 ) -> dict:
@@ -337,9 +348,12 @@ def run_codex_agent(
     commit = instance['base_commit']
     problem = instance['problem_statement']
     
+    endpoint_name = endpoint['name']
+    
     logger.info(f"\n{'='*60}")
     logger.info(f"Instance: {instance_id}")
     logger.info(f"Repo: {repo} @ {commit[:8]}")
+    logger.info(f"Endpoint: {endpoint_name}")
     logger.info(f"{'='*60}")
     
     result = {
@@ -350,11 +364,12 @@ def run_codex_agent(
         "status": "FAILED",
         "error": None,
         "raw_response": "",
-        "retries": 0
+        "retries": 0,
+        "endpoint": endpoint_name
     }
     
-    # Setup repo
-    repo_dir = os.path.join(repos_dir, repo.replace('/', '_'))
+    # Setup repo - use endpoint-specific directory to avoid conflicts
+    repo_dir = os.path.join(repos_dir, f"{repo.replace('/', '_')}_{endpoint_name}")
     if not clone_repo_at_commit(repo, commit, repo_dir, logger):
         result["error"] = "Failed to clone repo"
         return result
@@ -363,24 +378,49 @@ def run_codex_agent(
     prompt = build_prompt(problem)
     logger.debug(f"  Problem: {problem[:200]}...")
     
-    # Build command
-    cmd = [
-        "codex", "exec", 
-        "--json",
-        "--sandbox", "danger-full-access",
-        "--model", model,
-        prompt
-    ]
-    
     # Retry loop
     for attempt in range(max_retries + 1):
         if attempt > 0:
-            logger.info(f"  Retry {attempt}/{max_retries} after {retry_delay}s delay...")
+            logger.info(f"  [{endpoint_name}] Retry {attempt}/{max_retries} after {retry_delay}s delay...")
             time.sleep(retry_delay)
             # Exponential backoff: double the delay for next retry
             retry_delay = min(retry_delay * 2, 300)  # Cap at 5 minutes
         
-        logger.info(f"  Running Codex agent (attempt {attempt + 1}/{max_retries + 1})...")
+        # Setup environment
+        env = os.environ.copy()
+        env["AZURE_OPENAI_API_KEY"] = endpoint["api_key"]
+        
+        # Write temporary config.toml
+        temp_config_path = os.path.join(repo_dir, ".codex_temp_config.toml")
+        config_content = f'''model = "{model}"
+model_provider = "azure"
+model_reasoning_effort = "medium"
+personality = "pragmatic"
+model_reasoning_summary = "concise"
+model_verbosity = "low"
+
+[model_providers.azure]
+name = "Azure OpenAI"
+base_url = "{endpoint['base_url']}"
+env_key = "AZURE_OPENAI_API_KEY"
+wire_api = "responses"
+stream_idle_timeout_ms = 600000
+request_max_retries = 10
+stream_max_retries = 30
+'''
+        with open(temp_config_path, 'w') as f:
+            f.write(config_content)
+        
+        cmd = [
+            "codex", "exec",
+            "--json",
+            "--sandbox", "danger-full-access",
+            "--model", model,
+            "--config", temp_config_path,
+            prompt
+        ]
+        
+        logger.info(f"  [{endpoint_name}] Running Codex agent (attempt {attempt + 1}/{max_retries + 1})...")
         
         try:
             proc = subprocess.run(
@@ -388,8 +428,13 @@ def run_codex_agent(
                 cwd=repo_dir,
                 capture_output=True,
                 text=True,
-                timeout=timeout
+                timeout=timeout,
+                env=env
             )
+            
+            # Cleanup temp config
+            if os.path.exists(temp_config_path):
+                os.remove(temp_config_path)
             
             response = proc.stdout
             stderr = proc.stderr or ""
@@ -400,13 +445,13 @@ def run_codex_agent(
             
             # Log stderr if any
             if stderr:
-                logger.debug(f"  [STDERR] {stderr[:500]}")
+                logger.debug(f"  [{endpoint_name}] [STDERR] {stderr[:500]}")
             
             # Check for rate limit errors
             if is_rate_limit_error(combined_output):
-                logger.warning(f"  Rate limit hit!")
+                logger.warning(f"  [{endpoint_name}] Rate limit hit!")
                 if attempt < max_retries:
-                    logger.info(f"  Will retry after delay...")
+                    logger.info(f"  [{endpoint_name}] Will retry after delay...")
                     continue
                 else:
                     result["error"] = "Rate limit exceeded (max retries reached)"
@@ -415,7 +460,7 @@ def run_codex_agent(
             
             # Check for other retriable errors (like stream disconnection)
             if is_retriable_error(combined_output) and not response.strip():
-                logger.warning(f"  Retriable error detected")
+                logger.warning(f"  [{endpoint_name}] Retriable error detected")
                 if attempt < max_retries:
                     continue
                 else:
@@ -423,7 +468,6 @@ def run_codex_agent(
                     return result
             
             # Parse the response
-            logger.info(f"  Parsing response...")
             found_files, found_modules, found_entities = parse_codex_response(response, logger)
             
             result["found_files"] = found_files
@@ -431,36 +475,74 @@ def run_codex_agent(
             result["found_entities"] = found_entities
             result["status"] = "FINISHED"
             
-            logger.info(f"  Results: {len(found_files)} files, {len(found_modules)} modules, {len(found_entities)} entities")
-            if found_files:
-                logger.info(f"  Files: {found_files[:5]}{'...' if len(found_files) > 5 else ''}")
+            logger.info(f"  [{endpoint_name}] Results: {len(found_files)} files, {len(found_modules)} modules, {len(found_entities)} entities")
+            logger.info(f"  [{endpoint_name}] Files: {found_files[:5]}{'...' if len(found_files) > 5 else ''}")
             
-            # Success - break out of retry loop
             return result
             
         except subprocess.TimeoutExpired:
-            logger.error(f"  TIMEOUT after {timeout}s")
+            logger.warning(f"  [{endpoint_name}] Timeout after {timeout}s")
             if attempt < max_retries:
-                logger.info(f"  Will retry...")
                 continue
-            else:
-                result["error"] = "Timeout (max retries reached)"
-                result["status"] = "TIMEOUT"
-                return result
-                
+            result["error"] = f"Timeout after {timeout}s"
+            result["status"] = "TIMEOUT"
+            # Cleanup temp config
+            if os.path.exists(temp_config_path):
+                os.remove(temp_config_path)
+            return result
+            
         except Exception as e:
-            logger.error(f"  ERROR: {e}")
-            if attempt < max_retries and "connection" in str(e).lower():
+            logger.error(f"  [{endpoint_name}] Error: {e}")
+            if attempt < max_retries:
                 continue
-            else:
-                result["error"] = str(e)
-                return result
+            result["error"] = str(e)
+            # Cleanup temp config
+            if os.path.exists(temp_config_path):
+                os.remove(temp_config_path)
+            return result
+    
+    return result
+
+
+def worker(
+    instance: dict,
+    repos_dir: str,
+    model: str,
+    timeout: int,
+    logger: logging.Logger,
+    endpoint_pool: EndpointPool,
+    result_writer: ResultWriter,
+    max_retries: int,
+    retry_delay: int,
+    pbar: tqdm
+) -> dict:
+    """Worker function for parallel processing."""
+    # Get an endpoint from the pool
+    endpoint = endpoint_pool.get_endpoint()
+    
+    # Run the agent
+    result = run_codex_agent(
+        instance=instance,
+        repos_dir=repos_dir,
+        model=model,
+        timeout=timeout,
+        logger=logger,
+        endpoint=endpoint,
+        max_retries=max_retries,
+        retry_delay=retry_delay
+    )
+    
+    # Save result
+    result_writer.add_result(result)
+    
+    # Update progress bar
+    pbar.update(1)
     
     return result
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Evaluate Codex CLI agent on LocBench")
+    parser = argparse.ArgumentParser(description="Evaluate Codex CLI agent on LocBench (Parallel)")
     parser.add_argument("--dataset_path", type=str, required=True,
                         help="Path to LocBench JSONL file")
     parser.add_argument("--output_dir", type=str, default="results/codex_agent",
@@ -483,24 +565,39 @@ def main():
                         help="Maximum retries per instance on failure")
     parser.add_argument("--retry_delay", type=int, default=60,
                         help="Initial delay between retries in seconds (doubles each retry)")
-    parser.add_argument("--delay", type=int, default=0,
-                        help="Delay in seconds between consecutive instances (to avoid rate limits)")
+    parser.add_argument("--endpoints_file", type=str, required=True,
+                        help="JSON file with Azure endpoints for parallel processing")
+    parser.add_argument("--workers", type=int, default=None,
+                        help="Number of parallel workers (default: number of endpoints)")
     
     args = parser.parse_args()
     
     # Setup logging
     logger = setup_logging(args.output_dir, args.verbose)
     
-    logger.info(f"Codex Agent Evaluation")
+    # Load endpoints
+    with open(args.endpoints_file) as f:
+        endpoints = json.load(f)
+    
+    num_endpoints = len(endpoints)
+    num_workers = args.workers or num_endpoints
+    
+    logger.info(f"Codex Agent Evaluation (Parallel)")
     logger.info(f"=" * 60)
     logger.info(f"Dataset: {args.dataset_path}")
     logger.info(f"Model: {args.model}")
     logger.info(f"Timeout: {args.timeout}s")
     logger.info(f"Max retries: {args.max_retries}")
     logger.info(f"Retry delay: {args.retry_delay}s (with exponential backoff)")
-    logger.info(f"Delay between instances: {args.delay}s")
     logger.info(f"Repos filter: {args.repos}")
     logger.info(f"Output: {args.output_dir}")
+    logger.info(f"Endpoints: {num_endpoints}")
+    for ep in endpoints:
+        logger.info(f"  - {ep['name']}: {ep['base_url']}")
+    logger.info(f"Parallel workers: {num_workers}")
+    
+    # Initialize endpoint pool
+    endpoint_pool = EndpointPool(endpoints)
     
     # Load dataset
     instances = []
@@ -535,37 +632,42 @@ def main():
                     existing_results.append(r)
         logger.info(f"Resuming: {len(completed_ids)} already completed")
     
-    results = existing_results.copy()
+    # Filter instances to process
+    instances_to_process = [inst for inst in instances if inst['instance_id'] not in completed_ids]
+    logger.info(f"Instances to process: {len(instances_to_process)}")
     
-    # Run evaluation
-    import time
-    for i, instance in enumerate(tqdm(instances, desc="Evaluating")):
-        if instance['instance_id'] in completed_ids:
-            logger.info(f"Skipping {instance['instance_id']} (already completed)")
-            continue
-        
-        # Add delay between instances (not before first one)
-        if i > 0 and args.delay > 0:
-            logger.info(f"  Waiting {args.delay}s before next instance...")
-            time.sleep(args.delay)
-        
-        result = run_codex_agent(
-            instance, 
-            args.repos_dir, 
-            args.model,
-            args.timeout,
-            logger,
-            max_retries=args.max_retries,
-            retry_delay=args.retry_delay
-        )
-        results.append(result)
-        
-        # Save incrementally
-        with open(output_path, 'w') as f:
-            for r in results:
-                f.write(json.dumps(r) + '\n')
+    # Initialize result writer
+    result_writer = ResultWriter(output_path, existing_results)
+    
+    # Run evaluation in parallel
+    with tqdm(total=len(instances_to_process), desc="Evaluating") as pbar:
+        with ThreadPoolExecutor(max_workers=num_workers) as executor:
+            futures = []
+            for instance in instances_to_process:
+                future = executor.submit(
+                    worker,
+                    instance=instance,
+                    repos_dir=args.repos_dir,
+                    model=args.model,
+                    timeout=args.timeout,
+                    logger=logger,
+                    endpoint_pool=endpoint_pool,
+                    result_writer=result_writer,
+                    max_retries=args.max_retries,
+                    retry_delay=args.retry_delay,
+                    pbar=pbar
+                )
+                futures.append(future)
+            
+            # Wait for all to complete
+            for future in as_completed(futures):
+                try:
+                    future.result()
+                except Exception as e:
+                    logger.error(f"Worker error: {e}")
     
     # Summary
+    results = result_writer.get_results()
     finished = sum(1 for r in results if r['status'] == 'FINISHED')
     with_files = sum(1 for r in results if r.get('found_files'))
     timeouts = sum(1 for r in results if r.get('status') == 'TIMEOUT')
@@ -573,6 +675,12 @@ def main():
     failed = sum(1 for r in results if r['status'] == 'FAILED')
     total_retries = sum(r.get('retries', 0) for r in results)
     avg_files = sum(len(r['found_files']) for r in results) / len(results) if results else 0
+    
+    # Count by endpoint
+    endpoint_counts = {}
+    for r in results:
+        ep = r.get('endpoint', 'unknown')
+        endpoint_counts[ep] = endpoint_counts.get(ep, 0) + 1
     
     logger.info(f"\n{'='*60}")
     logger.info(f"EVALUATION COMPLETE")
@@ -585,6 +693,9 @@ def main():
     logger.info(f"  Failed: {failed}")
     logger.info(f"Total retries: {total_retries}")
     logger.info(f"Avg files per instance: {avg_files:.2f}")
+    logger.info(f"By endpoint:")
+    for ep, count in endpoint_counts.items():
+        logger.info(f"  {ep}: {count}")
     logger.info(f"Output: {output_path}")
     logger.info(f"{'='*60}")
 
