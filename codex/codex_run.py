@@ -31,11 +31,11 @@ python codex/codex_run.py \
     --dataset_path /home/tsu25/LocAgent/evaluation/mulocbench_2/mulocbench.jsonl \
     --output_dir results/codex_agent \
     --repos_dir /home/tsu25/LocAgent/mulocbench_repos \
-    --repos scikit-learn flask requests transformers pandas pytorch \
-    --model gpt-5.2 \
+    --repos scikit-learn flask requests transformers pandas pytorch private-gpt\
+    --model gpt-5.2\
     --timeout 300 \
-    --max_retries 3 \
-    --retry_delay 30 \
+    --max_retries 0 \
+    --resume \
     -v
 """
 
@@ -90,7 +90,7 @@ def clone_repo_at_commit(repo: str, commit: str, target_dir: str, logger: loggin
             logger.info(f"  Cloning {repo}...")
             subprocess.run(
                 ["git", "clone", "--quiet", f"https://github.com/{repo}.git", target_dir],
-                check=True, capture_output=True, timeout=120
+                check=True, capture_output=True, timeout=300
             )
         logger.info(f"  Checking out {commit[:8]}...")
         subprocess.run(

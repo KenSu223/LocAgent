@@ -20,6 +20,13 @@ Usage:
         --gt_file /path/to/mulocbench.jsonl \
         --repos flask requests \
         --only_predicted
+
+    python run_locagent_eval.py \
+        --loc_file /home/tsu25/LocAgent/results/codex_agent/loc_outputs_filtered.jsonl \
+        --gt_file /home/tsu25/LocAgent/evaluation/mulocbench_2/mulocbench.jsonl \
+        --only_predicted
+
+     /home/tsu25/LocAgent/results/codex_agent/loc_outputs_filtered.jsonl
 """
 
 import argparse
