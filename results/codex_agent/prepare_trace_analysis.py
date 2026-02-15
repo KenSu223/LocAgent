@@ -15,11 +15,17 @@ Output formats:
 4. success_cases.jsonl - Successful instances for pattern comparison
 
 Usage:
-    python prepare_llm_analysis.py \
+    python prepare_trace_analysis.py \
         --loc_file results/codex_agent/loc_outputs_filtered.jsonl \
         --gt_file evaluation/mulocbench_2/mulocbench.jsonl \
         --log_file results/codex_agent/evaluation_*.log \
         --output_dir analysis/
+
+python prepare_trace_analysis.py \
+    --loc_file /home/tsu25/LocAgent/results/codex_agent/loc_outputs_filtered.jsonl \
+    --gt_file /home/tsu25/LocAgent/evaluation/mulocbench_2/mulocbench.jsonl \
+    --log_file "/home/tsu25/LocAgent/results/codex_agent/recent/*.log" \
+    --output_dir /home/tsu25/LocAgent/codex_agent/analysis/
 """
 
 import argparse
