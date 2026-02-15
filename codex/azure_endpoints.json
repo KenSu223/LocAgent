@@ -1,0 +1,12 @@
+[
+  {
+    "name": "endpoint-1",
+    "base_url": "https://cielara-research-resource.cognitiveservices.azure.com/",
+    "api_key": ""
+  },
+  {
+    "name": "endpoint-2",
+    "base_url": "https://bowen-ml61mmwb-southcentralus.cognitiveservices.azure.com/",
+    "api_key": ""
+  }
+]
