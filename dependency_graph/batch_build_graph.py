@@ -104,12 +104,28 @@ if __name__ == '__main__':
             repo_folders = list_folders(args.repo_path)
         selected_instance_data = None
 
+    existing_ids = {
+        osp.splitext(fname)[0]
+        for fname in os.listdir(args.index_dir)
+        if fname.endswith(".pkl")
+    }
+    to_build_ids = [instance_id for instance_id in repo_folders if instance_id not in existing_ids]
+    existing_count = len(repo_folders) - len(to_build_ids)
+    print(
+        f"Selected instances: {len(repo_folders)} | "
+        f"Already indexed: {existing_count} | "
+        f"New indexes to build: {len(to_build_ids)}"
+    )
+    if not to_build_ids:
+        print("No new graph indexes to build. Exiting.")
+        raise SystemExit(0)
+
     os.makedirs(args.repo_path, exist_ok=True)
 
     # Create a shared queue and add repositories to it
     manager = mp.Manager()
     queue = manager.Queue()
-    for repo in repo_folders:
+    for repo in to_build_ids:
         queue.put(repo)
 
     start_time = time.time()
